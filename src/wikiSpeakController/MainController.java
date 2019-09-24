@@ -10,13 +10,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import wikiSpeak.ViewCreationsUI;
 import wikiSpeak.Main;
+import wikiSpeak.ViewCreations;
 
 public class MainController {
 	@FXML
 	private void onViewBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-		Scene scene = new Scene(Main.getLayout());
-		stage.setScene(ViewCreationsUI.getInstance(()->stage.setScene(scene)));
+		Scene scene = new Scene(ViewCreations.getLayout());
+		stage.setScene(scene);
 	}
 	
 //	@FXML
