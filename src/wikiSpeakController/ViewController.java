@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,8 +18,6 @@ import javafx.stage.Stage;
 import wikiSpeak.Creation;
 import wikiSpeak.Main;
 import wikiSpeak.ShellHelper;
-import wikiSpeak.ViewCreations;
-import wikiSpeak.ViewCreationsUI;
 
 public class ViewController {
 	@FXML
