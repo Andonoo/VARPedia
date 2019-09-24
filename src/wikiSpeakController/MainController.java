@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
+import wikiSpeak.Search;
 import wikiSpeak.ViewCreations;
 
 public class MainController {
@@ -16,6 +17,13 @@ public class MainController {
 	private void onViewBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
 		Scene scene = new Scene(ViewCreations.getLayout());
+		stage.setScene(scene);
+	}
+	
+	@FXML
+	private void onCreateBtnClicked(ActionEvent event) throws IOException {
+		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+		Scene scene = new Scene(Search.getLayout());
 		stage.setScene(scene);
 	}
 	

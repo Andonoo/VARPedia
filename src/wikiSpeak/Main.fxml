@@ -18,7 +18,7 @@
             <Font size="17.0" />
          </font>
       </Button>
-      <Button layoutX="595.0" layoutY="317.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="154.0" text="Make Creation">
+      <Button layoutX="595.0" layoutY="317.0" mnemonicParsing="false" onAction="#onCreateBtnClicked" prefHeight="75.0" prefWidth="154.0" text="Make Creation">
          <font>
             <Font size="17.0" />
          </font>
