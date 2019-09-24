@@ -14,9 +14,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import wikiSpeakController.VideoPlayerController;
 
 public class Main extends Application{
-	Stage _primaryStage;
+//	Stage _primaryStage;
 //	@Override
 //	public void start(Stage primaryStage) throws Exception {
 //		_primaryStage = primaryStage;
@@ -97,8 +98,27 @@ public class Main extends Application{
 		return hbox;
 	}
 	
-	public static void main(String[] args) {
-		Application.launch(args);
+	public static void main(String args[]) {
+		launch(args);
 	}
 
+	/**
+	 * THE FOLLOWING DEMONSTRATES HOW WE CAN PASS PARAMETERS TO THE CONTROLLER OBJECTS
+	 */
+	
+//	 @Override
+//	 public void start(Stage primaryStage) throws Exception {
+//	 	FXMLLoader loader = new FXMLLoader();
+//	 	loader.setLocation(Main.class.getResource("PlayerUI.fxml"));
+//	 	Parent layout = loader.load();
+//	 	Scene scene = new Scene(layout);
+//	 	VideoPlayerController controller = loader.<VideoPlayerController>getController();
+//	 	controller.setVideo("Apple");
+//	 	primaryStage.setScene(scene);
+//	 	primaryStage.show();
+//	 }
+//	
+//	 public static void main(String args[]) {
+//	 	launch(args);
+//	 }
 }
