@@ -11,7 +11,6 @@ public class CreateAudioChunk {
 	public static Parent getLayout() throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(CreateAudio.class.getResource("CreateAudioChunk.fxml"));
-		CreateAudioChunkController controller = loader.<CreateAudioChunkController>getController();
 		Parent layout = loader.load();
 		return layout;
 	}
