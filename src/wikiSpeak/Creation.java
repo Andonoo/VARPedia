@@ -1,19 +1,23 @@
 package wikiSpeak;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.stage.Stage;
 import javafx.scene.control.ButtonType;
 
 /***
  * A class to represent an existing creation
- * @author Xiaobin Lin
+ * @author Xiaobin Lin, Andrew Donovan
  *
  */
 public class Creation {
@@ -35,23 +39,30 @@ public class Creation {
 			_duration = null;
 		}
 		_play = new Button("play");
-		_play.setOnAction(event -> onPlay());
+		_play.setOnAction(event -> onPlay(event));
 		_delete = new Button("delete");
 		_delete.setOnAction(event -> onDelete());
     }
 	
 	/***
-	 * Play the creation using ffplay on a different thread
+	 * Retrieving scene appropriate for playing this creation and loading
 	 */
-	private void onPlay() {
-			Thread worker = new Thread(()->{
-			try {
-				String command = String.format("ffplay -autoexit ./Creations/%s.mp4", _creationName);
-				ShellHelper.execute(command);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}});
-			worker.start();
+	private void onPlay(ActionEvent e) {
+//			Thread worker = new Thread(()->{
+//			try {
+//				String command = String.format("ffplay -autoexit ./Creations/%s.mp4", _creationName);
+//				ShellHelper.execute(command);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}});
+//			worker.start();
+		Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+		try {
+			Scene scene = new Scene(PlayerUI.getLayout(_creationName));
+			stage.setScene(scene);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 	
 	/***
