@@ -18,7 +18,7 @@ import javafx.util.converter.NumberStringConverter;
 public class CreateUI {
 	private TextField _textInput;
 	private Button _searchBtn;
-	private ListView<String> _wikitContents;
+	private TextField _wikitContents;
 	private TextField _lineNumberInput;
 	private Button _createBtn;
 	private TextField _creationNameInput;
@@ -38,7 +38,7 @@ public class CreateUI {
 		_createBtn = new Button("Create");
 		_backBtn = new Button("Back");
 		_backBtn.setOnAction(event -> {onBack.run();});
-		_wikitContents = new ListView<>();
+		_wikitContents = new TextField();
 		_lineNumberInput = new TextField();
 		_creationNameInput = new TextField();
 
@@ -51,7 +51,7 @@ public class CreateUI {
 
 		// Force the input field to take only numbers
 		_lineNumberInput.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
-		_wikitContents.setPlaceholder(new Label(contentPlaceHolder));
+		_wikitContents.setPromptText(contentPlaceHolder);
 		_lineNumberInput.setPromptText("Line Number");
 		_creationNameInput.setPromptText("Creation Name");
 
@@ -104,7 +104,7 @@ public class CreateUI {
 	 * Use wikit to search the Internet and store the result in wikitContent table with column numbers
 	 */
 	private void onSearch(){
-		_wikitContents.setPlaceholder(new Label(loadingText));
+		_wikitContents.setPromptText(loadingText);;
 		Thread worker = new Thread(() -> {
 			try{
 				String command = String.format("wikit %s", _textInput.getText());
@@ -112,8 +112,7 @@ public class CreateUI {
 				if (output.size() == 0 || output.get(0).contains("not found :^(")) {
 					// Show alert and exit
 					Platform.runLater(() -> {
-						_wikitContents.setPlaceholder(new Label(contentPlaceHolder));
-						Alert alert = new Alert(AlertType.ERROR);
+						_wikitContents.setPromptText(contentPlaceHolder);						Alert alert = new Alert(AlertType.ERROR);
 						alert.setContentText(String.format("%s: Nothing found :(", _textInput.getText()));
 						resetCreate();
 						alert.showAndWait();
@@ -126,14 +125,16 @@ public class CreateUI {
 
 				Platform.runLater(() -> {
 					// Update wikitContents table to show wikit text
-					_wikitContents.getItems().clear();
-					for (int i = 1; i <= wikiTextList.size(); i++) {
-						_wikitContents.getItems().add(String.format("%02d %s", i, wikiTextList.get(i-1)));
+					_wikitContents.clear();
+					String wikitText = "";
+					for (int i = 0; i < wikiTextList.size(); i++) {
+						wikitText += (wikiTextList.get(i));
 					}
+					_wikitContents.setText(wikitText);
 				});
 			} catch (Exception e) {
 				Platform.runLater(() -> {
-					_wikitContents.setPlaceholder(new Label(contentPlaceHolder));
+					_wikitContents.setPromptText(contentPlaceHolder);
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setContentText("Invalid search, please search with a different word");
 					alert.showAndWait();
@@ -152,7 +153,7 @@ public class CreateUI {
 		String textToSpeak = "";
 		for (int i = 1; i <= userLN; i++) {
 			// Add the line of text user specified, excluding the leading digits
-			textToSpeak += _wikitContents.getItems().get(i-1).substring(3);
+			textToSpeak += _wikitContents.getText();
 		}
 		try {
 			// Create the wav audio file
@@ -191,7 +192,7 @@ public class CreateUI {
 				alert.showAndWait();
 				_createBtn.setDisable(false);
 				resetCreate();
-				_wikitContents.setPlaceholder(new Label(contentPlaceHolder));
+				_wikitContents.setPromptText(contentPlaceHolder);
 			});
 		} catch (Exception e) {
 			Platform.runLater(() -> {
@@ -249,7 +250,7 @@ public class CreateUI {
 	 */
 	public void resetCreate(){
 		_textInput.clear();
-		_wikitContents.getItems().clear();
+		_wikitContents.clear();
 		_lineNumberInput.clear();
 		_creationNameInput.clear();
 	}
@@ -266,7 +267,7 @@ public class CreateUI {
 		} catch (NumberFormatException e) {
 			inputLN = 0;
 		}
-		int ln = _wikitContents.getItems().size();
+		int ln = 5;
 		if (inputLN > ln || inputLN <= 0) {
 			return -1;
 		}
