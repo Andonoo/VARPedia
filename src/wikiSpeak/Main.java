@@ -99,6 +99,16 @@ public class Main extends Application{
 	}
 	
 	public static void main(String args[]) {
+		String command = "mkdir -p ./Creations";
+		try {
+			ShellHelper.execute(command);
+			command = "mkdir -p ./Creations/.temp";
+			ShellHelper.execute(command);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return;
+		}
+		
 		launch(args);
 	}
 

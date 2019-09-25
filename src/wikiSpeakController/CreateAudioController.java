@@ -137,7 +137,7 @@ public class CreateAudioController {
 		List<String> playableNames = new ArrayList<String>();
 		List<Playable> playables = new ArrayList<Playable>();
 		try {
-            String command = String.format("ls -a chunk* 2> /dev/null | grep -Po \"((.+)(?=\\.wav))\"");
+            String command = String.format("ls -a ./Creations/.temp/chunk* 2> /dev/null | grep -Po \"((.+)(?=\\.wav))\"");
             playableNames = ShellHelper.execute(command);
 		} catch (Exception e) {
 		    // Return empty list of creations to indicate there are no creations

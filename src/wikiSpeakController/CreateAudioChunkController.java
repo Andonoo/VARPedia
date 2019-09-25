@@ -29,15 +29,15 @@ public class CreateAudioChunkController {
 		String voiceOption = voiceCombo.getValue();
 		
 		Thread worker = new Thread(()->{
-			String command = String.format("echo \"%s\" > temp.txt", text);
+			String command = String.format("echo \"%s\" > ./Creations/.temp/temp.txt", text);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o temp.wav -eval \'(voice_%s)\' < temp.txt",
+				command = String.format("text2wave -o ./Creations/.temp/temp.wav -eval \'(voice_%s)\' < temp.txt",
 						voiceOption);
 				ShellHelper.execute(command);
-				command = "play ./temp.wav";
+				command = "play ./Creations/.temp/temp.wav";
 				ShellHelper.execute(command);
-				command = "rm temp.wav temp.txt";
+				command = "rm ./Creations/.temp/temp.wav ./Creations/.temp/temp.txt";
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -54,10 +54,10 @@ public class CreateAudioChunkController {
 		String voiceOption = voiceCombo.getValue();
 		
 		Thread worker = new Thread(()->{
-			String command = String.format("echo \"%s\" > temp.txt", text);
+			String command = String.format("echo \"%s\" > ./Creations/.temp/temp.txt", text);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o \"chunk-$(date --iso-8601=seconds).wav\" -eval \'(voice_%s)\' < temp.txt",
+				command = String.format("text2wave -o \"./Creations/.temp/chunk-$(date --iso-8601=seconds).wav\" -eval \'(voice_%s)\' < ./Creations/.temp/temp.txt",
 						voiceOption);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
