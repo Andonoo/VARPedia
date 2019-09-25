@@ -31,7 +31,7 @@ public abstract class Playable {
 	
 	protected abstract void onDelete(ActionEvent event);
 	
-	public String getName() {
+	public String getPlayableName() {
 		return _playableName;
 	}
 	

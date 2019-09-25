@@ -1,8 +1,11 @@
 package wikiSpeakController;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 import wikiSpeak.ShellHelper;
 
 public class CreateAudioChunkController {
@@ -45,7 +48,8 @@ public class CreateAudioChunkController {
     }
 	
 	@FXML
-    private void saveBtnClicked() {
+    private void saveBtnClicked(ActionEvent event) {
+		
 		String text = selectedTextTA.getText();
 		String voiceOption = voiceCombo.getValue();
 		
@@ -62,6 +66,8 @@ public class CreateAudioChunkController {
 			}
 		});
 		worker.start();
+		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+	    stage.close();
     }
 	
 	public void setText(String text) {

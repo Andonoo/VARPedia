@@ -20,9 +20,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import wikiSpeak.AudioChunk;
 import wikiSpeak.CreateAudioChunk;
 import wikiSpeak.Creation;
 import wikiSpeak.Main;
+import wikiSpeak.Playable;
 import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
 
@@ -74,7 +76,7 @@ public class CreateAudioController {
 	
 	private void loadData() {
 		// Create columns for the UI
-		List<String> creationFieldNames = Arrays.asList("creationName", "duration", "play", "delete");
+		List<String> creationFieldNames = Arrays.asList("playableName", "duration", "play", "delete");
 		List<String> tableColumnNames = Arrays.asList("Name", "Duration", "Play", "Delete");
 		double[] widthMultiplier = {0.4, 0.5/3, 0.5/3, 0.5/3};
 		List<TableColumn<String, Creation>> columns = new ArrayList<TableColumn<String, Creation>>();
@@ -105,14 +107,14 @@ public class CreateAudioController {
 		modal.initModality(Modality.APPLICATION_MODAL); 
 		modal.setScene(scene);
 		modal.showAndWait();
-//		refreshTable();
+		refreshTableAsync();
 	}
 	
 	private void refreshTableAsync() {
 		audioChunkTV.getItems().clear();
 		audioChunkTV.setPlaceholder(new Label("Loading..."));
 		Thread worker = new Thread(()->{
-			List<Creation> creations = getCreations();
+			List<Playable> creations = getCreations();
 			Platform.runLater(()->{
 				// Hint that there are no creations
 				audioChunkTV.setPlaceholder(new Label("There are no audio chunks"));
@@ -131,23 +133,23 @@ public class CreateAudioController {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	private List<Creation> getCreations() throws RuntimeException{
-		List<String> creationNames = new ArrayList<String>();
-		List<Creation> creations = new ArrayList<Creation>();
+	private List<Playable> getCreations() throws RuntimeException{
+		List<String> playableNames = new ArrayList<String>();
+		List<Playable> playables = new ArrayList<Playable>();
 		try {
             String command = String.format("ls -a chunk* 2> /dev/null | grep -Po \"((.+)(?=\\.wav))\"");
-			creationNames = ShellHelper.execute(command);
+            playableNames = ShellHelper.execute(command);
 		} catch (Exception e) {
 		    // Return empty list of creations to indicate there are no creations
-			return new ArrayList<Creation>();
+			return new ArrayList<Playable>();
 		}
 		
 		// Create a list of Creation objects
-		for (int i = 0; i < creationNames.size(); i++) {
-			Creation creation = new Creation(creationNames.get(i), ()->{refreshTableAsync();});
-			creations.add(creation);
+		for (int i = 0; i < playableNames.size(); i++) {
+			AudioChunk creation = new AudioChunk(playableNames.get(i), ()->{refreshTableAsync();});
+			playables.add(creation);
 		}
 		
-		return creations;
+		return playables;
 	}
 }
