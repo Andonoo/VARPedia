@@ -53,7 +53,7 @@ public class CreateAudioChunkController {
 			String command = String.format("echo \"%s\" > temp.txt", text);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o \"$(date --iso-8601=seconds).wav\" -eval \'(voice_%s)\' < temp.txt",
+				command = String.format("text2wave -o \"chunk-$(date --iso-8601=seconds).wav\" -eval \'(voice_%s)\' < temp.txt",
 						voiceOption);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
