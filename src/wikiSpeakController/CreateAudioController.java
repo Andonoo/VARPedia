@@ -48,6 +48,7 @@ public class CreateAudioController {
 	@FXML
     public void initialize() {
         wikiTextTA.setText(wikiContent);
+        
         wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
         		selectedTextTA.setText(newValue);        		
