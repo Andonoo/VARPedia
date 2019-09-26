@@ -55,7 +55,7 @@ public class FlickrHelper {
 	}
 
 	private static String getSecret() throws IOException {
-		File file = new File("/home/student/Documents/flickrSecret.txt"); 
+		File file = new File("/flickrSecret.txt"); 
 		BufferedReader br = new BufferedReader(new FileReader(file)); 
 				
 		String line;
@@ -70,7 +70,7 @@ public class FlickrHelper {
 	}
 
 	private static String getKey() throws IOException {
-		File file = new File("/home/student/Documents/flickrKey.txt"); 
+		File file = new File("/flickrKey.txt"); 
 		BufferedReader br = new BufferedReader(new FileReader(file)); 
 				
 		String line;

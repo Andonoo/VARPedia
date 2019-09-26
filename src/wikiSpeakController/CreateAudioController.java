@@ -68,6 +68,7 @@ public class CreateAudioController {
 	
 	@FXML
     public void initialize() {
+		FlickrHelper.getImages("Apple");
         wikiTextTA.setText(wikiContent);
         wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
