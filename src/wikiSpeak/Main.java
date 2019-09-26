@@ -104,6 +104,8 @@ public class Main extends Application{
 			ShellHelper.execute(command);
 			command = "mkdir -p ./Creations/.temp";
 			ShellHelper.execute(command);
+			command = "mkdir -p ./Creations/.tempPhotos";
+			ShellHelper.execute(command);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return;

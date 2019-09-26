@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 import wikiSpeak.AudioChunk;
 import wikiSpeak.CreateAudioChunk;
 import wikiSpeak.Creation;
+import wikiSpeak.FlickrHelper;
 import wikiSpeak.Main;
 import wikiSpeak.Playable;
 import wikiSpeak.Search;
