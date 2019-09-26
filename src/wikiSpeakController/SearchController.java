@@ -61,7 +61,6 @@ public class SearchController {
 			Scene scene = new Scene(Main.getLayout());
 			stage.setScene(scene);
 		}
-
 	}
 	
 	@FXML

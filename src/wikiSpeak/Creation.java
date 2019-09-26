@@ -35,8 +35,8 @@ public class Creation extends Playable{
 		try {
 			Scene scene = new Scene(PlayerUI.getLayout(_playableName));
 			stage.setScene(scene);
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

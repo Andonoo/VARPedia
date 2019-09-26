@@ -32,7 +32,7 @@ public class CreateAudioChunkController {
 			String command = String.format("echo \"%s\" > ./Creations/.temp/temp.txt", text);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o ./Creations/.temp/temp.wav -eval \'(voice_%s)\' < temp.txt",
+				command = String.format("text2wave -o ./Creations/.temp/temp.wav -eval \'(voice_%s)\' < ./Creations/.temp/temp.txt",
 						voiceOption);
 				ShellHelper.execute(command);
 				command = "play ./Creations/.temp/temp.wav";

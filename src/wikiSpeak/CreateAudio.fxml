@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.CreateAudioController">
    <children>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Home" />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
       <TextArea fx:id="wikiTextTA" layoutX="14.0" layoutY="53.0" prefHeight="531.0" prefWidth="325.0" wrapText="true" />
       <Button layoutX="929.0" layoutY="53.0" mnemonicParsing="false" onAction="#onAddBtnClicked" text="Add" />
       <TableView fx:id="audioChunkTV" layoutX="380.0" layoutY="150.0" prefHeight="370.0" prefWidth="593.0" />
