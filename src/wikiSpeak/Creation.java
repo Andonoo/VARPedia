@@ -2,6 +2,8 @@ package wikiSpeak;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -33,7 +35,7 @@ public class Creation extends Playable{
 	protected void onPlay(ActionEvent event) {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
 		try {
-			Scene scene = new Scene(PlayerUI.getLayout(_playableName));
+			Scene scene = new Scene(PlayerUI.getLayout(this));
 			stage.setScene(scene);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -57,7 +59,7 @@ public class Creation extends Playable{
 		if (result.get() == buttonTypeYes){
 				Thread worker = new Thread(()->{
 				try {
-					String command = String.format("rm ./Creations/%s.*", _playableName);
+					String command = String.format("rm %s", _filePath);
 					ShellHelper.execute(command);
 					// Run the action specified by client, mainly for refreshing the UI
 					Platform.runLater(()-> _afterDelete.run());
@@ -72,7 +74,28 @@ public class Creation extends Playable{
 		}
 	}
 	
+	public String getPlayableName() {
+		Pattern p = Pattern.compile(".+\\/(.+).mp4$");
+		Matcher m = p.matcher(_filePath);
+		if (m.matches()) {
+			return m.group(1);
+		}
+		return null;
+	}
+	
 	public String getCreationName() {
-		return _playableName;
+		return getPlayableName();
+	}
+
+	protected int fetchDuration() {
+		// TODO Auto-generated method stub
+		try {
+			// Get the duration to a whole number string
+			String command = String.format("ffprobe -i \"%s\" -show_format -v " +
+					"quiet | sed -n 's/duration=//p'", _filePath);
+			return((int) Double.parseDouble(ShellHelper.execute(command).get(0)));
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 }

@@ -36,6 +36,7 @@ import wikiSpeak.ShellHelper;
 
 public class CreateAudioController {
 	private String wikiContent;
+	private String creationName;
 	
 	@FXML
 	private TextArea wikiTextTA;
@@ -49,6 +50,10 @@ public class CreateAudioController {
 	public void setText(String wikiContent) {
 		this.wikiContent = wikiContent;
 		wikiTextTA.setText(wikiContent);
+	}
+	
+	public void setCreationName(String creationName) {
+		this.creationName = creationName;
 	}
 	
 	private int countWords(String text) {
@@ -68,7 +73,6 @@ public class CreateAudioController {
 	
 	@FXML
     public void initialize() {
-		FlickrHelper.getImages("Apple");
         wikiTextTA.setText(wikiContent);
         wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
@@ -83,7 +87,7 @@ public class CreateAudioController {
 	
 	private void loadData() {
 		// Create columns for the UI
-		List<String> creationFieldNames = Arrays.asList("playableName", "duration", "play", "delete");
+		List<String> creationFieldNames = Arrays.asList("PlayableName", "duration", "play", "delete");
 		List<String> tableColumnNames = Arrays.asList("Name", "Duration", "Play", "Delete");
 		double[] widthMultiplier = {0.4, 0.5/3, 0.5/3, 0.5/3};
 		List<TableColumn<String, Creation>> columns = new ArrayList<TableColumn<String, Creation>>();
@@ -107,6 +111,8 @@ public class CreateAudioController {
 		String text = wikiTextTA.getSelectedText();
 		CreateAudioChunkController controller = loader.<CreateAudioChunkController>getController();
 		controller.setText(text);
+		controller.setCreationName(creationName);
+		controller.setOnAddAction(()->refreshTableAsync());
 		Scene scene = new Scene(layout);
 		
 		Stage modal = new Stage();
@@ -114,7 +120,6 @@ public class CreateAudioController {
 		modal.initModality(Modality.APPLICATION_MODAL); 
 		modal.setScene(scene);
 		modal.showAndWait();
-		refreshTableAsync();
 	}
 	
 	private void refreshTableAsync() {
@@ -162,14 +167,14 @@ public class CreateAudioController {
 		List<String> playableNames = new ArrayList<String>();
 		List<Playable> playables = new ArrayList<Playable>();
 		try {
-            String command = String.format("ls -a ./Creations/.temp/chunk* 2> /dev/null | grep -Po \"((.+)(?=\\.wav))\"");
+            String command = String.format("ls -a ./Creations/%s/chunk* 2> /dev/null | grep -Po \".+.wav\"", creationName);
             playableNames = ShellHelper.execute(command);
 		} catch (Exception e) {
 		    // Return empty list of creations to indicate there are no creations
 			return new ArrayList<Playable>();
 		}
 		
-		// Create a list of Creation objects
+		// Create a list of Playable objects
 		for (int i = 0; i < playableNames.size(); i++) {
 			AudioChunk creation = new AudioChunk(playableNames.get(i), ()->{refreshTableAsync();});
 			playables.add(creation);

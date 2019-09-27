@@ -16,6 +16,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
+import wikiSpeak.Playable;
 
 /**
  * Class to control the PlayerUI components.
@@ -66,9 +67,9 @@ public class VideoPlayerController {
 	 * Sets the name of the creation to be played by this PlayerUI component.
 	 * @param creationName
 	 */
-	public void setVideo(String creationName) {
-		_creationTitle.setText(creationName);
-		File vid = new File("Creations/" + creationName + ".mp4");
+	public void setVideo(Playable playable) {
+		_creationTitle.setText(playable.getPlayableName());
+		File vid = new File(playable.getPath());
 		_video = new Media("file://" + vid.getAbsolutePath());
 		_videoPlayer = new MediaPlayer(_video);
 		_videoPlayer.setAutoPlay(false);
