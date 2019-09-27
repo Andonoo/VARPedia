@@ -14,5 +14,13 @@
 	<classpathentry kind="lib" path="/home/student/Downloads/openjfx-13-rc+2_linux-x64_bin-sdk/javafx-sdk-13/lib/javafx.swing.jar"/>
 	<classpathentry kind="lib" path="/home/student/Downloads/openjfx-13-rc+2_linux-x64_bin-sdk/javafx-sdk-13/lib/javafx.web.jar"/>
 	<classpathentry kind="lib" path="/home/student/Downloads/openjfx-13-rc+2_linux-x64_bin-sdk/javafx-sdk-13/lib/javafx-swt.jar"/>
+	<classpathentry kind="lib" path="libs/flickr4java-3.0.1.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-annotations-2.9.0.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-core-2.9.9.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-databind-2.9.9.jar"/>
+	<classpathentry kind="lib" path="libs/scribejava-apis-6.6.3.jar"/>
+	<classpathentry kind="lib" path="libs/scribejava-core-6.2.0.jar"/>
+	<classpathentry kind="lib" path="libs/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="libs/slf4j-nop-1.7.26.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 import wikiSpeak.AudioChunk;
 import wikiSpeak.CreateAudioChunk;
 import wikiSpeak.Creation;
+import wikiSpeak.FlickrHelper;
 import wikiSpeak.Main;
 import wikiSpeak.Playable;
 import wikiSpeak.Search;
@@ -67,6 +68,7 @@ public class CreateAudioController {
 	
 	@FXML
     public void initialize() {
+		FlickrHelper.getImages("Apple");
         wikiTextTA.setText(wikiContent);
         wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
