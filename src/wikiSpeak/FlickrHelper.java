@@ -61,7 +61,7 @@ public class FlickrHelper {
 	}
 	
 	private static String getAPIKey(String key) throws IOException{
-		File file = new File("./flickr-api-keys.txt"); 
+		File file = new File("flickr-api-keys.txt"); 
 		BufferedReader br = new BufferedReader(new FileReader(file)); 
 				
 		String line;

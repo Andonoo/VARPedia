@@ -52,7 +52,7 @@ public class FinalizeCreationController {
 		formatImages();
 		String creationDir = "Creations/" + _creationName;
 		Thread creationWorker = new Thread(() -> {			
-			File audioDirectory = new File(creationDir + "/.temp");
+			File audioDirectory = new File(creationDir + "/.temp/");
 			String[] audioFiles = audioDirectory.list();
 			
 			File photoDirectory = new File(creationDir + "/.tempPhotos");
