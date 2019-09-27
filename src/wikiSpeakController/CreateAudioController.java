@@ -87,7 +87,7 @@ public class CreateAudioController {
 	
 	private void loadData() {
 		// Create columns for the UI
-		List<String> creationFieldNames = Arrays.asList("playableName", "duration", "play", "delete");
+		List<String> creationFieldNames = Arrays.asList("PlayableName", "duration", "play", "delete");
 		List<String> tableColumnNames = Arrays.asList("Name", "Duration", "Play", "Delete");
 		double[] widthMultiplier = {0.4, 0.5/3, 0.5/3, 0.5/3};
 		List<TableColumn<String, Creation>> columns = new ArrayList<TableColumn<String, Creation>>();
@@ -167,7 +167,7 @@ public class CreateAudioController {
 		List<String> playableNames = new ArrayList<String>();
 		List<Playable> playables = new ArrayList<Playable>();
 		try {
-            String command = String.format("ls -a ./Creations/%s/chunk* 2> /dev/null | grep -Po \"((.+)(?=\\.wav))\"", creationName);
+            String command = String.format("ls -a ./Creations/%s/chunk* 2> /dev/null | grep -Po \".+.wav\"", creationName);
             playableNames = ShellHelper.execute(command);
 		} catch (Exception e) {
 		    // Return empty list of creations to indicate there are no creations

@@ -13,12 +13,12 @@ import wikiSpeakController.VideoPlayerController;
  * @author Andrew Donovan
  */
 public class PlayerUI {
-	public static Parent getLayout(String creationName) throws IOException {
+	public static Parent getLayout(Playable playable) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("PlayerUI.fxml"));
 		Parent layout = loader.load();
 		VideoPlayerController controller = loader.<VideoPlayerController>getController();
-		controller.setVideo(creationName);
+		controller.setVideo(playable);
 		return layout;
 	}
 }

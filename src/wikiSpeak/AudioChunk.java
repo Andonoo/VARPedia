@@ -1,6 +1,8 @@
 package wikiSpeak;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,7 +22,7 @@ public class AudioChunk extends Playable{
 	protected void onPlay(ActionEvent event) {
 		Thread worker = new Thread(()->{
 			try {
-				String command = String.format("play %s.wav", _playableName);
+				String command = String.format("play %s", _filePath);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -45,7 +47,7 @@ public class AudioChunk extends Playable{
 			if (result.get() == buttonTypeYes){
 					Thread worker = new Thread(()->{
 					try {
-						String command = String.format("rm %s.*", _playableName);
+						String command = String.format("rm %s", _filePath);
 						ShellHelper.execute(command);
 						// Run the action specified by client, mainly for refreshing the UI
 						Platform.runLater(()-> _afterDelete.run());
@@ -59,6 +61,28 @@ public class AudioChunk extends Playable{
 					worker.start();
 			}
 		
+	}
+
+	public String getPlayableName() {
+		Pattern p = Pattern.compile(".+\\/(.+).wav$");
+		Matcher m = p.matcher(_filePath);
+		if (m.matches()) {
+			return m.group(1);
+		}
+		return null;
+	}
+
+	@Override
+	protected int fetchDuration() {
+		// TODO Auto-generated method stub
+		try {
+			// Get the duration to a whole number string
+			String command = String.format("ffprobe -i \"%s\" -show_format -v " +
+					"quiet | sed -n 's/duration=//p'", _filePath);
+			return((int) Double.parseDouble(ShellHelper.execute(command).get(0)));
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 }

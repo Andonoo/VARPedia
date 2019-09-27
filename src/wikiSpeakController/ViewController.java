@@ -81,8 +81,12 @@ public class ViewController {
 		List<String> creationNames = new ArrayList<String>();
 		List<Creation> creations = new ArrayList<Creation>();
 		try {
-            String command = String.format("ls -a ./Creations 2> /dev/null | grep -Po \"((.+)(?=\\.mp4))\"");
+			// Assuming if a folder exists, a creation exists
+            String command = String.format("ls ./Creations 2> /dev/null");
 			creationNames = ShellHelper.execute(command);
+			for (int i = 0; i < creationNames.size(); i++) {
+				creationNames.set(i, "./Creations/" + creationNames.get(i) + "/" + creationNames.get(i) + ".mp4");
+			}
 		} catch (Exception e) {
 		    // Return empty list of creations to indicate there are no creations
 			return new ArrayList<Creation>();

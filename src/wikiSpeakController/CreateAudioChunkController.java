@@ -44,7 +44,7 @@ public class CreateAudioChunkController {
 				ShellHelper.execute(command);
 				command = String.format("play %s/temp.wav", creationPath);
 				ShellHelper.execute(command);
-				command = String.format("rm %s/temp.wav %s/temp.txt", creationPath, creationPath);
+				command = String.format("rm %s/temp.wav %s/temp.txt &2> /dev/null", creationPath, creationPath);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

@@ -1,38 +1,42 @@
 package wikiSpeak;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
 public abstract class Playable {
+	protected String _filePath;
 	protected String _playableName;
 	protected String _duration;
 	protected Button _play;
 	protected Button _delete;
 	protected Runnable _afterDelete;
 	
-	public Playable(String playableName, Runnable afterDelete){
-		_playableName = playableName;
+	public Playable(String filePath, Runnable afterDelete){
+//		"./Creations/apple/apple.mp4"
+		_filePath = filePath;
 		_afterDelete = afterDelete;
-		try {
-			// Get the duration to a whole number string
-			String command = String.format("ffprobe -i ./Creations/\"%s.mp4\" -show_format -v " +
-					"quiet | sed -n 's/duration=//p'", playableName);
-			_duration = String.valueOf((int) Double.parseDouble(ShellHelper.execute(command).get(0)));
-		} catch (Exception e) {
-			_duration = null;
-		}
+		_playableName = getPlayableName();
+		_duration = String.valueOf(fetchDuration());
+		
 		_play = new Button("play");
 		_play.setOnAction(event -> onPlay(event));
 		_delete = new Button("delete");
 		_delete.setOnAction(event -> onDelete(event));
     }
+	
+	protected abstract int fetchDuration();
 
 	protected abstract void onPlay(ActionEvent event);
 	
 	protected abstract void onDelete(ActionEvent event);
 	
-	public String getPlayableName() {
-		return _playableName;
+	public abstract String getPlayableName();
+	
+	public String getPath() {
+		return _filePath;
 	}
 	
 	public String getDuration() {
