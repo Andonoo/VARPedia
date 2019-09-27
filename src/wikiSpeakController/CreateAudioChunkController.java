@@ -1,5 +1,6 @@
 package wikiSpeakController;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,6 +14,7 @@ public class CreateAudioChunkController {
 	private TextArea selectedTextTA;
 	
 	private String creationName;
+	private Runnable onAdd;
 	
 	@FXML
 	private ComboBox<String> voiceCombo;
@@ -23,6 +25,8 @@ public class CreateAudioChunkController {
 		    "akl_nz_jdt_diphone",
 		    "akl_nz_cw_cg_cg"
 		);
+		// Sets the combobox to select the first option by default
+		voiceCombo.getSelectionModel().selectFirst();
     }
 	
 	@FXML
@@ -65,14 +69,19 @@ public class CreateAudioChunkController {
 				ShellHelper.execute(command);
 				command = String.format("rm %s/temp.txt", creationPath);
 				ShellHelper.execute(command);
+				
+				Platform.runLater(()->{
+					Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+					this.onAdd.run();
+				    stage.close();
+				});
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
 		worker.start();
-		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-	    stage.close();
     }
 	
 	public void setText(String text) {
@@ -81,5 +90,9 @@ public class CreateAudioChunkController {
 	
 	public void setCreationName(String creationName) {
 		this.creationName = creationName;
+	}
+	
+	public void setOnAddAction(Runnable r) {
+		this.onAdd = r;
 	}
 }

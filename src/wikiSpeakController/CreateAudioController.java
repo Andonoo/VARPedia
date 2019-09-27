@@ -112,6 +112,7 @@ public class CreateAudioController {
 		CreateAudioChunkController controller = loader.<CreateAudioChunkController>getController();
 		controller.setText(text);
 		controller.setCreationName(creationName);
+		controller.setOnAddAction(()->refreshTableAsync());
 		Scene scene = new Scene(layout);
 		
 		Stage modal = new Stage();
@@ -119,7 +120,6 @@ public class CreateAudioController {
 		modal.initModality(Modality.APPLICATION_MODAL); 
 		modal.setScene(scene);
 		modal.showAndWait();
-		refreshTableAsync();
 	}
 	
 	private void refreshTableAsync() {
