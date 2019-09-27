@@ -37,6 +37,9 @@ public class SearchController {
 	private TextArea searchResultTF;
 	
 	@FXML
+	private TextField creationNameTF;
+	
+	@FXML
 	private Button nextBtn;
 	
 	@FXML
@@ -66,11 +69,24 @@ public class SearchController {
 	@FXML
 	private void onNextBtnClicked(ActionEvent event) throws IOException {
 		String wikiText = searchResultTF.getText();
+		String creationName = creationNameTF.getText();
+		
+		try {
+			makeCreationFolder(creationName);
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("Creation already exists, please try another name.");
+			alert.showAndWait();
+			return;
+		}
+		
+		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("CreateAudio.fxml"));
 		Parent layout = loader.load();
 		
 		CreateAudioController controller = loader.<CreateAudioController>getController();
+		controller.setCreationName(creationName);
 		controller.setText(wikiText);
 		Scene scene = new Scene(layout);
 		
@@ -113,6 +129,10 @@ public class SearchController {
 			}
 		});
 		worker.start();
+	}
+	
+	private void makeCreationFolder(String name) throws Exception {
+			ShellHelper.execute("mkdir ./Creations/" + name);
 	}
 	
 	private void resetCreate() {

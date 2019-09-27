@@ -36,6 +36,7 @@ import wikiSpeak.ShellHelper;
 
 public class CreateAudioController {
 	private String wikiContent;
+	private String creationName;
 	
 	@FXML
 	private TextArea wikiTextTA;
@@ -49,6 +50,10 @@ public class CreateAudioController {
 	public void setText(String wikiContent) {
 		this.wikiContent = wikiContent;
 		wikiTextTA.setText(wikiContent);
+	}
+	
+	public void setCreationName(String creationName) {
+		this.creationName = creationName;
 	}
 	
 	private int countWords(String text) {
@@ -68,7 +73,6 @@ public class CreateAudioController {
 	
 	@FXML
     public void initialize() {
-		FlickrHelper.getImages("Apple");
         wikiTextTA.setText(wikiContent);
         wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
@@ -107,6 +111,7 @@ public class CreateAudioController {
 		String text = wikiTextTA.getSelectedText();
 		CreateAudioChunkController controller = loader.<CreateAudioChunkController>getController();
 		controller.setText(text);
+		controller.setCreationName(creationName);
 		Scene scene = new Scene(layout);
 		
 		Stage modal = new Stage();
@@ -162,14 +167,14 @@ public class CreateAudioController {
 		List<String> playableNames = new ArrayList<String>();
 		List<Playable> playables = new ArrayList<Playable>();
 		try {
-            String command = String.format("ls -a ./Creations/.temp/chunk* 2> /dev/null | grep -Po \"((.+)(?=\\.wav))\"");
+            String command = String.format("ls -a ./Creations/%s/chunk* 2> /dev/null | grep -Po \"((.+)(?=\\.wav))\"", creationName);
             playableNames = ShellHelper.execute(command);
 		} catch (Exception e) {
 		    // Return empty list of creations to indicate there are no creations
 			return new ArrayList<Playable>();
 		}
 		
-		// Create a list of Creation objects
+		// Create a list of Playable objects
 		for (int i = 0; i < playableNames.size(); i++) {
 			AudioChunk creation = new AudioChunk(playableNames.get(i), ()->{refreshTableAsync();});
 			playables.add(creation);

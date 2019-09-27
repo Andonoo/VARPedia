@@ -12,6 +12,8 @@ public class CreateAudioChunkController {
 	@FXML
 	private TextArea selectedTextTA;
 	
+	private String creationName;
+	
 	@FXML
 	private ComboBox<String> voiceCombo;
 	
@@ -27,17 +29,18 @@ public class CreateAudioChunkController {
     private void previewBtnClicked() {
 		String text = selectedTextTA.getText();
 		String voiceOption = voiceCombo.getValue();
+		String creationPath = "./Creations/" + creationName;
 		
 		Thread worker = new Thread(()->{
-			String command = String.format("echo \"%s\" > ./Creations/.temp/temp.txt", text);
+			String command = String.format("echo \"%s\" > %s/temp.txt", text, creationPath);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o ./Creations/.temp/temp.wav -eval \'(voice_%s)\' < ./Creations/.temp/temp.txt",
-						voiceOption);
+				command = String.format("text2wave -o %s/temp.wav -eval \'(voice_%s)\' < %s/temp.txt",
+						creationPath, voiceOption, creationPath);
 				ShellHelper.execute(command);
-				command = "play ./Creations/.temp/temp.wav";
+				command = String.format("play %s/temp.wav", creationPath);
 				ShellHelper.execute(command);
-				command = "rm ./Creations/.temp/temp.wav ./Creations/.temp/temp.txt";
+				command = String.format("rm %s/temp.wav %s/temp.txt", creationPath, creationPath);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -49,16 +52,18 @@ public class CreateAudioChunkController {
 	
 	@FXML
     private void saveBtnClicked(ActionEvent event) {
-		
 		String text = selectedTextTA.getText();
 		String voiceOption = voiceCombo.getValue();
+		String creationPath = "./Creations/" + creationName;
 		
 		Thread worker = new Thread(()->{
-			String command = String.format("echo \"%s\" > ./Creations/.temp/temp.txt", text);
+			String command = String.format("echo \"%s\" > %s/temp.txt", text, creationPath);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o \"./Creations/.temp/chunk-$(date --iso-8601=seconds).wav\" -eval \'(voice_%s)\' < ./Creations/.temp/temp.txt",
-						voiceOption);
+				command = String.format("text2wave -o \"%s/chunk-$(date --iso-8601=seconds).wav\" -eval \'(voice_%s)\' < %s/temp.txt",
+						creationPath, voiceOption, creationPath);
+				ShellHelper.execute(command);
+				command = String.format("rm %s/temp.txt", creationPath);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -72,5 +77,9 @@ public class CreateAudioChunkController {
 	
 	public void setText(String text) {
 		selectedTextTA.setText(text);
+	}
+	
+	public void setCreationName(String creationName) {
+		this.creationName = creationName;
 	}
 }
