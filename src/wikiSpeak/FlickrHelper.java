@@ -20,8 +20,8 @@ import com.flickr4java.flickr.photos.Size;
 public class FlickrHelper {
 	public static void getImages(String searchTerm) {
 		try {
-			String apiKey = getKey();
-			String secret = getSecret();
+			String apiKey = getAPIKey("key");
+			String secret = getAPIKey("secret");
 			
 			Flickr searcher = new Flickr(apiKey, secret, new REST());
 			
@@ -53,29 +53,14 @@ public class FlickrHelper {
 			e.printStackTrace();
 		}
 	}
-
-	private static String getSecret() throws IOException {
-		File file = new File("/flickrSecret.txt"); 
+	
+	private static String getAPIKey(String key) throws IOException{
+		File file = new File("/flickr-api-keys.txt"); 
 		BufferedReader br = new BufferedReader(new FileReader(file)); 
 				
 		String line;
 		while ( (line = br.readLine()) != null ) {
-			if (line.trim().startsWith("secret=")) {
-				br.close();
-				return line.substring(line.indexOf("=")+1).trim();
-			}
-		}
-		br.close();
-		throw new RuntimeException("Couldn't find secret in config file " + file.getName());
-	}
-
-	private static String getKey() throws IOException {
-		File file = new File("/flickrKey.txt"); 
-		BufferedReader br = new BufferedReader(new FileReader(file)); 
-				
-		String line;
-		while ( (line = br.readLine()) != null ) {
-			if (line.trim().startsWith("key=")) {
+			if (line.trim().startsWith(key+"=")) {
 				br.close();
 				return line.substring(line.indexOf("=")+1).trim();
 			}
