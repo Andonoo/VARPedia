@@ -13,7 +13,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wikiSpeak.ShellHelper;
 
-public class CreateAudioChunkController {
+public class CreateAudioChunkController {	
+	private String _chunkName;
+	
 	@FXML
 	private TextArea selectedTextTA;
 	
@@ -28,7 +30,8 @@ public class CreateAudioChunkController {
 		voiceCombo.getItems().addAll(
 			"kal_diphone",
 		    "akl_nz_jdt_diphone",
-		    "akl_nz_cw_cg_cg"
+		    "akl_nz_cw_cg_cg",
+		    "kal_diphone"
 		);
 		// Sets the combobox to select the first option by default
 		voiceCombo.getSelectionModel().selectFirst();
@@ -68,8 +71,8 @@ public class CreateAudioChunkController {
 			String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o \"%s/chunk-$(date --iso-8601=seconds).wav\" -eval \'(voice_%s)\' < %s/.temp.txt",
-						creationPath, voiceOption, creationPath);
+				command = String.format("text2wave -o \"./Creations/.temp/%s.wav\" -eval \'(voice_%s)\' < ./Creations/.temp/temp.txt",
+						_chunkName, voiceOption);
 				ShellHelper.execute(command);
 				
 				Platform.runLater(()->{
@@ -98,7 +101,8 @@ public class CreateAudioChunkController {
 		errorAlert.showAndWait();
 	}
 	
-	public void setText(String text) {
+	public void setContent(String chunkName, String text) {
+		_chunkName = chunkName;
 		selectedTextTA.setText(text);
 	}
 	

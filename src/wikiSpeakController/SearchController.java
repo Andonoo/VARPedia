@@ -28,7 +28,8 @@ import wikiSpeak.ViewCreations;
 public class SearchController {
 	public static final String contentPlaceHolder = "Please use the input field above to search";
 	public static final String loadingText = "Loading...";
-
+	private String _searchTerm;
+	private String _creationName;
 	
 	@FXML
 	private TextField searchTF;
@@ -86,8 +87,7 @@ public class SearchController {
 		Parent layout = loader.load();
 		
 		CreateAudioController controller = loader.<CreateAudioController>getController();
-		controller.setCreationName(creationName);
-		controller.setText(wikiText);
+		controller.setCreationData(_creationName, _searchTerm, wikiText);
 		Scene scene = new Scene(layout);
 		
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
@@ -113,6 +113,7 @@ public class SearchController {
 					return;
 				}
 				String wikiText = output.get(0);
+				_searchTerm = searchTF.getText();
 
 				Platform.runLater(() -> {
 					// Update wikitContents table to show wikit text, remove the first two spaces

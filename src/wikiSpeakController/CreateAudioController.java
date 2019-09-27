@@ -35,8 +35,10 @@ import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
 
 public class CreateAudioController {
-	private String wikiContent;
-	private String creationName;
+	private String _creationName;
+	private String _searchTerm;
+	private String _wikiContent;
+	private int _chunkCount;
 	
 	@FXML
 	private TextArea wikiTextTA;
@@ -110,9 +112,8 @@ public class CreateAudioController {
 
 		String text = wikiTextTA.getSelectedText();
 		CreateAudioChunkController controller = loader.<CreateAudioChunkController>getController();
-		controller.setText(text);
-		controller.setCreationName(creationName);
-		controller.setOnAddAction(()->refreshTableAsync());
+		controller.setContent(_creationName + _chunkCount, text);
+		_chunkCount++;
 		Scene scene = new Scene(layout);
 		
 		Stage modal = new Stage();
@@ -120,6 +121,21 @@ public class CreateAudioController {
 		modal.initModality(Modality.APPLICATION_MODAL); 
 		modal.setScene(scene);
 		modal.showAndWait();
+	}
+	
+	@FXML
+	private void onNextButtonClicked(ActionEvent event) throws IOException {
+		Stage parentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("FinalizeCreation.fxml"));
+		Parent layout = loader.load();
+		
+		FinalizeCreationController controller = loader.<FinalizeCreationController>getController();
+		controller.setCreationInfo(_creationName, _searchTerm);
+		Scene scene = new Scene(layout);
+		
+		parentStage.setScene(scene);
 	}
 	
 	private void refreshTableAsync() {
@@ -163,7 +179,7 @@ public class CreateAudioController {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	private List<Playable> getCreations() throws RuntimeException{
+	private List<Playable> getCreations() throws RuntimeException {
 		List<String> playableNames = new ArrayList<String>();
 		List<Playable> playables = new ArrayList<Playable>();
 		try {
@@ -181,5 +197,12 @@ public class CreateAudioController {
 		}
 		
 		return playables;
+	}
+
+	public void setCreationData(String creationName, String searchTerm, String wikiContent) {
+		_creationName = creationName;
+		_searchTerm = searchTerm;
+		_wikiContent = wikiContent;
+		wikiTextTA.setText(_wikiContent);
 	}
 }
