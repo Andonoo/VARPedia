@@ -1,11 +1,15 @@
 package wikiSpeakController;
 
+import java.util.List;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wikiSpeak.ShellHelper;
 
@@ -22,6 +26,7 @@ public class CreateAudioChunkController {
 	@FXML
     private void initialize() {
 		voiceCombo.getItems().addAll(
+			"kal_diphone",
 		    "akl_nz_jdt_diphone",
 		    "akl_nz_cw_cg_cg"
 		);
@@ -31,24 +36,23 @@ public class CreateAudioChunkController {
 	
 	@FXML
     private void previewBtnClicked() {
-		String text = selectedTextTA.getText();
+		String text = getText();
 		String voiceOption = voiceCombo.getValue();
 		String creationPath = "./Creations/" + creationName;
 		
 		Thread worker = new Thread(()->{
-			String command = String.format("echo \"%s\" > %s/temp.txt", text, creationPath);
+			String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o %s/temp.wav -eval \'(voice_%s)\' < %s/temp.txt",
+				command = String.format("text2wave -o %s/.temp.wav -eval \'(voice_%s)\' < %s/.temp.txt",
 						creationPath, voiceOption, creationPath);
-				ShellHelper.execute(command);
-				command = String.format("play %s/temp.wav", creationPath);
-				ShellHelper.execute(command);
-				command = String.format("rm %s/temp.wav %s/temp.txt &2> /dev/null", creationPath, creationPath);
+				List<String> dsdsa = ShellHelper.execute(command);
+				command = String.format("play %s/.temp.wav", creationPath);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Platform.runLater(()->showError("This voice can't pronounce the sentence :( Please change the voice..."));
 			}
 		});
 		worker.start();
@@ -56,18 +60,16 @@ public class CreateAudioChunkController {
 	
 	@FXML
     private void saveBtnClicked(ActionEvent event) {
-		String text = selectedTextTA.getText();
+		String text = getText();
 		String voiceOption = voiceCombo.getValue();
 		String creationPath = "./Creations/" + creationName;
 		
 		Thread worker = new Thread(()->{
-			String command = String.format("echo \"%s\" > %s/temp.txt", text, creationPath);
+			String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o \"%s/chunk-$(date --iso-8601=seconds).wav\" -eval \'(voice_%s)\' < %s/temp.txt",
+				command = String.format("text2wave -o \"%s/chunk-$(date --iso-8601=seconds).wav\" -eval \'(voice_%s)\' < %s/.temp.txt",
 						creationPath, voiceOption, creationPath);
-				ShellHelper.execute(command);
-				command = String.format("rm %s/temp.txt", creationPath);
 				ShellHelper.execute(command);
 				
 				Platform.runLater(()->{
@@ -78,11 +80,23 @@ public class CreateAudioChunkController {
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Platform.runLater(()->showError("This voice can't pronounce the sentence :( Please change the voice..."));
 			}
 		});
 		worker.start();
     }
+	
+	private String getText() {
+		String text = selectedTextTA.getText();
+		text = text.replaceAll("[^a-zA-Z\\s\\,\\.0-9\\-\\']", " ");
+		return text;
+	}
+	
+	private void showError(String text) {
+		Alert errorAlert = new Alert(AlertType.ERROR);
+		errorAlert.setContentText(text);
+		errorAlert.showAndWait();
+	}
 	
 	public void setText(String text) {
 		selectedTextTA.setText(text);
