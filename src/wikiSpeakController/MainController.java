@@ -10,9 +10,23 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeak.Search;
+import wikiSpeak.ShellHelper;
 import wikiSpeak.ViewCreations;
 
 public class MainController {
+	
+	@FXML
+    public void initialize() {
+		// Remove all folders that doesn't have a creation
+        String command = "xargs rm -rf <<< $(find ./Creations -mindepth 1 -maxdepth 1 -type d '!' -exec sh -c 'ls -1 \"{}\"|egrep -i -q \"*.(mp4)$\"' ';' -print)";
+        try {
+			ShellHelper.execute(command);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+	
 	@FXML
 	private void onViewBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();

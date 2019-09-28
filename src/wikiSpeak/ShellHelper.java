@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ShellHelper {
 	public static List<String> execute(String command) throws Exception {
-		ProcessBuilder pb = new ProcessBuilder("/bin/sh", "-c", command);
+		ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
 		List<String> output = new ArrayList<String>();
 		Process process = pb.start();
 		BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -32,6 +32,9 @@ public class ShellHelper {
 				output.add(line);
 			}
 		} else {
+			if ((line = stderr.readLine()) != null) {
+				System.out.println(line);
+			}
 			throw new RuntimeException("Error with exitStatus" + exitStatus);
 		}
 		return output;
