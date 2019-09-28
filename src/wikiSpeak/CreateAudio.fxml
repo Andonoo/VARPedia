@@ -9,7 +9,7 @@
    <children>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
       <TextArea fx:id="wikiTextTA" layoutX="14.0" layoutY="53.0" prefHeight="531.0" prefWidth="325.0" wrapText="true" />
-      <Button layoutX="929.0" layoutY="53.0" mnemonicParsing="false" onAction="#onAddBtnClicked" text="Add" />
+      <Button fx:id="addAudioChunkBtn" layoutX="929.0" layoutY="53.0" mnemonicParsing="false" onAction="#onAddBtnClicked" text="Add" />
       <TableView fx:id="audioChunkTV" layoutX="380.0" layoutY="150.0" prefHeight="370.0" prefWidth="593.0" />
       <Button layoutX="380.0" layoutY="558.0" mnemonicParsing="false" text="Preview Audio" />
       <Button fx:id="_nxtButton" layoutX="924.0" layoutY="558.0" mnemonicParsing="false" onAction="#onNextButtonClicked" text="Next" />

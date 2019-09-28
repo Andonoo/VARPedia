@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.CreateAudioChunkController">
    <children>
-      <TextArea fx:id="selectedTextTA" layoutX="14.0" layoutY="14.0" prefHeight="113.0" prefWidth="573.0" />
+      <TextArea fx:id="selectedTextTA" layoutX="14.0" layoutY="14.0" prefHeight="113.0" prefWidth="573.0" wrapText="true" />
       <ComboBox fx:id="voiceCombo" layoutX="14.0" layoutY="145.0" prefHeight="26.0" prefWidth="221.0" />
       <Button layoutX="265.0" layoutY="145.0" mnemonicParsing="false" onAction="#previewBtnClicked" text="Preview" />
       <Button layoutX="371.0" layoutY="145.0" mnemonicParsing="false" onAction="#saveBtnClicked" text="Save" />

@@ -68,7 +68,7 @@ public class FinalizeCreationController {
 		}
 	}
 	
-	private void makeCreation() {
+	private void makeCreation(ActionEvent event) {
 		formatImages();
 		String creationDir = "Creations/" + _creationName;
 		Thread creationWorker = new Thread(() -> {			
@@ -141,6 +141,23 @@ public class FinalizeCreationController {
 				creationDone.setTitle("Creation Complete");
 				creationDone.setContentText("Your creation, " + _creationName + ", is complete and ready for viewing.");
 				creationDone.show();
+				
+				Stage parentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+				
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("Main.fxml"));
+				Parent layout = null;
+				try {
+					layout = loader.load();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				MainController controller = loader.<MainController>getController();
+				Scene scene = new Scene(layout);
+				
+				parentStage.setScene(scene);
 			});
 		});
 		creationWorker.start();
@@ -163,17 +180,8 @@ public class FinalizeCreationController {
 
 	@FXML
 	private void onCreate(ActionEvent e) throws IOException {
-		makeCreation();
-		
-		Stage parentStage = (Stage)((Node) e.getSource()).getScene().getWindow();
-		
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("Main.fxml"));
-		Parent layout = loader.load();
-		
-		MainController controller = loader.<MainController>getController();
-		Scene scene = new Scene(layout);
-		
-		parentStage.setScene(scene);
+		_createButton.setDisable(true);
+		_createButton.setText("Creating...");
+		makeCreation(e);
 	}
 }
