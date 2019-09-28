@@ -85,7 +85,7 @@ public class ViewController {
             String command = String.format("ls ./Creations 2> /dev/null");
 			creationNames = ShellHelper.execute(command);
 			for (int i = 0; i < creationNames.size(); i++) {
-				creationNames.set(i, "./Creations/" + creationNames.get(i) + "/" + creationNames.get(i) + ".mp4");
+				creationNames.set(i, "./Creations/" + creationNames.get(i) + "/" + creationNames.get(i) + "Creation" + ".mp4");
 			}
 		} catch (Exception e) {
 		    // Return empty list of creations to indicate there are no creations
@@ -94,7 +94,7 @@ public class ViewController {
 		
 		// Create a list of Creation objects
 		for (int i = 0; i < creationNames.size(); i++) {
-			Creation creation = new Creation(creationNames.get(i), ()->{refreshTableAsync();});
+			Creation creation = new Creation(creationNames.get(i), () -> {refreshTableAsync();});
 			creations.add(creation);
 		}
 		

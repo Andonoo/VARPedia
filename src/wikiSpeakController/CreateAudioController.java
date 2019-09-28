@@ -21,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -35,8 +36,13 @@ import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
 
 public class CreateAudioController {
-	private String wikiContent;
-	private String creationName;
+	private String _creationName;
+	private String _searchTerm;
+	private String _wikiContent;
+	private int _chunkCount;
+	
+	@FXML
+	private Button _nxtButton;
 	
 	@FXML
 	private TextArea wikiTextTA;
@@ -46,15 +52,6 @@ public class CreateAudioController {
 	
 	@FXML
 	private TableView audioChunkTV;
-	
-	public void setText(String wikiContent) {
-		this.wikiContent = wikiContent;
-		wikiTextTA.setText(wikiContent);
-	}
-	
-	public void setCreationName(String creationName) {
-		this.creationName = creationName;
-	}
 	
 	private int countWords(String text) {
 		int count = 0;
@@ -73,7 +70,8 @@ public class CreateAudioController {
 	
 	@FXML
     public void initialize() {
-        wikiTextTA.setText(wikiContent);
+		_nxtButton.setDisable(true);
+        wikiTextTA.setText(_wikiContent);
         wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
         		selectedTextTA.setText(newValue);        		
@@ -83,6 +81,7 @@ public class CreateAudioController {
         });
         loadData();
         refreshTableAsync();
+        _chunkCount = 0;
     }
 	
 	private void loadData() {
@@ -108,11 +107,11 @@ public class CreateAudioController {
 		loader.setLocation(Main.class.getResource("CreateAudioChunk.fxml"));
 		Parent layout = loader.load();
 
+		String chunkName = _creationName + _chunkCount;
 		String text = wikiTextTA.getSelectedText();
 		CreateAudioChunkController controller = loader.<CreateAudioChunkController>getController();
-		controller.setText(text);
-		controller.setCreationName(creationName);
-		controller.setOnAddAction(()->refreshTableAsync());
+		controller.setContent(_creationName, chunkName, text);
+		controller.setOnAddAction(()->onChunkCreation());
 		Scene scene = new Scene(layout);
 		
 		Stage modal = new Stage();
@@ -120,6 +119,27 @@ public class CreateAudioController {
 		modal.initModality(Modality.APPLICATION_MODAL); 
 		modal.setScene(scene);
 		modal.showAndWait();
+	}
+	
+	private void onChunkCreation() {
+		_nxtButton.setDisable(false);
+		refreshTableAsync();
+		_chunkCount++;
+	}
+	
+	@FXML
+	private void onNextButtonClicked(ActionEvent event) throws IOException {
+		Stage parentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("FinalizeCreation.fxml"));
+		Parent layout = loader.load();
+		
+		FinalizeCreationController controller = loader.<FinalizeCreationController>getController();
+		controller.setCreationInfo(_creationName, _searchTerm);
+		Scene scene = new Scene(layout);
+		
+		parentStage.setScene(scene);
 	}
 	
 	private void refreshTableAsync() {
@@ -163,11 +183,11 @@ public class CreateAudioController {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	private List<Playable> getCreations() throws RuntimeException{
+	private List<Playable> getCreations() throws RuntimeException {
 		List<String> playableNames = new ArrayList<String>();
 		List<Playable> playables = new ArrayList<Playable>();
 		try {
-            String command = String.format("ls -a ./Creations/%s/chunk* 2> /dev/null | grep -Po \".+.wav\"", creationName);
+            String command = String.format("ls -a ./Creations/%s/.temp/%s* 2> /dev/null | grep -Po \".+.wav\"", _creationName, _creationName);
             playableNames = ShellHelper.execute(command);
 		} catch (Exception e) {
 		    // Return empty list of creations to indicate there are no creations
@@ -181,5 +201,12 @@ public class CreateAudioController {
 		}
 		
 		return playables;
+	}
+
+	public void setCreationData(String creationName, String searchTerm, String wikiContent) {
+		_creationName = creationName;
+		_searchTerm = searchTerm;
+		_wikiContent = wikiContent;
+		wikiTextTA.setText(_wikiContent);
 	}
 }
