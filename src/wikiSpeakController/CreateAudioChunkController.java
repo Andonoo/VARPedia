@@ -46,7 +46,7 @@ public class CreateAudioChunkController {
 				ShellHelper.execute(command);
 				command = String.format("text2wave -o %s/.temp.wav -eval \'(voice_%s)\' < %s/.temp.txt",
 						creationPath, voiceOption, creationPath);
-				List<String> dsdsa = ShellHelper.execute(command);
+				ShellHelper.execute(command);
 				command = String.format("play %s/.temp.wav", creationPath);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
