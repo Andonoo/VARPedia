@@ -62,7 +62,7 @@ public class Creation extends Playable{
 					String command = String.format("rm -r %s", _directoryPath);
 					ShellHelper.execute(command);
 					// Run the action specified by client, mainly for refreshing the UI
-					Platform.runLater(()-> _afterDelete.run());
+					Platform.runLater(_afterDelete);
 				} catch (Exception e) {
 					Platform.runLater(()->{
 						Alert errorAlert = new Alert(AlertType.ERROR);

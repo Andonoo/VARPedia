@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
@@ -34,10 +35,13 @@ public class FinalizeCreationController {
 	@FXML
 	private Spinner<Integer> _numberImages;
 	
+	@FXML Button _createButton;
+	
 	@FXML
 	private void initialize() {
 		_numberImages.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10));
-		
+		_createButton.setDisable(true);
+		_createButton.setText("Fetching images\nPlease wait...");
 	}
 	
 	public void setCreationInfo(String creationName, String searchTerm) {
@@ -49,6 +53,10 @@ public class FinalizeCreationController {
 	private void getImages() {
 		Thread flickrWorker = new Thread(() -> {
 			FlickrHelper.getImages(_creationName, _searchTerm);
+			Platform.runLater(()-> {
+				_createButton.setDisable(false);
+				_createButton.setText("Create!");
+			});
 		});
 		flickrWorker.start();
 	}

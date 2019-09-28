@@ -94,7 +94,7 @@ public class ViewController {
 		
 		// Create a list of Creation objects
 		for (int i = 0; i < creationNames.size(); i++) {
-			Creation creation = new Creation(creationNames.get(i), ()->{refreshTableAsync();});
+			Creation creation = new Creation(creationNames.get(i), () -> {refreshTableAsync();});
 			creations.add(creation);
 		}
 		

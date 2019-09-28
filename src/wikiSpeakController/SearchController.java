@@ -46,7 +46,7 @@ public class SearchController {
 	@FXML
     public void initialize() {
         searchResultTF.setEditable(false);
-//        nextBtn.setDisable(true);
+        nextBtn.setDisable(true);
     }
 	
 	@FXML
@@ -80,7 +80,6 @@ public class SearchController {
 			alert.showAndWait();
 			return;
 		}
-		
 		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("CreateAudio.fxml"));
