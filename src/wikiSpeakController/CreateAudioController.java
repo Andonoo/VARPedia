@@ -49,15 +49,6 @@ public class CreateAudioController {
 	@FXML
 	private TableView audioChunkTV;
 	
-	public void setText(String wikiContent) {
-		this.wikiContent = wikiContent;
-		wikiTextTA.setText(wikiContent);
-	}
-	
-	public void setCreationName(String creationName) {
-		this.creationName = creationName;
-	}
-	
 	private int countWords(String text) {
 		int count = 0;
 		// Remove the leading and ending spaces
@@ -75,7 +66,7 @@ public class CreateAudioController {
 	
 	@FXML
     public void initialize() {
-        wikiTextTA.setText(wikiContent);
+        wikiTextTA.setText(_wikiContent);
         wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
         		selectedTextTA.setText(newValue);        		
@@ -85,6 +76,7 @@ public class CreateAudioController {
         });
         loadData();
         refreshTableAsync();
+        _chunkCount = 0;
     }
 	
 	private void loadData() {
@@ -110,10 +102,11 @@ public class CreateAudioController {
 		loader.setLocation(Main.class.getResource("CreateAudioChunk.fxml"));
 		Parent layout = loader.load();
 
+		String chunkName = _creationName + _chunkCount;
 		String text = wikiTextTA.getSelectedText();
 		CreateAudioChunkController controller = loader.<CreateAudioChunkController>getController();
-		controller.setContent(_creationName + _chunkCount, text);
-		_chunkCount++;
+		controller.setContent(_creationName, chunkName, text);
+		controller.setOnAddAction(()->onChunkCreation());
 		Scene scene = new Scene(layout);
 		
 		Stage modal = new Stage();
@@ -121,6 +114,11 @@ public class CreateAudioController {
 		modal.initModality(Modality.APPLICATION_MODAL); 
 		modal.setScene(scene);
 		modal.showAndWait();
+	}
+	
+	private void onChunkCreation() {
+		refreshTableAsync();
+		_chunkCount++;
 	}
 	
 	@FXML
@@ -183,7 +181,7 @@ public class CreateAudioController {
 		List<String> playableNames = new ArrayList<String>();
 		List<Playable> playables = new ArrayList<Playable>();
 		try {
-            String command = String.format("ls -a ./Creations/%s/chunk* 2> /dev/null | grep -Po \".+.wav\"", creationName);
+            String command = String.format("ls -a ./Creations/%s/.temp/%s* 2> /dev/null | grep -Po \".+.wav\"", _creationName, _creationName);
             playableNames = ShellHelper.execute(command);
 		} catch (Exception e) {
 		    // Return empty list of creations to indicate there are no creations

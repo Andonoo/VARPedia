@@ -70,10 +70,10 @@ public class SearchController {
 	@FXML
 	private void onNextBtnClicked(ActionEvent event) throws IOException {
 		String wikiText = searchResultTF.getText();
-		String creationName = creationNameTF.getText();
+		_creationName = creationNameTF.getText();
 		
 		try {
-			makeCreationFolder(creationName);
+			makeCreationFolder(_creationName);
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setContentText("Creation already exists, please try another name.");
@@ -134,6 +134,8 @@ public class SearchController {
 	
 	private void makeCreationFolder(String name) throws Exception {
 			ShellHelper.execute("mkdir ./Creations/" + name);
+			ShellHelper.execute("mkdir ./Creations/" + name + "/.temp");
+			ShellHelper.execute("mkdir ./Creations/" + name + "/.tempPhotos");
 	}
 	
 	private void resetCreate() {

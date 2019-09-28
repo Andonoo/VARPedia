@@ -15,11 +15,11 @@ import wikiSpeak.ShellHelper;
 
 public class CreateAudioChunkController {	
 	private String _chunkName;
+	private String _creationName;
 	
 	@FXML
 	private TextArea selectedTextTA;
 	
-	private String creationName;
 	private Runnable onAdd;
 	
 	@FXML
@@ -30,8 +30,7 @@ public class CreateAudioChunkController {
 		voiceCombo.getItems().addAll(
 			"kal_diphone",
 		    "akl_nz_jdt_diphone",
-		    "akl_nz_cw_cg_cg",
-		    "kal_diphone"
+		    "akl_nz_cw_cg_cg"
 		);
 		// Sets the combobox to select the first option by default
 		voiceCombo.getSelectionModel().selectFirst();
@@ -41,7 +40,7 @@ public class CreateAudioChunkController {
     private void previewBtnClicked() {
 		String text = getText();
 		String voiceOption = voiceCombo.getValue();
-		String creationPath = "./Creations/" + creationName;
+		String creationPath = "./Creations/" + _creationName;
 		
 		Thread worker = new Thread(()->{
 			String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
@@ -49,7 +48,7 @@ public class CreateAudioChunkController {
 				ShellHelper.execute(command);
 				command = String.format("text2wave -o %s/.temp.wav -eval \'(voice_%s)\' < %s/.temp.txt",
 						creationPath, voiceOption, creationPath);
-				List<String> dsdsa = ShellHelper.execute(command);
+				ShellHelper.execute(command);
 				command = String.format("play %s/.temp.wav", creationPath);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
@@ -65,14 +64,14 @@ public class CreateAudioChunkController {
     private void saveBtnClicked(ActionEvent event) {
 		String text = getText();
 		String voiceOption = voiceCombo.getValue();
-		String creationPath = "./Creations/" + creationName;
+		String creationPath = "./Creations/" + _creationName;
 		
 		Thread worker = new Thread(()->{
 			String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 			try {
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o \"./Creations/.temp/%s.wav\" -eval \'(voice_%s)\' < ./Creations/.temp/temp.txt",
-						_chunkName, voiceOption);
+				command = String.format("text2wave -o \"%s/.temp/%s.wav\" -eval \'(voice_%s)\' < ./Creations/%s/.temp.txt",
+						creationPath, _chunkName, voiceOption, _creationName);
 				ShellHelper.execute(command);
 				
 				Platform.runLater(()->{
@@ -82,7 +81,6 @@ public class CreateAudioChunkController {
 				});
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				Platform.runLater(()->showError("This voice can't pronounce the sentence :( Please change the voice..."));
 			}
 		});
@@ -101,13 +99,10 @@ public class CreateAudioChunkController {
 		errorAlert.showAndWait();
 	}
 	
-	public void setContent(String chunkName, String text) {
+	public void setContent(String creationName, String chunkName, String text) {
+		_creationName = creationName;
 		_chunkName = chunkName;
 		selectedTextTA.setText(text);
-	}
-	
-	public void setCreationName(String creationName) {
-		this.creationName = creationName;
 	}
 	
 	public void setOnAddAction(Runnable r) {

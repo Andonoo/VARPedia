@@ -9,10 +9,20 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.stage.Stage;
 import wikiSpeak.FlickrHelper;
+import wikiSpeak.Main;
 import wikiSpeak.ShellHelper;
 
 public class FinalizeCreationController {
@@ -28,14 +38,14 @@ public class FinalizeCreationController {
 	}
 	
 	public void setCreationInfo(String creationName, String searchTerm) {
-		_creationName = "Apple";
+		_creationName = creationName;
 		_searchTerm = searchTerm;
 		getImages();
 	}
 	
 	private void getImages() {
 		Thread flickrWorker = new Thread(() -> {
-			FlickrHelper.getImages("Apple", _searchTerm);
+			FlickrHelper.getImages(_creationName, _searchTerm);
 		});
 		flickrWorker.start();
 	}
@@ -47,8 +57,7 @@ public class FinalizeCreationController {
 		}
 	}
 	
-	@FXML
-	private void onCreate() {
+	private void makeCreation() {
 		formatImages();
 		String creationDir = "Creations/" + _creationName;
 		Thread creationWorker = new Thread(() -> {			
@@ -95,7 +104,7 @@ public class FinalizeCreationController {
 			    float frameRate = creationAudioFormat.getFrameRate();
 			    float creationAudioDuration = (audioFileLength / (frameSize * frameRate));
 				float creationImageRate = noImages/creationAudioDuration;
-			    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _creationName +"%d.jpg -vf \"pad=" + maxImageWidth + ":" + 
+			    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm +"%d.jpg -vf \"pad=" + maxImageWidth + ":" + 
 				maxImageHeight + "\" -r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
 				ShellHelper.execute(command);
 				
@@ -111,7 +120,29 @@ public class FinalizeCreationController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			Platform.runLater(() -> {
+				Alert creationDone = new Alert(AlertType.INFORMATION);
+				creationDone.setTitle("Creation Complete");
+				creationDone.setContentText("Your creation, " + _creationName + " is complete and ready for viewing.");
+				creationDone.show();
+			});
 		});
 		creationWorker.start();
+	}
+	
+	@FXML
+	private void onCreate(ActionEvent e) throws IOException {
+		makeCreation();
+		
+		Stage parentStage = (Stage)((Node) e.getSource()).getScene().getWindow();
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("Main.fxml"));
+		Parent layout = loader.load();
+		
+		MainController controller = loader.<MainController>getController();
+		Scene scene = new Scene(layout);
+		
+		parentStage.setScene(scene);
 	}
 }
