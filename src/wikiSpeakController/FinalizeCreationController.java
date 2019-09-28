@@ -117,7 +117,7 @@ public class FinalizeCreationController {
 			    float creationAudioDuration = (audioFileLength / (frameSize * frameRate));
 				float creationImageRate = noImages/creationAudioDuration;
 			    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
-			    		"%d.jpg -vf scale=800x400 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
+			    		"%d.jpg -vf scale=1600x800 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
 				ShellHelper.execute(command);
 				
 				command = "ffmpeg -i " + creationDir + "/.temp/" + _creationName + ".mp4 -i " + creationDir + "/.temp/" + _creationName + ".wav -vf "

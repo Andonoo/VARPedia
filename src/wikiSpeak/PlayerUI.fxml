@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.VideoPlayerController">
    <children>
-      <MediaView fx:id="_videoDisplay" fitHeight="400.0" fitWidth="800.0" layoutX="100.0" layoutY="97.0" nodeOrientation="INHERIT" />
+      <MediaView fx:id="_videoDisplay" fitHeight="425.0" fitWidth="800.0" layoutX="100.0" layoutY="97.0" nodeOrientation="INHERIT" />
       <HBox layoutX="410.0" layoutY="522.0" prefHeight="46.0" prefWidth="180.0">
          <children>
             <Button fx:id="_playButton" mnemonicParsing="false" onAction="#handlePlay" prefWidth="80.0" text="Play" />
