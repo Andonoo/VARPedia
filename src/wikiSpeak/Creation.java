@@ -23,8 +23,6 @@ import javafx.scene.control.ButtonType;
  *
  */
 public class Creation extends Playable{
-	private Runnable _afterDelete;
-	
 	public Creation(String creationName, Runnable afterDelete){
 		super(creationName, afterDelete);
     }
