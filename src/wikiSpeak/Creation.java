@@ -59,10 +59,10 @@ public class Creation extends Playable{
 		if (result.get() == buttonTypeYes){
 				Thread worker = new Thread(()->{
 				try {
-					String command = String.format("rm %s", _filePath);
+					String command = String.format("rm -r %s", _directoryPath);
 					ShellHelper.execute(command);
 					// Run the action specified by client, mainly for refreshing the UI
-					Platform.runLater(()-> _afterDelete.run());
+					Platform.runLater(_afterDelete);
 				} catch (Exception e) {
 					Platform.runLater(()->{
 						Alert errorAlert = new Alert(AlertType.ERROR);
@@ -75,7 +75,7 @@ public class Creation extends Playable{
 	}
 	
 	public String getPlayableName() {
-		Pattern p = Pattern.compile(".+\\/(.+).mp4$");
+		Pattern p = Pattern.compile(".+\\/(.+)Creation.mp4$");
 		Matcher m = p.matcher(_filePath);
 		if (m.matches()) {
 			return m.group(1);
