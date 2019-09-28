@@ -75,7 +75,7 @@ public class Creation extends Playable{
 	}
 	
 	public String getPlayableName() {
-		Pattern p = Pattern.compile(".+\\/(.+).mp4$");
+		Pattern p = Pattern.compile(".+\\/(.+)Creation.mp4$");
 		Matcher m = p.matcher(_filePath);
 		if (m.matches()) {
 			return m.group(1);

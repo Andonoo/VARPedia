@@ -3,6 +3,9 @@ package wikiSpeakController;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
@@ -63,6 +66,7 @@ public class FinalizeCreationController {
 		Thread creationWorker = new Thread(() -> {			
 			File audioDirectory = new File(creationDir + "/.temp/");
 			String[] audioFiles = audioDirectory.list();
+			sortAudioFiles(audioFiles);
 			
 			File photoDirectory = new File(creationDir + "/.tempPhotos");
 			String[] photoFiles = photoDirectory.list();
@@ -104,11 +108,12 @@ public class FinalizeCreationController {
 			    float frameRate = creationAudioFormat.getFrameRate();
 			    float creationAudioDuration = (audioFileLength / (frameSize * frameRate));
 				float creationImageRate = noImages/creationAudioDuration;
-			    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm +"%d.jpg -vf \"pad=" + maxImageWidth + ":" + 
-				maxImageHeight + "\" -r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
+			    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
+			    		"%d.jpg -vf scale=800x400 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
 				ShellHelper.execute(command);
 				
-				command = "ffmpeg -i " + creationDir + "/.temp/" + _creationName + ".mp4 -i " + creationDir + "/.temp/" + _creationName + ".wav Creations/" +
+				command = "ffmpeg -i " + creationDir + "/.temp/" + _creationName + ".mp4 -i " + creationDir + "/.temp/" + _creationName + ".wav -vf "
+						+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=100:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + _searchTerm + "\" Creations/" +
 				_creationName + "/" + _creationName + "Creation.mp4";
 				ShellHelper.execute(command);
 				
@@ -117,19 +122,37 @@ public class FinalizeCreationController {
 				
 				command = "rm -r " + creationDir + "/.tempPhotos";
 				ShellHelper.execute(command);
+				
+				command = "rm " + creationDir + "/.temp.txt";
+				ShellHelper.execute(command);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			Platform.runLater(() -> {
 				Alert creationDone = new Alert(AlertType.INFORMATION);
 				creationDone.setTitle("Creation Complete");
-				creationDone.setContentText("Your creation, " + _creationName + " is complete and ready for viewing.");
+				creationDone.setContentText("Your creation, " + _creationName + ", is complete and ready for viewing.");
 				creationDone.show();
 			});
 		});
 		creationWorker.start();
 	}
 	
+	private void sortAudioFiles(String[] audioFiles) {
+		Hashtable<Integer, String> sortingFiles = new Hashtable<Integer, String>();
+		for (String s: audioFiles) {
+			String valString = s.substring(s.length()-5, s.length()-4);
+			int val =  Integer.parseInt(valString);
+			sortingFiles.put(val, s);
+		}
+		int count = 0;
+		for (Integer i: sortingFiles.keySet()) {
+			audioFiles[count] = sortingFiles.get(i);
+			count ++;
+		}
+		Collections.reverse(Arrays.asList(audioFiles));
+	}
+
 	@FXML
 	private void onCreate(ActionEvent e) throws IOException {
 		makeCreation();
