@@ -16,3 +16,5 @@ Put in the flickr secret and key after the equal sign.
 
 ## How to run:
 bash ./runApp.sh
+If classpath is configured incorrectly, please run the following sciprt to execute the jar file
+bash ./runJAR.sh
