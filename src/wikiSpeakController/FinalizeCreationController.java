@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
@@ -21,7 +22,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
@@ -68,7 +71,25 @@ public class FinalizeCreationController {
 		}
 	}
 	
-	private void makeCreation() {
+	@FXML
+	private void onHomeBtnClicked(ActionEvent event) throws IOException {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation");
+		alert.setHeaderText("Delete creation");
+		alert.setContentText("Are you sure you want to go home? All of the progress will be lost");
+		ButtonType buttonTypeYes = new ButtonType("Yes");
+		ButtonType buttonTypeCancel = new ButtonType("No", ButtonData.CANCEL_CLOSE);
+		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == buttonTypeYes){
+			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+			Scene scene = new Scene(Main.getLayout());
+			stage.setScene(scene);
+		}
+	}
+	
+	private void makeCreation(ActionEvent event) {
 		formatImages();
 		String creationDir = "Creations/" + _creationName;
 		Thread creationWorker = new Thread(() -> {			
@@ -125,13 +146,8 @@ public class FinalizeCreationController {
 				_creationName + "/" + _creationName + "Creation.mp4";
 				ShellHelper.execute(command);
 				
-				command = "rm -r " + creationDir + "/.temp";
-				ShellHelper.execute(command);
+				command = "rm -r " + creationDir + "/.temp " + creationDir + "/.tempPhotos " + creationDir+ "/.temp.txt";
 				
-				command = "rm -r " + creationDir + "/.tempPhotos";
-				ShellHelper.execute(command);
-				
-				command = "rm " + creationDir + "/.temp.txt";
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -141,6 +157,23 @@ public class FinalizeCreationController {
 				creationDone.setTitle("Creation Complete");
 				creationDone.setContentText("Your creation, " + _creationName + ", is complete and ready for viewing.");
 				creationDone.show();
+				
+				Stage parentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+				
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("Main.fxml"));
+				Parent layout = null;
+				try {
+					layout = loader.load();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				MainController controller = loader.<MainController>getController();
+				Scene scene = new Scene(layout);
+				
+				parentStage.setScene(scene);
 			});
 		});
 		creationWorker.start();
@@ -163,17 +196,8 @@ public class FinalizeCreationController {
 
 	@FXML
 	private void onCreate(ActionEvent e) throws IOException {
-		makeCreation();
-		
-		Stage parentStage = (Stage)((Node) e.getSource()).getScene().getWindow();
-		
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("Main.fxml"));
-		Parent layout = loader.load();
-		
-		MainController controller = loader.<MainController>getController();
-		Scene scene = new Scene(layout);
-		
-		parentStage.setScene(scene);
+		_createButton.setDisable(true);
+		_createButton.setText("Creating...");
+		makeCreation(e);
 	}
 }

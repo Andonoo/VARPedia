@@ -5,16 +5,22 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.SearchController">
    <children>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
-      <TextField fx:id="searchTF" layoutX="204.0" layoutY="64.0" prefHeight="26.0" prefWidth="529.0" />
-      <Button layoutX="742.0" layoutY="64.0" mnemonicParsing="false" onAction="#onSearchBtnClicked" text="Search" />
-      <TextArea fx:id="searchResultTF" layoutX="145.0" layoutY="105.0" prefHeight="340.0" prefWidth="659.0" promptText="Please search" wrapText="true" />
-      <Button fx:id="nextBtn" layoutX="893.0" layoutY="542.0" mnemonicParsing="false" onAction="#onNextBtnClicked" prefHeight="26.0" prefWidth="62.0" text="Next" />
-      <Label layoutX="151.0" layoutY="69.0" text="Search" />
-      <TextField fx:id="creationNameTF" layoutX="264.0" layoutY="457.0" prefHeight="26.0" prefWidth="540.0" />
-      <Label layoutX="151.0" layoutY="462.0" text="Creation Name" />
+      <Label layoutX="151.0" layoutY="120.0" text="Search" />
+      <TextField fx:id="searchTF" layoutX="204.0" layoutY="115.0" prefHeight="26.0" prefWidth="529.0" />
+      <Button layoutX="742.0" layoutY="115.0" mnemonicParsing="false" onAction="#onSearchBtnClicked" text="Search" />
+      <TextArea fx:id="searchResultTF" layoutX="145.0" layoutY="160.0" prefHeight="340.0" prefWidth="659.0" promptText="Please use the search bar to search for a keyword." wrapText="true" />
+      <Label layoutX="151.0" layoutY="529.0" text="Creation Name" />
+      <TextField fx:id="creationNameTF" layoutX="264.0" layoutY="524.0" prefHeight="26.0" prefWidth="540.0" />
+      <Button fx:id="nextBtn" layoutX="888.0" layoutY="560.0" mnemonicParsing="false" onAction="#onNextBtnClicked" prefHeight="26.0" prefWidth="98.0" text="Next" />
+      <Label layoutX="353.0" layoutY="62.0" text="Search for a term...">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

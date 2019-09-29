@@ -53,6 +53,9 @@ public class CreateAudioController {
 	@FXML
 	private TableView audioChunkTV;
 	
+	@FXML
+	private Button addAudioChunkBtn;
+	
 	private int countWords(String text) {
 		int count = 0;
 		// Remove the leading and ending spaces
@@ -74,9 +77,11 @@ public class CreateAudioController {
         wikiTextTA.setText(_wikiContent);
         wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
-        		selectedTextTA.setText(newValue);        		
+        		selectedTextTA.setText(newValue);   
+        		addAudioChunkBtn.setDisable(false);    		
         	} else {
-        		selectedTextTA.setText("YOU SELECTED TOO MANY WORDS"); 
+        		selectedTextTA.setText("You've selected too many words."); 
+        		addAudioChunkBtn.setDisable(true);
         	}
         });
         loadData();
