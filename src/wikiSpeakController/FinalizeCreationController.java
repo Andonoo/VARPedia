@@ -86,7 +86,7 @@ public class FinalizeCreationController {
 	 */
 	private void formatImages() {
 		for (int i = _numberImages.getValue() + 1; i <=10; i++ ) {
-			File imageToDelete = new File("Creations/" + _creationName + "/.tempPhotos/" + _creationName + i + ".jpg");
+			File imageToDelete = new File("Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + i + ".jpg");
 			imageToDelete.delete();
 		}
 	}
@@ -169,17 +169,30 @@ public class FinalizeCreationController {
 			    float frameRate = creationAudioFormat.getFrameRate();
 			    float creationAudioDuration = (audioFileLength / (frameSize * frameRate));
 				float creationImageRate = noImages/creationAudioDuration;
-			    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
-			    		"%d.jpg -vf scale=1600x800 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
-				ShellHelper.execute(command);
 				
-				// Combining audio and slide show
-				command = "ffmpeg -i " + creationDir + "/.temp/" + _creationName + ".mp4 -i " + creationDir + "/.temp/" + _creationName + ".wav -vf "
-						+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=100:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + _searchTerm + "\" Creations/" +
-				_creationName + "/" + _creationName + "Creation.mp4";
-				ShellHelper.execute(command);
+				if (noImages == 1) {
+					command = "ffmpeg -loop 1 -i " + creationDir + "/.tempPhotos/" + _searchTerm + 
+				    		"1.jpg -t " + creationAudioDuration + " -vf scale=1600x800 " + creationDir + "/.temp/" + _creationName + ".mp4";
+					ShellHelper.execute(command);
+				} else if (noImages == 2){
+					// Combining audio and slide show
+				    command = "ffmpeg -framerate " + creationImageRate*2 + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
+				    		"%d.jpg -vf scale=1600x800 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
+					ShellHelper.execute(command);
+				} else {
+					// Combining audio and slide show
+				    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
+				    		"%d.jpg -vf scale=1600x800 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
+					ShellHelper.execute(command);
+				}
 				
-				// Adding text to video
+					// Combining audio and video with text
+					command = "ffmpeg -i " + creationDir + "/.temp/" + _creationName + ".mp4 -i " + creationDir + "/.temp/" + _creationName + ".wav -vf "
+							+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=100:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + _searchTerm + "\" Creations/" +
+					_creationName + "/" + _creationName + "Creation.mp4";
+					ShellHelper.execute(command);
+
+				// Removing temp
 				command = "rm -r " + creationDir + "/.temp " + creationDir + "/.tempPhotos " + creationDir+ "/.temp.txt";
 				ShellHelper.execute(command);
 			} catch (Exception e) {
