@@ -35,6 +35,10 @@ import wikiSpeak.Playable;
 import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
 
+/**
+ * Controller class for audio creation UI component.
+ * 
+ */
 public class CreateAudioController {
 	private String _creationName;
 	private String _searchTerm;

@@ -17,7 +17,19 @@ import com.flickr4java.flickr.photos.PhotosInterface;
 import com.flickr4java.flickr.photos.SearchParameters;
 import com.flickr4java.flickr.photos.Size;
 
+/**
+ * Class for dealing with Flickr API calls.
+ * 
+ * @author andrew
+ *
+ */
 public class FlickrHelper {
+	/**
+	 * Fetches 10 images from flickr with the given search term and puts them
+	 * in a directory corresponding to the provided creation name.
+	 * @param creationName
+	 * @param searchTerm
+	 */
 	public static void getImages(String creationName, String searchTerm) {
 		try {
 			String command = "mkdir -p " + "Creations/" + creationName + "/.tempPhotos";
@@ -60,6 +72,12 @@ public class FlickrHelper {
 		}
 	}
 	
+	/**
+	 * Gets the key corresponding to the given string. 
+	 * @param key
+	 * @return
+	 * @throws IOException
+	 */
 	private static String getAPIKey(String key) throws IOException{
 		File file = new File("flickr-api-keys.txt"); 
 		BufferedReader br = new BufferedReader(new FileReader(file)); 

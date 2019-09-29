@@ -37,11 +37,17 @@ public class VideoPlayerController {
 	@FXML
 	private Text _creationTitle;
 
+	/**
+	 * Method executed when play button is pressed.
+	 */
 	@FXML
 	private void handlePlay() {
 		_videoPlayer.play();
 	}
 	
+	/**
+	 * Method executed when pause button is pushed
+	 */
 	@FXML
 	private void handlePause() {
 		_videoPlayer.pause();
