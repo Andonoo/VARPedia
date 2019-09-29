@@ -11,10 +11,10 @@
    <children>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
       <TextArea fx:id="wikiTextTA" layoutX="14.0" layoutY="76.0" prefHeight="508.0" prefWidth="325.0" wrapText="true" />
-      <Button fx:id="addAudioChunkBtn" layoutX="928.0" layoutY="77.0" mnemonicParsing="false" onAction="#onAddBtnClicked" prefHeight="50.0" prefWidth="44.0" text="Add" />
-      <TableView fx:id="audioChunkTV" layoutX="380.0" layoutY="150.0" prefHeight="388.0" prefWidth="593.0" />
+      <Button fx:id="addAudioChunkBtn" layoutX="928.0" layoutY="77.0" mnemonicParsing="false" onAction="#onAddBtnClicked" prefHeight="61.0" prefWidth="44.0" text="Add" />
+      <TableView fx:id="audioChunkTV" layoutX="380.0" layoutY="160.0" prefHeight="378.0" prefWidth="593.0" />
       <Button fx:id="_nxtButton" layoutX="882.0" layoutY="558.0" mnemonicParsing="false" onAction="#onNextButtonClicked" prefHeight="26.0" prefWidth="91.0" text="Next" />
-      <TextArea fx:id="selectedTextTA" editable="false" focusTraversable="false" layoutX="380.0" layoutY="77.0" prefHeight="50.0" prefWidth="540.0" promptText="Please highlight text on the left with the cursor." wrapText="true">
+      <TextArea fx:id="selectedTextTA" editable="false" focusTraversable="false" layoutX="380.0" layoutY="77.0" prefHeight="61.0" prefWidth="540.0" promptText="Please highlight text on the left with the cursor." wrapText="true">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></TextArea>

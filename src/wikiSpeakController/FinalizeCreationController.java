@@ -3,6 +3,7 @@ package wikiSpeakController;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -86,8 +87,19 @@ public class FinalizeCreationController {
 	 */
 	private void formatImages() {
 		for (int i = _numberImages.getValue() + 1; i <=10; i++ ) {
-			File imageToDelete = new File("Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + i + ".jpg");
+			File imageToDelete = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + i + ".jpg");
 			imageToDelete.delete();
+		}
+		// Special case when n = 2 to circumvent ffmpeg
+		if (_numberImages.getValue() == 2) {
+			File image = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + "2" + ".jpg");
+			File newImage = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + "3" + ".jpg");
+			try {
+				Files.copy(image.toPath(), newImage.toPath());
+			} catch (IOException e) {
+				return;
+			}
+			
 		}
 	}
 	
@@ -172,17 +184,17 @@ public class FinalizeCreationController {
 				
 				if (noImages == 1) {
 					command = "ffmpeg -loop 1 -i " + creationDir + "/.tempPhotos/" + _searchTerm + 
-				    		"1.jpg -t " + creationAudioDuration + " -vf scale=1600x800 " + creationDir + "/.temp/" + _creationName + ".mp4";
+				    		"1.jpg -t " + creationAudioDuration + " -vf scale=320x240 " + creationDir + "/.temp/" + _creationName + ".mp4";
 					ShellHelper.execute(command);
 				} else if (noImages == 2){
 					// Combining audio and slide show
-				    command = "ffmpeg -framerate " + creationImageRate*2 + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
-				    		"%d.jpg -vf scale=1600x800 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
+				    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
+				    		"%d.jpg -vf scale=320x240 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
 					ShellHelper.execute(command);
 				} else {
 					// Combining audio and slide show
 				    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
-				    		"%d.jpg -vf scale=1600x800 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
+				    		"%d.jpg -vf scale=320x240 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
 					ShellHelper.execute(command);
 				}
 				
@@ -214,11 +226,10 @@ public class FinalizeCreationController {
 				try {
 					layout = loader.load();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-				MainController controller = loader.<MainController>getController();
+				loader.<MainController>getController();
 				Scene scene = new Scene(layout);
 				
 				parentStage.setScene(scene);

@@ -32,12 +32,14 @@ public class ViewController {
 	 */
 	@FXML
     public void initialize() {
-        loadData();
+		makeColumns();
 		refreshTableAsync();
     }
 	
-	private void loadData() {
-		// Create columns for the UI
+	/**
+	 * Create columns for the UI
+	 */
+	private void makeColumns() {
 		List<String> creationFieldNames = Arrays.asList("creationName", "play", "delete");
 		List<String> tableColumnNames = Arrays.asList("Name", "Play", "Delete");
 		double[] widthMultiplier = {0.4, 0.5/3, 0.5/3, 0.5/3};
@@ -49,8 +51,8 @@ public class ViewController {
 			columns.add(col);
 		}
 		creationTable.getColumns().addAll(columns);
-	} 
-//	
+	}
+	
 	@FXML
 	private void onBackBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();

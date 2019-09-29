@@ -1,9 +1,6 @@
 package wikiSpeak;
 
 import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 

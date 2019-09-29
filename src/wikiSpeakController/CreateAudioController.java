@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +22,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -27,12 +29,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import wikiSpeak.AudioChunk;
-import wikiSpeak.CreateAudioChunk;
 import wikiSpeak.Creation;
-import wikiSpeak.FlickrHelper;
 import wikiSpeak.Main;
 import wikiSpeak.Playable;
-import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
 
 /**
@@ -60,19 +59,20 @@ public class CreateAudioController {
 	@FXML
 	private Button addAudioChunkBtn;
 	
+	/**
+	 * Finds the number of words in a string
+	 * @param text
+	 * @return
+	 */
 	private int countWords(String text) {
 		int count = 0;
-		// Remove the leading and ending spaces
-		text = text.trim();
-		
-		// Count the number of spaces
-		for (int i = 0; i < text.length(); i++) {
-			if (text.charAt(i) == ' ') {
-				count++;
-			}
-		}
-		
-		return count;
+		// Find any non-white spaces
+		Pattern pattern = Pattern.compile("\\S+");
+		Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+        	count++;        	
+        }
+        return count;
 	}
 	
 	@FXML
@@ -88,12 +88,28 @@ public class CreateAudioController {
         		addAudioChunkBtn.setDisable(true);
         	}
         });
-        loadData();
+        
+        // Ensure only enable the next button when there is something to play
+        audioChunkTV.getItems().addListener(new ListChangeListener() {
+			@Override
+			public void onChanged(Change arg0) {
+				if (audioChunkTV.getItems().size() > 0) {
+					_nxtButton.setDisable(false);
+				} else {
+					_nxtButton.setDisable(true);
+				}	
+			}
+        });
+        
+        loadColumns();
         refreshTableAsync();
         _chunkCount = 0;
     }
 	
-	private void loadData() {
+	/**
+	 * Loads the column with headings
+	 */
+	private void loadColumns() {
 		// Create columns for the UI
 		List<String> creationFieldNames = Arrays.asList("PlayableName", "duration", "play", "delete");
 		List<String> tableColumnNames = Arrays.asList("Name", "Duration", "Play", "Delete");
@@ -131,7 +147,6 @@ public class CreateAudioController {
 	}
 	
 	private void onChunkCreation() {
-		_nxtButton.setDisable(false);
 		refreshTableAsync();
 		_chunkCount++;
 	}
@@ -151,6 +166,9 @@ public class CreateAudioController {
 		parentStage.setScene(scene);
 	}
 	
+	/**
+	 * Refresh the table when there are changes to the content
+	 */
 	private void refreshTableAsync() {
 		audioChunkTV.getItems().clear();
 		audioChunkTV.setPlaceholder(new Label("Loading..."));
@@ -212,6 +230,12 @@ public class CreateAudioController {
 		return playables;
 	}
 
+	/**
+	 * Set the context for CreateAudio UI
+	 * @param creationName
+	 * @param searchTerm
+	 * @param wikiContent
+	 */
 	public void setCreationData(String creationName, String searchTerm, String wikiContent) {
 		_creationName = creationName;
 		_searchTerm = searchTerm;
