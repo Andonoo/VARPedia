@@ -23,6 +23,10 @@ import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeak.ShellHelper;
 
+/**
+ * Controller class for text search UI component.
+ *
+ */
 public class SearchController {
 	public static final String contentPlaceHolder = "Please use the input field above to search";
 	public static final String loadingText = "Loading...";

@@ -8,6 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Main application method for VARpedia
+ * @author Andrew Donovan
+ * 
+ */
 public class Main extends Application{
 //	Stage _primaryStage;
 //	@Override

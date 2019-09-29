@@ -11,6 +11,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wikiSpeak.ShellHelper;
 
+/**
+ * Class for controlling the audio chunk pop-up UI component.
+ *
+ */
 public class CreateAudioChunkController {	
 	private String _chunkName;
 	private String _creationName;

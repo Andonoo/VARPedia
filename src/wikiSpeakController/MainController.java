@@ -12,6 +12,10 @@ import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
 import wikiSpeak.ViewCreations;
 
+/**
+ * Controller class for main menu UI component.
+ *
+ */
 public class MainController {
 	
 	@FXML

@@ -4,6 +4,9 @@ import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
+/**
+ * Class to define a playable media object.
+ */
 public abstract class Playable {
 	protected String _directoryPath;
 	protected String _filePath;

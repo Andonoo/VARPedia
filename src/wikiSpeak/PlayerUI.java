@@ -12,6 +12,12 @@ import wikiSpeakController.VideoPlayerController;
  * @author Andrew Donovan
  */
 public class PlayerUI {
+	/**
+	 * Returns a UI component to play the provided video.
+	 * @param playable
+	 * @return
+	 * @throws IOException
+	 */
 	public static Parent getLayout(Playable playable) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("PlayerUI.fxml"));
