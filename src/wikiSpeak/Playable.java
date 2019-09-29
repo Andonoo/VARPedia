@@ -20,7 +20,7 @@ public abstract class Playable {
 		_filePath = filePath;
 		_afterDelete = afterDelete;
 		_playableName = getPlayableName();
-//		_duration = String.valueOf(fetchDuration());
+		_duration = String.valueOf(fetchDuration());
 		
 		_play = new Button("play");
 		_play.setOnAction(event -> onPlay(event));

@@ -125,13 +125,8 @@ public class FinalizeCreationController {
 				_creationName + "/" + _creationName + "Creation.mp4";
 				ShellHelper.execute(command);
 				
-				command = "rm -r " + creationDir + "/.temp";
-				ShellHelper.execute(command);
+				command = "rm -r " + creationDir + "/.temp " + creationDir + "/.tempPhotos " + creationDir+ "/.temp.txt";
 				
-				command = "rm -r " + creationDir + "/.tempPhotos";
-				ShellHelper.execute(command);
-				
-				command = "rm " + creationDir + "/.temp.txt";
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				e.printStackTrace();

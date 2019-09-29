@@ -77,7 +77,8 @@ public class CreateAudioController {
         wikiTextTA.setText(_wikiContent);
         wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
-        		selectedTextTA.setText(newValue);        		
+        		selectedTextTA.setText(newValue);   
+        		addAudioChunkBtn.setDisable(false);    		
         	} else {
         		selectedTextTA.setText("You've selected too many words."); 
         		addAudioChunkBtn.setDisable(true);

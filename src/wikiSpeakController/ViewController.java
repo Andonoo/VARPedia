@@ -31,8 +31,8 @@ public class ViewController {
 	
 	private void loadData() {
 		// Create columns for the UI
-		List<String> creationFieldNames = Arrays.asList("creationName", "duration", "play", "delete");
-		List<String> tableColumnNames = Arrays.asList("Name", "Duration", "Play", "Delete");
+		List<String> creationFieldNames = Arrays.asList("creationName", "play", "delete");
+		List<String> tableColumnNames = Arrays.asList("Name", "Play", "Delete");
 		double[] widthMultiplier = {0.4, 0.5/3, 0.5/3, 0.5/3};
 		List<TableColumn<String, Creation>> columns = new ArrayList<TableColumn<String, Creation>>();
 		for (int i = 0; i < creationFieldNames.size(); i++) {

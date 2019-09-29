@@ -72,12 +72,15 @@ public class SearchController {
 		String wikiText = searchResultTF.getText();
 		_creationName = creationNameTF.getText();
 		
+		if (_creationName.length() <= 0) {
+			showAlert("Creation name must be entered");
+			return;
+		}
+		
 		try {
 			makeCreationFolder(_creationName);
 		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("Creation already exists, please try another name.");
-			alert.showAndWait();
+			showAlert("Creation already exists, please try another name.");
 			return;
 		}
 		
@@ -103,11 +106,9 @@ public class SearchController {
 				if (output.size() == 0 || output.get(0).contains("not found :^(")) {
 					// Show alert and exit
 					Platform.runLater(() -> {
-						searchResultTF.setPromptText(contentPlaceHolder);						
-						Alert alert = new Alert(AlertType.ERROR);
-						alert.setContentText(String.format("%s: Nothing found :(", searchTF.getText()));
+						String message = String.format("%s: Nothing found :(", searchTF.getText());
+						showAlert(message);
 						resetCreate();
-						alert.showAndWait();
 					});
 					return;
 				}
@@ -122,9 +123,7 @@ public class SearchController {
 			} catch (Exception e) {
 				Platform.runLater(() -> {
 					searchResultTF.setPromptText(contentPlaceHolder);
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setContentText("Invalid search, please search with a different word");
-					alert.showAndWait();
+					showAlert("Invalid search, please search with a different word");
 				});
 			}
 		});
@@ -140,5 +139,11 @@ public class SearchController {
 	private void resetCreate() {
 		searchResultTF.clear();
 		nextBtn.setDisable(true);
+	}
+	
+	private void showAlert(String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 }

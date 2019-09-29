@@ -86,14 +86,16 @@ public class Creation extends Playable{
 	}
 
 	protected int fetchDuration() {
-		// TODO Auto-generated method stub
-		try {
-			// Get the duration to a whole number string
-			String command = String.format("ffprobe -i \"%s\" -show_format -v " +
-					"quiet | sed -n 's/duration=//p'", _filePath);
-			return((int) Double.parseDouble(ShellHelper.execute(command).get(0)));
-		} catch (Exception e) {
-			return 0;
-		}
+		return -1;
+		// The following code fetches the creation duration, it is a time consuming process so 
+		// only use when needed
+//		try {
+//			// Get the duration to a whole number string
+//			String command = String.format("ffprobe -i \"%s\" -show_format -v " +
+//					"quiet | sed -n 's/duration=//p'", _filePath);
+//			return((int) Double.parseDouble(ShellHelper.execute(command).get(0)));
+//		} catch (Exception e) {
+//			return 0;
+//		}
 	}
 }
