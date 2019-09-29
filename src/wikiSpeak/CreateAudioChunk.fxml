@@ -11,8 +11,8 @@
    <children>
       <TextArea fx:id="selectedTextTA" layoutX="14.0" layoutY="91.0" prefHeight="113.0" prefWidth="573.0" wrapText="true" />
       <ComboBox fx:id="voiceCombo" layoutX="62.0" layoutY="221.0" prefHeight="28.0" prefWidth="239.0" />
-      <Button layoutX="379.0" layoutY="222.0" mnemonicParsing="false" onAction="#previewBtnClicked" prefHeight="26.0" prefWidth="82.0" text="Preview" />
-      <Button layoutX="505.0" layoutY="222.0" mnemonicParsing="false" onAction="#saveBtnClicked" prefHeight="26.0" prefWidth="82.0" text="Save" />
+      <Button fx:id="previewBtn" layoutX="379.0" layoutY="222.0" mnemonicParsing="false" onAction="#previewBtnClicked" prefHeight="26.0" prefWidth="82.0" text="Preview" />
+      <Button fx:id="saveBtn" layoutX="505.0" layoutY="222.0" mnemonicParsing="false" onAction="#saveBtnClicked" prefHeight="26.0" prefWidth="82.0" text="Save" />
       <Label layoutX="181.0" layoutY="34.0" text="Create an audio chunk">
          <font>
             <Font size="21.0" />

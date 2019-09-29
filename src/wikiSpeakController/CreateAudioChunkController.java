@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import wikiSpeak.ShellHelper;
 
@@ -18,14 +19,19 @@ import wikiSpeak.ShellHelper;
 public class CreateAudioChunkController {	
 	private String _chunkName;
 	private String _creationName;
+	private Runnable onAdd;
 	
 	@FXML
 	private TextArea selectedTextTA;
 	
-	private Runnable onAdd;
-	
 	@FXML
 	private ComboBox<String> voiceCombo;
+	
+	@FXML
+	private Button saveBtn;
+	
+	@FXML
+	private Button previewBtn;
 	
 	@FXML
     private void initialize() {
@@ -41,6 +47,7 @@ public class CreateAudioChunkController {
 	
 	@FXML
     private void previewBtnClicked() {
+		setDisableButtons(true);
 		String text = getText();
 		String voiceOption = voiceCombo.getValue();
 		String creationPath = "./Creations/" + _creationName;
@@ -57,6 +64,8 @@ public class CreateAudioChunkController {
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				Platform.runLater(()->showError("This voice can't pronounce the sentence :( Please change the voice..."));
+			} finally {
+				Platform.runLater(()->setDisableButtons(false));
 			}
 		});
 		worker.start();
@@ -67,7 +76,7 @@ public class CreateAudioChunkController {
 		String text = getText();
 		String voiceOption = voiceCombo.getValue();
 		String creationPath = "./Creations/" + _creationName;
-		
+		setDisableButtons(true);
 		Thread worker = new Thread(()->{
 			try {
 				// Save the audio chunk file
@@ -78,13 +87,17 @@ public class CreateAudioChunkController {
 				ShellHelper.execute(command);
 				
 				Platform.runLater(()->{
+					setDisableButtons(false);
 					Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
 					this.onAdd.run();
 				    stage.close();
 				});
 				
 			} catch (Exception e) {
-				Platform.runLater(()->showError("This voice can't pronounce the sentence :( Please change the voice..."));
+				Platform.runLater(()->{
+					showError("This voice can't pronounce the sentence :( Please change the voice...");
+					setDisableButtons(false);
+				});
 			}
 		});
 		worker.start();
@@ -129,5 +142,10 @@ public class CreateAudioChunkController {
 	 */
 	public void setOnAddAction(Runnable r) {
 		this.onAdd = r;
+	}
+	
+	private void setDisableButtons(Boolean condition) {
+		this.saveBtn.setDisable(condition);
+		this.previewBtn.setDisable(condition);
 	}
 }

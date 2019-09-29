@@ -3,6 +3,7 @@ package wikiSpeakController;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -89,6 +90,17 @@ public class FinalizeCreationController {
 			File imageToDelete = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + i + ".jpg");
 			imageToDelete.delete();
 		}
+		// Special case when n = 2 to circumvent ffmpeg
+		if (_numberImages.getValue() == 2) {
+			File image = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + "2" + ".jpg");
+			File newImage = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + "3" + ".jpg");
+			try {
+				Files.copy(image.toPath(), newImage.toPath());
+			} catch (IOException e) {
+				return;
+			}
+			
+		}
 	}
 	
 	/**
@@ -169,19 +181,32 @@ public class FinalizeCreationController {
 			    float frameRate = creationAudioFormat.getFrameRate();
 			    float creationAudioDuration = (audioFileLength / (frameSize * frameRate));
 				float creationImageRate = noImages/creationAudioDuration;
-			    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
-			    		"%d.jpg -vf scale=320x240 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
-				ShellHelper.execute(command);
 				
-				// Combining audio and slide show
-				command = "ffmpeg -i " + creationDir + "/.temp/" + _creationName + ".mp4 -i " + creationDir + "/.temp/" + _creationName + ".wav -vf "
-						+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=100:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + _searchTerm + "\" Creations/" +
-				_creationName + "/" + _creationName + "Creation.mp4";
-				ShellHelper.execute(command);
+				if (noImages == 1) {
+					command = "ffmpeg -loop 1 -i " + creationDir + "/.tempPhotos/" + _searchTerm + 
+				    		"1.jpg -t " + creationAudioDuration + " -vf scale=320x240 " + creationDir + "/.temp/" + _creationName + ".mp4";
+					ShellHelper.execute(command);
+				} else if (noImages == 2){
+					// Combining audio and slide show
+				    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
+				    		"%d.jpg -vf scale=320x240 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
+					ShellHelper.execute(command);
+				} else {
+					// Combining audio and slide show
+				    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
+				    		"%d.jpg -vf scale=320x240 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
+					ShellHelper.execute(command);
+				}
 				
-				// Adding text to video
-				command = "rm -r " + creationDir + "/.temp " + creationDir + "/.tempPhotos " + creationDir+ "/.temp.txt";
-				ShellHelper.execute(command);
+					// Combining audio and video with text
+					command = "ffmpeg -i " + creationDir + "/.temp/" + _creationName + ".mp4 -i " + creationDir + "/.temp/" + _creationName + ".wav -vf "
+							+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=100:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + _searchTerm + "\" Creations/" +
+					_creationName + "/" + _creationName + "Creation.mp4";
+					ShellHelper.execute(command);
+
+				// Removing temp
+//				command = "rm -r " + creationDir + "/.temp " + creationDir + "/.tempPhotos " + creationDir+ "/.temp.txt";
+//				ShellHelper.execute(command);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
