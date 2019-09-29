@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -52,19 +54,20 @@ public class CreateAudioController {
 	@FXML
 	private Button addAudioChunkBtn;
 	
+	/**
+	 * Finds the number of words in a string
+	 * @param text
+	 * @return
+	 */
 	private int countWords(String text) {
 		int count = 0;
-		// Remove the leading and ending spaces
-		text = text.trim();
-		
-		// Count the number of spaces
-		for (int i = 0; i < text.length(); i++) {
-			if (text.charAt(i) == ' ') {
-				count++;
-			}
-		}
-		
-		return count;
+		// Find any non-white spaces
+		Pattern pattern = Pattern.compile("\\S+");
+		Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+        	count++;        	
+        }
+        return count;
 	}
 	
 	@FXML
