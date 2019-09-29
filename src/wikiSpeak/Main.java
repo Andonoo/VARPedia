@@ -84,19 +84,6 @@ public class Main extends Application{
 		Parent layout = loader.load();
 		return layout;
 	}
-
-	/***
-	 * // A wrapper so that the button can take the full width
-	 * @param button
-	 * @return
-	 */
-	public HBox buttonWrapper(Button button){
-		HBox hbox = new HBox();
-		hbox.getChildren().add(button);
-		HBox.setHgrow(button, Priority.ALWAYS);
-		button.setMaxWidth(Double.MAX_VALUE);
-		return hbox;
-	}
 	
 	public static void main(String args[]) {
 		String command = "mkdir -p ./Creations";
