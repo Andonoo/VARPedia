@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import wikiSpeak.SceneSwitcher.SceneOption;
 import wikiSpeakController.VideoPlayerController;
 
 public class Main extends Application{
@@ -73,16 +74,9 @@ public class Main extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Scene scene = new Scene(getLayout());
+		Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 		primaryStage.setScene(scene);
 		primaryStage.show();
-	}
-	
-	public static Parent getLayout() throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("Main.fxml"));
-		Parent layout = loader.load();
-		return layout;
 	}
 	
 	public static void main(String args[]) {

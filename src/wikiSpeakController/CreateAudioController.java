@@ -32,8 +32,10 @@ import wikiSpeak.Creation;
 import wikiSpeak.FlickrHelper;
 import wikiSpeak.Main;
 import wikiSpeak.Playable;
+import wikiSpeak.SceneSwitcher;
 import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
+import wikiSpeak.SceneSwitcher.SceneOption;
 
 public class CreateAudioController {
 	private String _creationName;
@@ -178,7 +180,7 @@ public class CreateAudioController {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeYes){
 			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(Main.getLayout());
+			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 			stage.setScene(scene);
 		}
 	}

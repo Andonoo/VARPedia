@@ -21,9 +21,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
+import wikiSpeak.SceneSwitcher;
 import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
 import wikiSpeak.ViewCreations;
+import wikiSpeak.SceneSwitcher.SceneOption;
 
 public class SearchController {
 	public static final String contentPlaceHolder = "Please use the input field above to search";
@@ -62,7 +64,7 @@ public class SearchController {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeYes){
 			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(Main.getLayout());
+			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 			stage.setScene(scene);
 		}
 	}

@@ -30,7 +30,9 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
 import wikiSpeak.FlickrHelper;
 import wikiSpeak.Main;
+import wikiSpeak.SceneSwitcher;
 import wikiSpeak.ShellHelper;
+import wikiSpeak.SceneSwitcher.SceneOption;
 
 public class FinalizeCreationController {
 	private String _searchTerm;
@@ -84,7 +86,7 @@ public class FinalizeCreationController {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeYes){
 			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(Main.getLayout());
+			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 			stage.setScene(scene);
 		}
 	}

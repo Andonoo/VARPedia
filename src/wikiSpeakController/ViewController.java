@@ -17,7 +17,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import wikiSpeak.Creation;
 import wikiSpeak.Main;
+import wikiSpeak.SceneSwitcher;
 import wikiSpeak.ShellHelper;
+import wikiSpeak.SceneSwitcher.SceneOption;
 
 public class ViewController {
 	@FXML
@@ -47,7 +49,7 @@ public class ViewController {
 	@FXML
 	private void onBackBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-		Scene scene = new Scene(Main.getLayout());
+		Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 		stage.setScene(scene);
 	}
 	
