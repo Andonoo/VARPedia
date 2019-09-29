@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 /**
  * Main application method for VARpedia
- * @author Andrew Donovan
+ * @author Andrew Donovan, Xiaobin Lin
  * 
  */
 public class Main extends Application{	

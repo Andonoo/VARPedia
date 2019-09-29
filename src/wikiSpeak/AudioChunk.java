@@ -11,11 +11,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 
+/**
+ * A class to represent a Audio Chunk audio file
+ * @author Xiaobin Lin
+ *
+ */
 public class AudioChunk extends Playable{
-
 	public AudioChunk(String playableName, Runnable afterDelete) {
 		super(playableName, afterDelete);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -25,7 +28,6 @@ public class AudioChunk extends Playable{
 				String command = String.format("play %s", _filePath);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -60,9 +62,11 @@ public class AudioChunk extends Playable{
 					}});
 					worker.start();
 			}
-		
 	}
 
+	/**
+	 * Get the name of the playable e.g. ./apple.wav -> apple
+	 */
 	public String getPlayableName() {
 		Pattern p = Pattern.compile(".+\\/(.+).wav$");
 		Matcher m = p.matcher(_filePath);
@@ -74,7 +78,6 @@ public class AudioChunk extends Playable{
 
 	@Override
 	protected int fetchDuration() {
-		// TODO Auto-generated method stub
 		try {
 			// Get the duration to a whole number string
 			String command = String.format("ffprobe -i \"%s\" -show_format -v " +

@@ -86,7 +86,7 @@ public class FinalizeCreationController {
 	 */
 	private void formatImages() {
 		for (int i = _numberImages.getValue() + 1; i <=10; i++ ) {
-			File imageToDelete = new File("Creations/" + _creationName + "/.tempPhotos/" + _creationName + i + ".jpg");
+			File imageToDelete = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + i + ".jpg");
 			imageToDelete.delete();
 		}
 	}
@@ -201,7 +201,6 @@ public class FinalizeCreationController {
 				try {
 					layout = loader.load();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

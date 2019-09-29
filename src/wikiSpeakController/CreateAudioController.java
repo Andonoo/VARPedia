@@ -89,26 +89,27 @@ public class CreateAudioController {
         	}
         });
         
+        // Ensure only enable the next button when there is something to play
         audioChunkTV.getItems().addListener(new ListChangeListener() {
-
 			@Override
 			public void onChanged(Change arg0) {
 				if (audioChunkTV.getItems().size() > 0) {
 					_nxtButton.setDisable(false);
 				} else {
 					_nxtButton.setDisable(true);
-				}
-				
+				}	
 			}
-        	
         });
         
-        loadData();
+        loadColumns();
         refreshTableAsync();
         _chunkCount = 0;
     }
 	
-	private void loadData() {
+	/**
+	 * Loads the column with headings
+	 */
+	private void loadColumns() {
 		// Create columns for the UI
 		List<String> creationFieldNames = Arrays.asList("PlayableName", "duration", "play", "delete");
 		List<String> tableColumnNames = Arrays.asList("Name", "Duration", "Play", "Delete");
@@ -165,6 +166,9 @@ public class CreateAudioController {
 		parentStage.setScene(scene);
 	}
 	
+	/**
+	 * Refresh the table when there are changes to the content
+	 */
 	private void refreshTableAsync() {
 		audioChunkTV.getItems().clear();
 		audioChunkTV.setPlaceholder(new Label("Loading..."));
@@ -226,6 +230,12 @@ public class CreateAudioController {
 		return playables;
 	}
 
+	/**
+	 * Set the context for CreateAudio UI
+	 * @param creationName
+	 * @param searchTerm
+	 * @param wikiContent
+	 */
 	public void setCreationData(String creationName, String searchTerm, String wikiContent) {
 		_creationName = creationName;
 		_searchTerm = searchTerm;

@@ -51,6 +51,11 @@ public class SearchController {
         nextBtn.setDisable(true);
     }
 	
+	/**
+	 * Show an alert dialog with actionable buttons
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void onHomeBtnClicked(ActionEvent event) throws IOException {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -69,6 +74,11 @@ public class SearchController {
 		}
 	}
 	
+	/**
+	 * Do all the checks and attempt to go to the next step of the wizard
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void onNextBtnClicked(ActionEvent event) throws IOException {
 		String wikiText = searchResultTF.getText();
@@ -98,6 +108,11 @@ public class SearchController {
 		stage.setScene(scene);
 	}
 	
+	/**
+	 * Fetch content using wikit
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void onSearchBtnClicked(ActionEvent event) throws IOException {
 		searchResultTF.setPromptText(loadingText);
@@ -132,17 +147,29 @@ public class SearchController {
 		worker.start();
 	}
 	
+	/**
+	 * Create the needed folders for temp creations
+	 * @param name
+	 * @throws Exception
+	 */
 	private void makeCreationFolder(String name) throws Exception {
 			ShellHelper.execute("mkdir ./Creations/" + name);
 			ShellHelper.execute("mkdir ./Creations/" + name + "/.temp");
 			ShellHelper.execute("mkdir ./Creations/" + name + "/.tempPhotos");
 	}
 	
+	/**
+	 * Reset creation to allow user to start again
+	 */
 	private void resetCreate() {
 		searchResultTF.clear();
 		nextBtn.setDisable(true);
 	}
 	
+	/**
+	 * Show alert dialog
+	 * @param message
+	 */
 	private void showAlert(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setContentText(message);

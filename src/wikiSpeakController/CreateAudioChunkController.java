@@ -29,6 +29,7 @@ public class CreateAudioChunkController {
 	
 	@FXML
     private void initialize() {
+		// List of festival voices
 		voiceCombo.getItems().addAll(
 			"kal_diphone",
 		    "akl_nz_jdt_diphone",
@@ -69,6 +70,7 @@ public class CreateAudioChunkController {
 		
 		Thread worker = new Thread(()->{
 			try {
+				// Save the audio chunk file
 				String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 				ShellHelper.execute(command);
 				command = String.format("text2wave -o \"%s/.temp/%s.wav\" -eval \'(voice_%s)\' < ./Creations/%s/.temp.txt",
@@ -99,12 +101,22 @@ public class CreateAudioChunkController {
 		return text;
 	}
 	
+	/**
+	 * Show a javafx alert box
+	 * @param text
+	 */
 	private void showError(String text) {
 		Alert errorAlert = new Alert(AlertType.ERROR);
 		errorAlert.setContentText(text);
 		errorAlert.showAndWait();
 	}
 	
+	/**
+	 * Set the content of the AudioChunk box
+	 * @param creationName
+	 * @param chunkName
+	 * @param text
+	 */
 	public void setContent(String creationName, String chunkName, String text) {
 		_creationName = creationName;
 		_chunkName = chunkName;
