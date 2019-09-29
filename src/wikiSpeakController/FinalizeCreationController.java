@@ -205,8 +205,8 @@ public class FinalizeCreationController {
 					ShellHelper.execute(command);
 
 				// Removing temp
-//				command = "rm -r " + creationDir + "/.temp " + creationDir + "/.tempPhotos " + creationDir+ "/.temp.txt";
-//				ShellHelper.execute(command);
+				command = "rm -r " + creationDir + "/.temp " + creationDir + "/.tempPhotos " + creationDir+ "/.temp.txt";
+				ShellHelper.execute(command);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
