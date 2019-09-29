@@ -21,9 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
-import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
-import wikiSpeak.ViewCreations;
 
 public class SearchController {
 	public static final String contentPlaceHolder = "Please use the input field above to search";

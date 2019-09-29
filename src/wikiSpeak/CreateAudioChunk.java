@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import wikiSpeakController.CreateAudioChunkController;
-import wikiSpeakController.CreateAudioController;
 
 public class CreateAudioChunk {
 	public static Parent getLayout() throws IOException {

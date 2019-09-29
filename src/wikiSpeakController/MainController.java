@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import wikiSpeak.Main;
 import wikiSpeak.Search;
 import wikiSpeak.ShellHelper;
 import wikiSpeak.ViewCreations;

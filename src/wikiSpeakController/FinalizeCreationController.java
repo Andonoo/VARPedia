@@ -170,7 +170,7 @@ public class FinalizeCreationController {
 					e.printStackTrace();
 				}
 				
-				MainController controller = loader.<MainController>getController();
+				loader.<MainController>getController();
 				Scene scene = new Scene(layout);
 				
 				parentStage.setScene(scene);

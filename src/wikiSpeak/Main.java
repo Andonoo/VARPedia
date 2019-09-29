@@ -4,17 +4,9 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import wikiSpeakController.VideoPlayerController;
 
 public class Main extends Application{
 //	Stage _primaryStage;
