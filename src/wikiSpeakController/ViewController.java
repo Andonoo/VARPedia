@@ -19,10 +19,17 @@ import wikiSpeak.Creation;
 import wikiSpeak.Main;
 import wikiSpeak.ShellHelper;
 
+/**
+ * Controller class for view creations UI component.
+ * 
+ */
 public class ViewController {
 	@FXML
 	private TableView creationTable;
 	
+	/**
+	 * Sets initial state for UI component.
+	 */
 	@FXML
     public void initialize() {
         loadData();

@@ -16,6 +16,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import wikiSpeakController.VideoPlayerController;
 
+/**
+ * Main application method for VARpedia
+ * @author Andrew Donovan
+ * 
+ */
 public class Main extends Application{
 //	Stage _primaryStage;
 //	@Override
