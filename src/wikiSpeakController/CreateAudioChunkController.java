@@ -45,8 +45,9 @@ public class CreateAudioChunkController {
 		String creationPath = "./Creations/" + _creationName;
 		
 		Thread worker = new Thread(()->{
-			String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 			try {
+				// Create a wav file using text2wave
+				String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 				ShellHelper.execute(command);
 				command = String.format("text2wave -o %s/.temp.wav -eval \'(voice_%s)\' < %s/.temp.txt",
 						creationPath, voiceOption, creationPath);
@@ -54,8 +55,6 @@ public class CreateAudioChunkController {
 				command = String.format("play %s/.temp.wav", creationPath);
 				ShellHelper.execute(command);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 				Platform.runLater(()->showError("This voice can't pronounce the sentence :( Please change the voice..."));
 			}
 		});
@@ -69,8 +68,8 @@ public class CreateAudioChunkController {
 		String creationPath = "./Creations/" + _creationName;
 		
 		Thread worker = new Thread(()->{
-			String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 			try {
+				String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 				ShellHelper.execute(command);
 				command = String.format("text2wave -o \"%s/.temp/%s.wav\" -eval \'(voice_%s)\' < ./Creations/%s/.temp.txt",
 						creationPath, _chunkName, voiceOption, _creationName);
@@ -89,8 +88,13 @@ public class CreateAudioChunkController {
 		worker.start();
     }
 	
+	/**
+	 * Get text from user input
+	 * @return
+	 */
 	private String getText() {
 		String text = selectedTextTA.getText();
+		// Filter out all special character that the text synthesizer can't speak
 		text = text.replaceAll("[^a-zA-Z\\s\\,\\.0-9\\-\\']", " ");
 		return text;
 	}
@@ -107,6 +111,10 @@ public class CreateAudioChunkController {
 		selectedTextTA.setText(text);
 	}
 	
+	/**
+	 * Defines the action upon adding
+	 * @param r
+	 */
 	public void setOnAddAction(Runnable r) {
 		this.onAdd = r;
 	}

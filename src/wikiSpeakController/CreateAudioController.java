@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -87,6 +88,21 @@ public class CreateAudioController {
         		addAudioChunkBtn.setDisable(true);
         	}
         });
+        
+        audioChunkTV.getItems().addListener(new ListChangeListener() {
+
+			@Override
+			public void onChanged(Change arg0) {
+				if (audioChunkTV.getItems().size() > 0) {
+					_nxtButton.setDisable(false);
+				} else {
+					_nxtButton.setDisable(true);
+				}
+				
+			}
+        	
+        });
+        
         loadData();
         refreshTableAsync();
         _chunkCount = 0;
@@ -130,7 +146,6 @@ public class CreateAudioController {
 	}
 	
 	private void onChunkCreation() {
-		_nxtButton.setDisable(false);
 		refreshTableAsync();
 		_chunkCount++;
 	}
