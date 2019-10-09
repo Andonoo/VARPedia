@@ -36,6 +36,7 @@ public class Main extends Application{
 	public static void main(String args[]) {
 		String command = "mkdir -p ./Creations";
 		try {
+//			deleteAllCreations();
 			ShellHelper.execute(command);
 			command = "mkdir -p ./Creations/.temp";
 			ShellHelper.execute(command);
@@ -46,5 +47,13 @@ public class Main extends Application{
 		}
 		
 		launch(args);
+	}
+	
+	public static void deleteAllCreations() {
+		try {
+			ShellHelper.execute("rm -r ./Creations");
+		} catch (Exception e) {
+			return;
+		}
 	}
 }

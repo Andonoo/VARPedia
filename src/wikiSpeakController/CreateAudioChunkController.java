@@ -50,7 +50,7 @@ public class CreateAudioChunkController {
 		setDisableButtons(true);
 		String text = getText();
 		String voiceOption = voiceCombo.getValue();
-		String creationPath = "./Creations/" + _creationName;
+		String creationPath = ShellHelper.WrapString("./Creations/" + _creationName);
 		
 		Thread worker = new Thread(()->{
 			try {
@@ -75,15 +75,15 @@ public class CreateAudioChunkController {
     private void saveBtnClicked(ActionEvent event) {
 		String text = getText();
 		String voiceOption = voiceCombo.getValue();
-		String creationPath = "./Creations/" + _creationName;
+		String creationPath = ShellHelper.WrapString("./Creations/" + _creationName);
 		setDisableButtons(true);
 		Thread worker = new Thread(()->{
 			try {
 				// Save the audio chunk file
 				String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
 				ShellHelper.execute(command);
-				command = String.format("text2wave -o \"%s/.temp/%s.wav\" -eval \'(voice_%s)\' < ./Creations/%s/.temp.txt",
-						creationPath, _chunkName, voiceOption, _creationName);
+				command = String.format("text2wave -o %s/.temp/%s.wav -eval \'(voice_%s)\' < ./Creations/%s/.temp.txt",
+						creationPath, ShellHelper.WrapString(_chunkName), voiceOption, ShellHelper.WrapString(_creationName));
 				ShellHelper.execute(command);
 				
 				Platform.runLater(()->{
@@ -148,4 +148,6 @@ public class CreateAudioChunkController {
 		this.saveBtn.setDisable(condition);
 		this.previewBtn.setDisable(condition);
 	}
+	
+	
 }
