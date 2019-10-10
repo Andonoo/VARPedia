@@ -28,12 +28,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
-import wikiSpeak.FlickrHelper;
 import wikiSpeak.Main;
-import wikiSpeak.SceneSwitcher;
-import wikiSpeak.ShellHelper;
-import wikiSpeak.SceneSwitcher.SceneOption;
+import wikiSpeakController.SceneSwitcher.SceneOption;
 
+/**
+ * Controller class for controlling the finalize creation UI page and producing the creation videos.
+ * 
+ * @author Andrew Donovan
+ *
+ */
 public class FinalizeCreationController {
 	private String _searchTerm;
 	private String _creationName;
@@ -42,6 +45,9 @@ public class FinalizeCreationController {
 	
 	@FXML Button _createButton;
 	
+	/**
+	 * Set initial state of UI components
+	 */
 	@FXML
 	private void initialize() {
 		_numberImages.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10));
@@ -49,12 +55,20 @@ public class FinalizeCreationController {
 		_createButton.setText("Fetching images\nPlease wait...");
 	}
 	
+	/**
+	 * Sets the existing information for the creation
+	 * @param creationName
+	 * @param searchTerm
+	 */
 	public void setCreationInfo(String creationName, String searchTerm) {
 		_creationName = creationName;
 		_searchTerm = searchTerm;
 		getImages();
 	}
 	
+	/**
+	 * Retrieve the images for this creation
+	 */
 	private void getImages() {
 		Thread flickrWorker = new Thread(() -> {
 			FlickrHelper.getImages(_creationName, _searchTerm);
@@ -66,13 +80,21 @@ public class FinalizeCreationController {
 		flickrWorker.start();
 	}
 	
+	/**
+	 * Deletes unnecessary images so that resulting video has requested number.
+	 */
 	private void formatImages() {
 		for (int i = _numberImages.getValue() + 1; i <=10; i++ ) {
-			File imageToDelete = new File("Creations/" + _creationName + "/.tempPhotos/" + _creationName + i + ".jpg");
+			File imageToDelete = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + i + ".jpg");
 			imageToDelete.delete();
 		}
 	}
 	
+	/**
+	 * Sets the action for the home button. Returns to the main menu.
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void onHomeBtnClicked(ActionEvent event) throws IOException {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -91,6 +113,10 @@ public class FinalizeCreationController {
 		}
 	}
 	
+	/**
+	 * Produces the requested creation
+	 * @param event
+	 */
 	private void makeCreation(ActionEvent event) {
 		formatImages();
 		String creationDir = "Creations/" + _creationName;
@@ -106,6 +132,7 @@ public class FinalizeCreationController {
 			int maxImageHeight = 0;
 			float noImages = _numberImages.getValue();
 			
+			// Determines maximum dimensions from downloaded photos
 			for (String p: photoFiles) {
 				BufferedImage image;
 				try {
@@ -124,6 +151,7 @@ public class FinalizeCreationController {
 			}
 			
 			try {
+				// Creating audio file
 				String command = "sox ";
 				for (String s: audioFiles) {
 					command = command + creationDir + "/.temp/" + s + " ";
@@ -131,6 +159,7 @@ public class FinalizeCreationController {
 				command = command + creationDir + "/.temp/" + _creationName + ".wav 2> /dev/null";
 				ShellHelper.execute(command);
 				
+				// Creating slide show
 				File creationAudio = new File(creationDir + "/.temp/" + _creationName + ".wav");
 				AudioInputStream creationAudioStream = AudioSystem.getAudioInputStream(creationAudio);
 				AudioFormat creationAudioFormat = creationAudioStream.getFormat();
@@ -139,21 +168,26 @@ public class FinalizeCreationController {
 			    float frameRate = creationAudioFormat.getFrameRate();
 			    float creationAudioDuration = (audioFileLength / (frameSize * frameRate));
 				float creationImageRate = noImages/creationAudioDuration;
-			    command = "ffmpeg -framerate " + creationImageRate + " -i "+ creationDir + "/.tempPhotos/" + _searchTerm + 
-			    		"%d.jpg -vf scale=1600x800 " + "-r 30 " + creationDir + "/.temp/" + _creationName + ".mp4";
+
+				// Creating video with images
+				command = "cat " + creationDir + "/.tempPhotos/*.jpg | ffmpeg -f image2pipe -framerate " + creationImageRate + " "
+						+ "-i - -c:v libx264 -pix_fmt yuv420p -vf \"scale=320x240\" -r 25 -max_muxing_queue_size 1024 " + creationDir + "/.temp/" + _creationName + ".mp4";
 				ShellHelper.execute(command);
 				
+				// Combining audio and video with text
 				command = "ffmpeg -i " + creationDir + "/.temp/" + _creationName + ".mp4 -i " + creationDir + "/.temp/" + _creationName + ".wav -vf "
 						+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=100:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + _searchTerm + "\" Creations/" +
 				_creationName + "/" + _creationName + "Creation.mp4";
 				ShellHelper.execute(command);
-				
+
+				// Removing temp
 				command = "rm -r " + creationDir + "/.temp " + creationDir + "/.tempPhotos " + creationDir+ "/.temp.txt";
-				
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
+			// Setting code to execute when the user should be notified of creation completion
 			Platform.runLater(() -> {
 				Alert creationDone = new Alert(AlertType.INFORMATION);
 				creationDone.setTitle("Creation Complete");
@@ -168,11 +202,10 @@ public class FinalizeCreationController {
 				try {
 					layout = loader.load();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-				MainController controller = loader.<MainController>getController();
+				loader.<MainController>getController();
 				Scene scene = new Scene(layout);
 				
 				parentStage.setScene(scene);
@@ -181,6 +214,10 @@ public class FinalizeCreationController {
 		creationWorker.start();
 	}
 	
+	/**
+	 * Sorts the audio clips into the user's order
+	 * @param audioFiles
+	 */
 	private void sortAudioFiles(String[] audioFiles) {
 		Hashtable<Integer, String> sortingFiles = new Hashtable<Integer, String>();
 		for (String s: audioFiles) {
@@ -195,7 +232,12 @@ public class FinalizeCreationController {
 		}
 		Collections.reverse(Arrays.asList(audioFiles));
 	}
-
+	
+	/**
+	 * Sets action for create button
+	 * @param e
+	 * @throws IOException
+	 */
 	@FXML
 	private void onCreate(ActionEvent e) throws IOException {
 		_createButton.setDisable(true);

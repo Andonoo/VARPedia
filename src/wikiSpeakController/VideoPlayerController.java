@@ -3,7 +3,6 @@ package wikiSpeakController;
 import java.io.File;
 import java.io.IOException;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +16,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
-import wikiSpeak.Playable;
+import wikiSpeakModel.Playable;
 
 /**
  * Class to control the PlayerUI components.
@@ -37,11 +36,17 @@ public class VideoPlayerController {
 	@FXML
 	private Text _creationTitle;
 
+	/**
+	 * Method executed when play button is pressed.
+	 */
 	@FXML
 	private void handlePlay() {
 		_videoPlayer.play();
 	}
 	
+	/**
+	 * Method executed when pause button is pushed
+	 */
 	@FXML
 	private void handlePause() {
 		_videoPlayer.pause();

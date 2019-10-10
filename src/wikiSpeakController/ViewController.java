@@ -15,24 +15,30 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import wikiSpeak.Creation;
-import wikiSpeak.Main;
-import wikiSpeak.SceneSwitcher;
-import wikiSpeak.ShellHelper;
-import wikiSpeak.SceneSwitcher.SceneOption;
+import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakModel.Creation;
 
+/**
+ * Controller class for view creations UI component.
+ * 
+ */
 public class ViewController {
 	@FXML
 	private TableView creationTable;
 	
+	/**
+	 * Sets initial state for UI component.
+	 */
 	@FXML
     public void initialize() {
-        loadData();
+		makeColumns();
 		refreshTableAsync();
     }
 	
-	private void loadData() {
-		// Create columns for the UI
+	/**
+	 * Create columns for the UI
+	 */
+	private void makeColumns() {
 		List<String> creationFieldNames = Arrays.asList("creationName", "play", "delete");
 		List<String> tableColumnNames = Arrays.asList("Name", "Play", "Delete");
 		double[] widthMultiplier = {0.4, 0.5/3, 0.5/3, 0.5/3};
@@ -44,8 +50,8 @@ public class ViewController {
 			columns.add(col);
 		}
 		creationTable.getColumns().addAll(columns);
-	} 
-//	
+	}
+	
 	@FXML
 	private void onBackBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
