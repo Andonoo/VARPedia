@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
-import wikiSpeak.ShellHelper;
+import wikiSpeakController.SceneSwitcher.SceneOption;
 
 /**
  * Controller class for text search UI component.
@@ -69,7 +69,7 @@ public class SearchController {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeYes){
 			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(Main.getLayout());
+			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 			stage.setScene(scene);
 		}
 	}

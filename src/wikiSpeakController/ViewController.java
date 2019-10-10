@@ -15,9 +15,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import wikiSpeak.Creation;
-import wikiSpeak.Main;
-import wikiSpeak.ShellHelper;
+import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakModel.Creation;
 
 /**
  * Controller class for view creations UI component.
@@ -56,7 +55,7 @@ public class ViewController {
 	@FXML
 	private void onBackBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-		Scene scene = new Scene(Main.getLayout());
+		Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 		stage.setScene(scene);
 	}
 	

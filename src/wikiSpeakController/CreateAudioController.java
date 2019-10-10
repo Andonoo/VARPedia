@@ -28,11 +28,11 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import wikiSpeak.AudioChunk;
-import wikiSpeak.Creation;
 import wikiSpeak.Main;
-import wikiSpeak.Playable;
-import wikiSpeak.ShellHelper;
+import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakModel.AudioChunk;
+import wikiSpeakModel.Creation;
+import wikiSpeakModel.Playable;
 
 /**
  * Controller class for audio creation UI component.
@@ -200,7 +200,7 @@ public class CreateAudioController {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeYes){
 			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(Main.getLayout());
+			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 			stage.setScene(scene);
 		}
 	}

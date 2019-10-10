@@ -1,4 +1,4 @@
-package wikiSpeak;
+package wikiSpeakController;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;

@@ -3,7 +3,6 @@ package wikiSpeakController;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -29,9 +28,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
-import wikiSpeak.FlickrHelper;
 import wikiSpeak.Main;
-import wikiSpeak.ShellHelper;
+import wikiSpeakController.SceneSwitcher.SceneOption;
 
 /**
  * Controller class for controlling the finalize creation UI page and producing the creation videos.
@@ -110,7 +108,7 @@ public class FinalizeCreationController {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeYes){
 			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(Main.getLayout());
+			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 			stage.setScene(scene);
 		}
 	}

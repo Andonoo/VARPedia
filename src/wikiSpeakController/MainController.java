@@ -8,9 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import wikiSpeak.Search;
-import wikiSpeak.ShellHelper;
-import wikiSpeak.ViewCreations;
 
 /**
  * Controller class for main menu UI component.
@@ -36,7 +33,7 @@ public class MainController {
 	@FXML
 	private void onViewBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-		Scene scene = new Scene(ViewCreations.getLayout());
+		Scene scene = new Scene(SceneSwitcher.getLayout(SceneSwitcher.SceneOption.ViewCreations));
 		stage.setScene(scene);
 	}
 	
@@ -48,7 +45,7 @@ public class MainController {
 	@FXML
 	private void onCreateBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-		Scene scene = new Scene(Search.getLayout());
+		Scene scene = new Scene(SceneSwitcher.getLayout(SceneSwitcher.SceneOption.Search));
 		stage.setScene(scene);
 	}
 }

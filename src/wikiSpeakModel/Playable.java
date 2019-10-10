@@ -1,4 +1,4 @@
-package wikiSpeak;
+package wikiSpeakModel;
 
 import java.io.File;
 import javafx.event.ActionEvent;

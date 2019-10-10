@@ -1,4 +1,4 @@
-package wikiSpeak;
+package wikiSpeakModel;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -13,6 +13,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.stage.Stage;
+import wikiSpeakController.SceneSwitcher;
+import wikiSpeakController.ShellHelper;
 import javafx.scene.control.ButtonType;
 
 /***
@@ -31,7 +33,7 @@ public class Creation extends Playable{
 	protected void onPlay(ActionEvent event) {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
 		try {
-			Scene scene = new Scene(PlayerUI.getLayout(this));
+			Scene scene = new Scene(SceneSwitcher.getPlayerLayout(this));
 			stage.setScene(scene);
 		} catch (IOException e) {
 			e.printStackTrace();

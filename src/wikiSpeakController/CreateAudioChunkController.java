@@ -10,7 +10,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import wikiSpeak.ShellHelper;
 
 /**
  * Class for controlling the audio chunk pop-up UI component.

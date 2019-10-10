@@ -16,7 +16,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
-import wikiSpeak.Playable;
+import wikiSpeakModel.Playable;
 
 /**
  * Class to control the PlayerUI components.
