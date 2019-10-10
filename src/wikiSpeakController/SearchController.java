@@ -153,9 +153,9 @@ public class SearchController {
 	 * @throws Exception
 	 */
 	private void makeCreationFolder(String name) throws Exception {
-			ShellHelper.execute("mkdir ./Creations/" + name);
-			ShellHelper.execute("mkdir ./Creations/" + name + "/.temp");
-			ShellHelper.execute("mkdir ./Creations/" + name + "/.tempPhotos");
+			ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) );
+			ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.temp");
+			ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.tempPhotos");
 	}
 	
 	/**
@@ -175,4 +175,5 @@ public class SearchController {
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
+	
 }

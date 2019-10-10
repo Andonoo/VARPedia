@@ -50,7 +50,7 @@ public class AudioChunk extends Playable{
 			if (result.get() == buttonTypeYes){
 					Thread worker = new Thread(()->{
 					try {
-						String command = String.format("rm %s", _filePath);
+						String command = String.format("rm %s", ShellHelper.WrapString(_filePath));
 						ShellHelper.execute(command);
 						// Run the action specified by client, mainly for refreshing the UI
 						Platform.runLater(()-> _afterDelete.run());

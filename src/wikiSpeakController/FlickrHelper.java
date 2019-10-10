@@ -32,7 +32,7 @@ public class FlickrHelper {
 	 */
 	public static void getImages(String creationName, String searchTerm) {
 		try {
-			String command = "mkdir -p " + "Creations/" + creationName + "/.tempPhotos";
+			String command = "mkdir -p " + "Creations/" + ShellHelper.WrapString(creationName) + "/.tempPhotos";
 			ShellHelper.execute(command);
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -58,7 +58,7 @@ public class FlickrHelper {
 	        		BufferedImage image = photos.getImage(photo,Size.LARGE);
 		        	String filename = searchTerm + count + ".jpg";
 		        	count ++;
-		        	File outputfile = new File("Creations/" + creationName + "/.tempPhotos",filename);
+		        	File outputfile = new File("./Creations/" + creationName + "/.tempPhotos", filename);
 		        	ImageIO.write(image, "jpg", outputfile);
 		        	if (count == 11) {
 		        		break;

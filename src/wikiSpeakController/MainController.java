@@ -17,7 +17,7 @@ public class MainController {
 	@FXML
     public void initialize() {
 		// Remove all folders that doesn't have a creation
-        String command = "xargs rm -rf <<< $(find ./Creations -mindepth 1 -maxdepth 1 -type d '!' -exec sh -c 'ls -1 \"{}\"|egrep -i -q \"*.(mp4)$\"' ';' -print)";
+        String command = "xargs -I{} rm -rf {}<<< $(find ./Creations -mindepth 1 -maxdepth 1 -type d '!' -exec sh -c 'ls -1 \"{}\"|egrep -i -q \"*.(mp4)$\"' ';' -print)";
         try {
 			ShellHelper.execute(command);
 		} catch (Exception e) {

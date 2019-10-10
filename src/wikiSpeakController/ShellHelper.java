@@ -39,4 +39,13 @@ public class ShellHelper {
 		}
 		return output;
 	}
+	
+	/**
+	 * Create a file name wrapper so argument into bash is always correct
+	 * @param fileLocation
+	 * @return Wrapped String with quotation marks
+	 */
+	public static String WrapString(String fileLocation) {
+		return ("\"" + fileLocation + "\"");
+	}
 }
