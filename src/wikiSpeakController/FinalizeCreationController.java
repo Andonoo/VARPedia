@@ -121,13 +121,12 @@ public class FinalizeCreationController {
 	 */
 	private void makeCreation(ActionEvent event) {
 		formatImages();
-		String creationDir = "Creations/" + _creationName;
 		Thread creationWorker = new Thread(() -> {			
-			File audioDirectory = new File(creationDir + "/.temp/");
+			File audioDirectory = new File("Creations/" + _creationName + "/.temp/");
 			String[] audioFiles = audioDirectory.list();
 			sortAudioFiles(audioFiles);
 			
-			File photoDirectory = new File(creationDir + "/.tempPhotos");
+			File photoDirectory = new File("Creations/" + _creationName + "/.tempPhotos");
 			String[] photoFiles = photoDirectory.list();
 			
 			int maxImageWidth = 0;
@@ -138,7 +137,7 @@ public class FinalizeCreationController {
 			for (String p: photoFiles) {
 				BufferedImage image;
 				try {
-					image = ImageIO.read(new File(creationDir + "/.tempPhotos/" + p));
+					image = ImageIO.read(new File("Creations/" + _creationName + "/.tempPhotos/" + p));
 					int width = image.getWidth();
 					int height = image.getHeight();
 					if (width > maxImageWidth) {
@@ -152,17 +151,19 @@ public class FinalizeCreationController {
 				}
 			}
 			
+			String creationDir = ShellHelper.WrapString("Creations/" + _creationName);
+			String wrappedCreationName = ShellHelper.WrapString(_creationName);
 			try {
 				// Creating audio file
 				String command = "sox ";
 				for (String s: audioFiles) {
-					command = command + creationDir + "/.temp/" + s + " ";
+					command = command + creationDir + "/.temp/" + ShellHelper.WrapString(s) + " ";
 				}
-				command = command + creationDir + "/.temp/" + _creationName + ".wav 2> /dev/null";
+				command = command + creationDir + "/.temp/" + wrappedCreationName + ".wav 2> /dev/null";
 				ShellHelper.execute(command);
 				
 				// Creating slide show
-				File creationAudio = new File(creationDir + "/.temp/" + _creationName + ".wav");
+				File creationAudio = new File("Creations/" + _creationName + "/.temp/" + _creationName + ".wav");
 				AudioInputStream creationAudioStream = AudioSystem.getAudioInputStream(creationAudio);
 				AudioFormat creationAudioFormat = creationAudioStream.getFormat();
 			    long audioFileLength = creationAudio.length();
@@ -173,13 +174,13 @@ public class FinalizeCreationController {
 
 				// Creating video with images
 				command = "cat " + creationDir + "/.tempPhotos/*.jpg | ffmpeg -f image2pipe -framerate " + creationImageRate + " "
-						+ "-i - -c:v libx264 -pix_fmt yuv420p -vf \"scale=320x240\" -r 25 -max_muxing_queue_size 1024 " + creationDir + "/.temp/" + _creationName + ".mp4";
+						+ "-i - -c:v libx264 -pix_fmt yuv420p -vf \"scale=320x240\" -r 25 -max_muxing_queue_size 1024 " + creationDir + "/.temp/" + wrappedCreationName + ".mp4";
 				ShellHelper.execute(command);
 				
 				// Combining audio and video with text
-				command = "ffmpeg -i " + creationDir + "/.temp/" + _creationName + ".mp4 -i " + creationDir + "/.temp/" + _creationName + ".wav -vf "
+				command = "ffmpeg -i " + creationDir + "/.temp/" + wrappedCreationName + ".mp4 -i " + creationDir + "/.temp/" + wrappedCreationName + ".wav -vf "
 						+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=100:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + _searchTerm + "\" Creations/" +
-				_creationName + "/" + _creationName + "Creation.mp4";
+						wrappedCreationName + "/" + wrappedCreationName + "Creation.mp4";
 				ShellHelper.execute(command);
 
 				// Removing temp
@@ -246,4 +247,6 @@ public class FinalizeCreationController {
 		_createButton.setText("Creating...");
 		makeCreation(e);
 	}
+	
+	
 }

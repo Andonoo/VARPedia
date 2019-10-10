@@ -75,7 +75,7 @@ public class VideoPlayerController {
 	 */
 	public void setVideo(Playable playable) {
 		_creationTitle.setText(playable.getPlayableName());
-		File vid = new File(playable.getPath());
+		File vid = new File(playable.getPath().replaceAll("\\s", "%20"));
 		_video = new Media("file://" + vid.getAbsolutePath());
 		_videoPlayer = new MediaPlayer(_video);
 		_videoPlayer.setAutoPlay(false);
