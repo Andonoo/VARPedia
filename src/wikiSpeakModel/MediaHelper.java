@@ -174,7 +174,7 @@ public class MediaHelper {
 	 */
 	public void combineAudioVideoWithTerm(String audioFile, String audioDir, String videoFile, String videoDir, String term, String outputDir, String outputName) throws Exception {
 		String command = "ffmpeg -i " + ShellHelper.WrapString(_workingDir + videoDir + videoFile) + ".mp4 -i " + ShellHelper.WrapString(_workingDir + audioDir + audioFile) + ".wav -vf "
-				+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=100:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + term + "\" "
+				+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=60:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + term + "\" "
 				+ ShellHelper.WrapString(outputDir + outputName) + ".mp4";
 		ShellHelper.execute(command);
 	}
