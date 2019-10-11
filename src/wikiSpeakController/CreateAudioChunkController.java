@@ -10,6 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import wikiSpeakModel.MediaHelper;
 
 /**
  * Class for controlling the audio chunk pop-up UI component.
@@ -49,22 +50,16 @@ public class CreateAudioChunkController {
 		setDisableButtons(true);
 		String text = getText();
 		String voiceOption = voiceCombo.getValue();
-		String creationPath = ShellHelper.WrapString("./Creations/" + _creationName);
+		String creationDir = ShellHelper.WrapString("./Creations/" + _creationName + "/");
 		
 		Thread worker = new Thread(()->{
 			try {
-				// Create a wav file using text2wave
-				String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
-				ShellHelper.execute(command);
-				command = String.format("text2wave -o %s/.temp.wav -eval \'(voice_%s)\' < %s/.temp.txt",
-						creationPath, voiceOption, creationPath);
-				ShellHelper.execute(command);
-				command = String.format("play %s/.temp.wav", creationPath);
-				ShellHelper.execute(command);
+				MediaHelper mh = new MediaHelper(creationDir);
+				mh.previewAudioChunk(text, voiceOption);
 			} catch (Exception e) {
-				Platform.runLater(()->showError("This voice can't pronounce the sentence :( Please change the voice..."));
+				Platform.runLater(()-> showError("This voice can't pronounce the sentence :( Please change the voice..."));
 			} finally {
-				Platform.runLater(()->setDisableButtons(false));
+				Platform.runLater(()-> setDisableButtons(false));
 			}
 		});
 		worker.start();
@@ -74,16 +69,12 @@ public class CreateAudioChunkController {
     private void saveBtnClicked(ActionEvent event) {
 		String text = getText();
 		String voiceOption = voiceCombo.getValue();
-		String creationPath = ShellHelper.WrapString("./Creations/" + _creationName);
+		String creationAudioPath = "./Creations/" + _creationName + "/.temp/";
 		setDisableButtons(true);
 		Thread worker = new Thread(()->{
 			try {
-				// Save the audio chunk file
-				String command = String.format("echo \"%s\" > %s/.temp.txt", text, creationPath);
-				ShellHelper.execute(command);
-				command = String.format("text2wave -o %s/.temp/%s.wav -eval \'(voice_%s)\' < ./Creations/%s/.temp.txt",
-						creationPath, ShellHelper.WrapString(_chunkName), voiceOption, ShellHelper.WrapString(_creationName));
-				ShellHelper.execute(command);
+				MediaHelper mh = new MediaHelper(creationAudioPath);
+				mh.createAudioChunk(text, voiceOption, _chunkName);
 				
 				Platform.runLater(()->{
 					setDisableButtons(false);
@@ -91,7 +82,6 @@ public class CreateAudioChunkController {
 					this.onAdd.run();
 				    stage.close();
 				});
-				
 			} catch (Exception e) {
 				Platform.runLater(()->{
 					showError("This voice can't pronounce the sentence :( Please change the voice...");
