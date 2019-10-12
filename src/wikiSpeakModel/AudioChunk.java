@@ -26,7 +26,7 @@ public class AudioChunk extends Playable{
 	protected void onPlay(ActionEvent event) {
 		Thread worker = new Thread(()->{
 			try {
-				String command = String.format("play %s", _filePath);
+				String command = String.format("play %s", ShellHelper.WrapString(_filePath));
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				e.printStackTrace();
