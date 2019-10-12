@@ -30,6 +30,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakModel.MediaHelper;
 
 /**
  * Controller class for controlling the finalize creation UI page and producing the creation videos.
@@ -114,7 +115,7 @@ public class FinalizeCreationController {
 	}
 	
 	/**
-	 * Produces the requested creation
+	 * Produces the requested creation by making various calls to a MediaHelper instance.
 	 * @param event
 	 */
 	private void makeCreation(ActionEvent event) {
@@ -127,92 +128,55 @@ public class FinalizeCreationController {
 			File photoDirectory = new File("Creations/" + _creationName + "/.tempPhotos");
 			String[] photoFiles = photoDirectory.list();
 			
-			int maxImageWidth = 0;
-			int maxImageHeight = 0;
-			float noImages = _numberImages.getValue();
+			int noImages = _numberImages.getValue();
 			
-			// Determines maximum dimensions from downloaded photos
-			for (String p: photoFiles) {
-				BufferedImage image;
-				try {
-					image = ImageIO.read(new File("Creations/" + _creationName + "/.tempPhotos/" + p));
-					int width = image.getWidth();
-					int height = image.getHeight();
-					if (width > maxImageWidth) {
-						maxImageWidth = width;
-					}
-					if (height > maxImageHeight) {
-						maxImageHeight = height;
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			String creationDir = "Creations/" + _creationName + "/";
 			
-			String creationDir = ShellHelper.WrapString("Creations/" + _creationName);
-			String wrappedCreationName = ShellHelper.WrapString(_creationName);
 			try {
-				// Creating audio file
-				String command = "sox ";
-				for (String s: audioFiles) {
-					command = command + creationDir + "/.temp/" + ShellHelper.WrapString(s) + " ";
-				}
-				command = command + creationDir + "/.temp/" + wrappedCreationName + ".wav 2> /dev/null";
-				ShellHelper.execute(command);
+				MediaHelper mh = new MediaHelper(creationDir);
+				mh.combineAudioFiles(".temp/", audioFiles, _creationName);
+				File creationAudio = new File(creationDir + ".temp/" + _creationName + ".wav");
+				mh.createSlideShowToFit(noImages, creationAudio, _creationName, ".tempPhotos/", ".temp/");
+				mh.combineAudioVideoWithTerm(_creationName, ".temp/", _creationName, ".temp/", _searchTerm, creationDir, _creationName + "Creation");
 				
-				// Creating slide show
-				File creationAudio = new File("Creations/" + _creationName + "/.temp/" + _creationName + ".wav");
-				AudioInputStream creationAudioStream = AudioSystem.getAudioInputStream(creationAudio);
-				AudioFormat creationAudioFormat = creationAudioStream.getFormat();
-			    long audioFileLength = creationAudio.length();
-			    int frameSize = creationAudioFormat.getFrameSize();
-			    float frameRate = creationAudioFormat.getFrameRate();
-			    float creationAudioDuration = (audioFileLength / (frameSize * frameRate));
-				float creationImageRate = noImages/creationAudioDuration;
-
-				// Creating video with images
-				command = "cat " + creationDir + "/.tempPhotos/*.jpg | ffmpeg -f image2pipe -framerate " + creationImageRate + " "
-						+ "-i - -c:v libx264 -pix_fmt yuv420p -vf \"scale=320x240\" -r 25 -max_muxing_queue_size 1024 " + creationDir + "/.temp/" + wrappedCreationName + ".mp4";
+				String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos";
 				ShellHelper.execute(command);
-				
-				// Combining audio and video with text
-				command = "ffmpeg -i " + creationDir + "/.temp/" + wrappedCreationName + ".mp4 -i " + creationDir + "/.temp/" + wrappedCreationName + ".wav -vf "
-						+ "\"drawtext=fontfile=./BodoniFLF-Roman.ttf:fontsize=100:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + _searchTerm + "\" Creations/" +
-						wrappedCreationName + "/" + wrappedCreationName + "Creation.mp4";
-				ShellHelper.execute(command);
-
-				// Removing temp
-				command = "rm -r " + creationDir + "/.temp " + creationDir + "/.tempPhotos " + creationDir+ "/.temp.txt";
-				ShellHelper.execute(command);
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception e1) {
+				e1.printStackTrace();
 			}
 			
-			// Setting code to execute when the user should be notified of creation completion
-			Platform.runLater(() -> {
-				Alert creationDone = new Alert(AlertType.INFORMATION);
-				creationDone.setTitle("Creation Complete");
-				creationDone.setContentText("Your creation, " + _creationName + ", is complete and ready for viewing.");
-				creationDone.show();
-				
-				Stage parentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
-				
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("Main.fxml"));
-				Parent layout = null;
-				try {
-					layout = loader.load();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				loader.<MainController>getController();
-				Scene scene = new Scene(layout);
-				
-				parentStage.setScene(scene);
-			});
+			Stage parentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
+			creationComplete(parentStage);
 		});
 		creationWorker.start();
+	}
+	
+	/**
+	 * Method executed to display 'creation completed' heads up to the user.
+	 * @param event
+	 */
+	private void creationComplete(Stage parentStage) {
+		// Setting code to execute when the user should be notified of creation completion
+		Platform.runLater(() -> {
+			Alert creationDone = new Alert(AlertType.INFORMATION);
+			creationDone.setTitle("Creation Complete");
+			creationDone.setContentText("Your creation, " + _creationName + ", is complete and ready for viewing.");
+			creationDone.show();
+									
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("Main.fxml"));
+			Parent layout = null;
+			try {
+				layout = loader.load();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+						
+			loader.<MainController>getController();
+			Scene scene = new Scene(layout);
+			
+			parentStage.setScene(scene);
+		});
 	}
 	
 	/**
