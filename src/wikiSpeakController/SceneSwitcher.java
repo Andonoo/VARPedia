@@ -11,6 +11,7 @@ public class SceneSwitcher {
 	public enum SceneOption {
 		Main,
 		View,
+		GameSetup,
 		VideoPlayer,
 		Search,
 		CreateAudio,
