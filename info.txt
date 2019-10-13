@@ -1,0 +1,14 @@
+{
+  "Fruits,": {
+      "0-9": ["apple", "banana"]
+  },
+  "Animal,": {
+      "0-9": ["dog", "cat"]
+  },
+  "Country,": {
+      "0-9": ["New Zealand", "China"]
+  },
+  "Celebrity": {
+      "0-9": ["Donald Trump", "Jacinda Ardern"]
+  }
+}

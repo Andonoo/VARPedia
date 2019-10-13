@@ -32,9 +32,9 @@
          </font>
       </Label>
       <Spinner fx:id="ageSpinner" layoutX="667.0" layoutY="104.0" />
-      <TableView fx:id="gameCategoryTV" layoutX="586.0" layoutY="200.0" prefHeight="200.0" prefWidth="252.0">
+      <TableView fx:id="categoryTV" layoutX="586.0" layoutY="200.0" prefHeight="200.0" prefWidth="252.0">
         <columns>
-          <TableColumn fx:id="categoryColumn" prefWidth="251.0" text="Category" />
+          <TableColumn fx:id="categoryCol" prefWidth="251.0" text="Category" />
         </columns>
       </TableView>
       <Label layoutX="91.0" layoutY="200.0" text="Number of games">

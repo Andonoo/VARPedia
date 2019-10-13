@@ -27,9 +27,7 @@ public class Main extends Application{
 		try {
 //			deleteAllCreations();
 			ShellHelper.execute(command);
-			command = "mkdir -p ./Creations/.temp";
-			ShellHelper.execute(command);
-			command = "mkdir -p ./Creations/.tempPhotos";
+			command = "mkdir -p ./Creations/.temp ./Creations/.tempPhotos ./.Game";
 			ShellHelper.execute(command);
 		} catch (Exception e) {
 			return;
