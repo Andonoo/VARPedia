@@ -91,6 +91,8 @@ public class GameSetupController {
 		if (categoryTV.getSelectionModel().getSelectedItem() == null) {
 			showAlert("You haven't selected a category");
 		};
+		playBtn.setDisable(true);
+		playBtn.setText("Wait...");
 		Thread worker = new Thread(() -> {
 			String command = String.format("wikit %s", "apple");
 			List<String> output;
