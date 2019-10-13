@@ -41,11 +41,11 @@ public class MediaHelper {
 	 */
 	public void createAudioChunk(String text, String voice, String chunkName) throws Exception {
 		// Save the text file and save it to provided location
-		String command = String.format("echo \"%s\" > %s.temp.txt", text, ShellHelper.WrapString(_workingDir));
+		String command = String.format("echo \"%s\" > %s", text, ShellHelper.WrapString(_workingDir + ".temp.txt"));
 		ShellHelper.execute(command);
 		// Turn the text file into an audio chunk
-		command = String.format("text2wave -o %s.wav -eval \'(voice_%s)\' < %s.temp.txt",
-				ShellHelper.WrapString(_workingDir + chunkName), voice, ShellHelper.WrapString(_workingDir));
+		command = String.format("text2wave -o %s -eval \'(voice_%s)\' < %s",
+				ShellHelper.WrapString(_workingDir + chunkName + ".wav"), voice, ShellHelper.WrapString(_workingDir + ".temp.txt"));
 		ShellHelper.execute(command);
 		// Deleting .temp.txt text file
 		deleteFile(_workingDir + ".temp.txt");
@@ -186,6 +186,16 @@ public class MediaHelper {
 	 */
 	private static void deleteFile(String file) throws Exception {
 		String command = "rm " + ShellHelper.WrapString(file);
+		ShellHelper.execute(command);
+	}
+	
+	/**
+	 * Play audio using bash command "play"
+	 * @param filePath
+	 * @throws Exception
+	 */
+	public static void playAudio(String filePath) throws Exception {
+		String command = String.format("play %s", filePath);
 		ShellHelper.execute(command);
 	}
 	

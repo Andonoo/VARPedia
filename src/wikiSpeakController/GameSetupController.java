@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +30,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakModel.MediaHelper;
 
 public class GameSetupController {
 	@FXML Spinner<Integer> ageSpinner;
@@ -53,7 +55,7 @@ public class GameSetupController {
 		textRB.setToggleGroup(radioButtonGroup);
 		audioRB.setToggleGroup(radioButtonGroup);
 		videoRB.setToggleGroup(radioButtonGroup);
-		videoRB.setSelected(true);
+		audioRB.setSelected(true);
 	}
 	
 	/***
@@ -85,11 +87,38 @@ public class GameSetupController {
 	}
 	
 	@FXML
-	private void onPlayBtnClicked() {
+	private void onPlayBtnClicked(ActionEvent event) throws Exception {
 		if (categoryTV.getSelectionModel().getSelectedItem() == null) {
 			showAlert("You haven't selected a category");
 		};
-		
+		Thread worker = new Thread(() -> {
+			String command = String.format("wikit %s", "apple");
+			List<String> output;
+			try {
+				output = ShellHelper.execute(command);
+				String wikitText = output.get(0);
+				wikitText = wikitText.toLowerCase();
+				wikitText = wikitText.replaceAll("apple", "something");
+				MediaHelper mh = new MediaHelper("./.Game/");
+				mh.createAudioChunk(wikitText, "kal_diphone", "temp");
+				ShellHelper.execute(command);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Platform.runLater(()->{
+				Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+				Scene scene;
+				try {
+					scene = new Scene(SceneSwitcher.getGameAudioPlayer("apple"));
+					stage.setScene(scene);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+		});
+		worker.start();
 	}
 	
 	private void showAlert(String text) {
