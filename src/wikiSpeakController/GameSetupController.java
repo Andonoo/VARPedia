@@ -48,8 +48,8 @@ public class GameSetupController {
 	@FXML
 	private void initialize() {
 		loadCategoryTable();
-		ageSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99));
-		nOfGamesSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10));
+		ageSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(7, 7));
+		nOfGamesSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1));
 		
 		// Toggle group ensures only one is selected at a time
 		textRB.setToggleGroup(radioButtonGroup);
@@ -66,6 +66,7 @@ public class GameSetupController {
 		categoryCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
 		categoryTV.setItems(categories);
 		categoryTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		categoryTV.getSelectionModel().selectFirst();
 	}
 	
 	@FXML
@@ -102,7 +103,7 @@ public class GameSetupController {
 				wikitText = wikitText.toLowerCase();
 				wikitText = wikitText.replaceAll("apple", "something");
 				MediaHelper mh = new MediaHelper("./.Game/");
-				mh.createAudioChunk(wikitText, "kal_diphone", "temp");
+				mh.createAudioChunk(wikitText.substring(0, 290), "kal_diphone", "temp");
 				ShellHelper.execute(command);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
