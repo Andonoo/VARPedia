@@ -183,6 +183,22 @@ public class MediaHelper {
 	}
 	
 	/**
+	 * Takes the images at the provided image directory and turns them into a slideshow to fit the length
+	 * provided. Video will be created in specified destination path.
+	 * @param noImages number of images
+	 * @param length
+	 * @param videoName of output video
+	 * @param destPath path from working directory where output video will be created
+	 * @throws Exception
+	 */
+	public void createSlideShowToLength(int noImages, int length, String videoName, String imageDir, String destPath) throws Exception {
+		int imageRate = noImages/length;
+		String command = "cat " + ShellHelper.WrapString(_workingDir + imageDir) + "*.jpg | ffmpeg -f image2pipe -framerate " + imageRate + " "
+				+ "-i - -c:v libx264 -pix_fmt yuv420p -vf \"scale=320x240\" -r 25 -max_muxing_queue_size 1024 " + ShellHelper.WrapString(_workingDir + destPath + videoName) + ".mp4";
+		ShellHelper.execute(command);
+	}
+	
+	/**
 	 * Takes audio file and combines with video file with overlaid text. 
 	 * @param audioFile
 	 * @param audioDir

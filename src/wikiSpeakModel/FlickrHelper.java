@@ -1,4 +1,4 @@
-package wikiSpeakController;
+package wikiSpeakModel;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -17,10 +17,12 @@ import com.flickr4java.flickr.photos.PhotosInterface;
 import com.flickr4java.flickr.photos.SearchParameters;
 import com.flickr4java.flickr.photos.Size;
 
+import wikiSpeakController.ShellHelper;
+
 /**
  * Class for dealing with Flickr API calls.
  * 
- * @author andrew
+ * @author Andrew Donovan
  *
  */
 public class FlickrHelper {
@@ -30,9 +32,9 @@ public class FlickrHelper {
 	 * @param creationName
 	 * @param searchTerm
 	 */
-	public static void getImages(String creationName, String searchTerm) {
+	public static void getImages(String path, String searchTerm) {
 		try {
-			String command = "mkdir -p " + "Creations/" + ShellHelper.WrapString(creationName) + "/.tempPhotos";
+			String command = "mkdir -p " + ShellHelper.WrapString(path) + ".tempPhotos";
 			ShellHelper.execute(command);
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -58,7 +60,7 @@ public class FlickrHelper {
 	        		BufferedImage image = photos.getImage(photo,Size.LARGE);
 		        	String filename = searchTerm + count + ".jpg";
 		        	count ++;
-		        	File outputfile = new File("./Creations/" + creationName + "/.tempPhotos", filename);
+		        	File outputfile = new File(path + ".tempPhotos", filename);
 		        	ImageIO.write(image, "jpg", outputfile);
 		        	if (count == 11) {
 		        		break;
@@ -71,6 +73,8 @@ public class FlickrHelper {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 	/**
 	 * Gets the key corresponding to the given string. 
