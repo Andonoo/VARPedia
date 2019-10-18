@@ -21,9 +21,10 @@ public class GuessingGameEngine {
 	private String _playerName;
 	private int _age;
 	private GameCategory _category;
-	private int _numGames;
-	private List<GuessCreation> _creations;
-	private GuessCreation _currentCreation;
+	private int _numRounds;
+	private List<GuessMedia> _guessMediaElements;
+	private GuessMedia _currentMediaElement;
+	private MediaType _gameType;
 	
 	/**
 	 * Creates an instance of the game for the user's given inputs.
@@ -32,29 +33,116 @@ public class GuessingGameEngine {
 	 * @param numGames
 	 * @param category
 	 */
-	public GuessingGameEngine(String playerName, int age, int numGames, GameCategory category) {
+	public GuessingGameEngine(String playerName, int age, int numRounds, GameCategory category, MediaType gameType) {
 		_playerName = playerName;
 		_age = age;
-		_numGames = numGames;
+		_numRounds = numRounds;
 		_category = category;
+		_gameType = gameType;
+		_guessMediaElements = new ArrayList<GuessMedia>();
 	}
 	
+	/**
+	 * Produces the media elements (videos, audio clips, text) required for the game to begin.
+	 */
+	public void prepareGame() {
+		switch(_gameType) {
+			case Video:
+				for (int i = 1; i <= _numRounds; i ++) {
+					createVideo(i);
+				}
+			break;
+			case Audio:
+				for (int i = 1; i <= _numRounds; i ++) {
+					createAudio(i);
+				}
+			break;
+			case Text:
+				for (int i = 1; i <= _numRounds; i ++) {
+					createText();
+				}
+			break;
+		}
+	}
+
 	/**
 	 * Determines whether the player's guess matches the current creation in play.
 	 * @param guessTerm
 	 * @return
 	 */
 	public boolean checkGuess(String guessTerm) {
-		return _currentCreation.checkGuess(guessTerm);
+		return _currentMediaElement.checkGuess(guessTerm);
 	}
 	
 	/**
-	 * Builds a creation for the user's current input.
+	 * Builds a video for the user's current input.
 	 */
-	public void buildCreation() {
+	private void createVideo(int videoNumber) {
 		String term = getRandomTerm();
-		String pathForImages = String.format(".Game/.GameCreations/.%s", term);
-		FlickrHelper.getImages(, term);
+		String dirForRound = String.format(".Game/.Round%s/", videoNumber);
+		FlickrHelper.getImages(dirForRound, term);
+		MediaHelper mediaHelper = new MediaHelper(dirForRound);
+		try {
+			mediaHelper.createSlideShowToLength(10, 5, term, ".tempPhotos/", "");
+			File video = new File(dirForRound + "term.mp4");
+			GuessMedia guessVideo = new GuessMedia(_gameType, video);
+			_guessMediaElements.add(guessVideo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+		
+	/**
+	 * Builds an text chunk for the user's current input.
+	 */
+	private void createText() {
+		String term = getRandomTerm();
+		List<String> text = fetchText(term);
+		GuessMedia textMedia = new GuessMedia(_gameType, text);
+		_guessMediaElements.add(textMedia);
+	}
+	
+	/**
+	 * Returns a list of strings from wikit for a random term with the current inputs.
+	 * @return wikit result
+	 */
+	private List<String> fetchText(String term) {
+		boolean successful = false;
+		List<String> output = null;
+		while (!successful) {
+			String command = String.format("wikit %s", term);
+			try {
+				output = ShellHelper.execute(command);
+				if (output.size() != 0 && !output.get(0).equals("not found :^(")) {
+					successful = true;
+				} else {
+					System.out.println("Term: " + term + " should be removed as it is not wikit-compatible");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return output;
+	}
+ 
+	/**
+	 * Builds an audio chunk for the user's current input.
+	 */
+	private void createAudio(int audioNumber) {
+		String term = getRandomTerm();
+		List<String> textList = fetchText(term);
+		String text = "";
+		for (String s: textList) {
+			text = text + s;
+		}
+		MediaHelper mediaHelper = new MediaHelper(String.format(".Game/.Round%s/", audioNumber));
+		try {
+			mediaHelper.createAudioChunk(text, "kal_diphone", term);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		File audio = new File(String.format(".Game/.Round%s/%s.wav", audioNumber, term));
+		GuessMedia guessMedia = new GuessMedia(_gameType, audio);
 	}
 	
 	/**
@@ -73,7 +161,7 @@ public class GuessingGameEngine {
 	 * @return
 	 */
 	private List<String> getTerms() {
-		String pathToTxt = String.format("/.Game/.GameTerms/Age%s/%s.txt", Integer.toString(_age), ShellHelper.WrapString(_category.toString()));
+		String pathToTxt = String.format(".GameTerms/Age%s/%s.txt", Integer.toString(_age), ShellHelper.WrapString(_category.toString()));
 		File terms = new File(pathToTxt);
 		List<String> strings = txtToList(terms);
 		return strings;

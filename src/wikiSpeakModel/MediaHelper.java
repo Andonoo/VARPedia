@@ -31,7 +31,7 @@ public class MediaHelper {
 	public MediaHelper(String workingDir) {
 		_workingDir = workingDir;
 	}
-	
+		
 	/**
 	 * Uses text to speech to turn the provided string into an audio file and saves it in
 	 * the provided location.
