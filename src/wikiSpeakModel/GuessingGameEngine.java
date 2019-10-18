@@ -3,7 +3,9 @@ package wikiSpeakModel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -25,6 +27,8 @@ public class GuessingGameEngine {
 	private List<GuessMedia> _guessMediaElements;
 	private int _currentMediaElementIndex;
 	private MediaType _gameType;
+	private Map<String, GameRecord> _scoreBoard;
+	private GameRecord _currentPlayerScore;
 	
 	/**
 	 * Creates an instance of the game for the user's given inputs.
@@ -41,8 +45,10 @@ public class GuessingGameEngine {
 		_gameType = gameType;
 		_guessMediaElements = new ArrayList<GuessMedia>();
 		_currentMediaElementIndex = 0;
+		_scoreBoard = new HashMap<String, GameRecord>();
+		addPlayerToBoard();
 	}
-	
+
 	/**
 	 * Produces the media elements (videos, audio clips, text) required for the game to begin. NOTE: This method should
 	 * be called on a background thread.
@@ -203,5 +209,17 @@ public class GuessingGameEngine {
 			e.printStackTrace();
 		}
 		return strings;
+	}
+	
+	/**
+	 * Method used to add the current player to the scoreboard or retrieve the current players score ready to be updated.
+	 */
+	private void addPlayerToBoard() {
+		if (_scoreBoard.containsKey(_playerName)) {
+			_currentPlayerScore = _scoreBoard.get(_playerName);
+		} else {
+			_currentPlayerScore = new GameRecord();
+			_scoreBoard.put(_playerName, _currentPlayerScore);
+		}
 	}
 }
