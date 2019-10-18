@@ -23,7 +23,7 @@ public class GuessingGameEngine {
 	private GameCategory _category;
 	private int _numRounds;
 	private List<GuessMedia> _guessMediaElements;
-	private GuessMedia _currentMediaElement;
+	private int _currentMediaElementIndex;
 	private MediaType _gameType;
 	
 	/**
@@ -40,10 +40,12 @@ public class GuessingGameEngine {
 		_category = category;
 		_gameType = gameType;
 		_guessMediaElements = new ArrayList<GuessMedia>();
+		_currentMediaElementIndex = 0;
 	}
 	
 	/**
-	 * Produces the media elements (videos, audio clips, text) required for the game to begin.
+	 * Produces the media elements (videos, audio clips, text) required for the game to begin. NOTE: This method should
+	 * be called on a background thread.
 	 */
 	public void prepareGame() {
 		switch(_gameType) {
@@ -64,14 +66,28 @@ public class GuessingGameEngine {
 			break;
 		}
 	}
-
+	
 	/**
-	 * Determines whether the player's guess matches the current creation in play.
-	 * @param guessTerm
+	 * Returns the next GuessMedia component for the user to guess.
+	 * 
 	 * @return
 	 */
-	public boolean checkGuess(String guessTerm) {
-		return _currentMediaElement.checkGuess(guessTerm);
+	public GuessMedia nextMedia() {
+		GuessMedia media = _guessMediaElements.get(_currentMediaElementIndex);
+		_currentMediaElementIndex ++;
+		return media;
+	}
+	
+	/**
+	 * Determines if there is another GuessMedia component availible for the user.
+	 * @return
+	 */
+	public boolean hasNextMedia() {
+		if (_currentMediaElementIndex >= _guessMediaElements.size()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	/**

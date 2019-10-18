@@ -5,6 +5,12 @@ import java.util.List;
 
 import javafx.event.ActionEvent;
 
+/**
+ * Class to represent one media component for the user to guess against (text, audio or video).
+ * 
+ * @author Andrew Donovan
+ *
+ */
 public class GuessMedia {
 	private String _guessTerm;
 	private File _guessVideo;
