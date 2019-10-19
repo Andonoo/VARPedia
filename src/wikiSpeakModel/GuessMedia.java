@@ -53,4 +53,26 @@ public class GuessMedia {
 	public boolean checkGuess(String guessTerm) {
 		return _guessTerm.equals(guessTerm);
 	}
+	
+	/**
+	 * Returns this media objects video or audio file depending on the type.
+	 * @return
+	 */
+	public File getAudioVideo() {
+		switch(_mediaType) {
+			case Audio: 
+				return _guessAudio;
+			case Video: 
+				return _guessVideo;	
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns this media objects text.
+	 * @return
+	 */
+	public List<String> getText() {
+		return _guessText;
+	}
 }
