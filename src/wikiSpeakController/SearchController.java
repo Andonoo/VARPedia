@@ -33,20 +33,21 @@ public class SearchController {
 	public static final String loadingText = "Loading...";
 	private String _searchTerm;
 	private String _creationName;
-	
+
 	@FXML private TextField _searchTF;
 	@FXML private TextArea _searchResultTF;
 	@FXML private TextField _creationNameTF;
 	@FXML private Button _nextBtn;
-	
+
 	@FXML
-    public void initialize() {
-        _searchResultTF.setEditable(false);
-        _nextBtn.setDisable(true);
-    }
-	
+	public void initialize() {
+		_searchResultTF.setEditable(false);
+		_nextBtn.setDisable(true);
+	}
+
 	/**
 	 * Show an alert dialog with actionable buttons
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
@@ -61,15 +62,16 @@ public class SearchController {
 		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeYes){
-			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+		if (result.get() == buttonTypeYes) {
+			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 			stage.setScene(scene);
 		}
 	}
-	
+
 	/**
 	 * Do all the checks and attempt to go to the next step of the wizard
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
@@ -77,33 +79,34 @@ public class SearchController {
 	private void onNextBtnClicked(ActionEvent event) throws IOException {
 		String wikiText = _searchResultTF.getText();
 		_creationName = _creationNameTF.getText();
-		
+
 		if (_creationName.length() <= 0) {
 			showAlert("Creation name must be entered");
 			return;
 		}
-		
+
 		try {
 			makeCreationFolder(_creationName);
 		} catch (Exception e) {
 			showAlert("Creation already exists, please try another name.");
 			return;
 		}
-		
+
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("CreateAudio.fxml"));
 		Parent layout = loader.load();
-		
+
 		CreateAudioController controller = loader.<CreateAudioController>getController();
 		controller.setCreationData(_creationName, _searchTerm, wikiText);
 		Scene scene = new Scene(layout);
-		
-		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		stage.setScene(scene);
 	}
-	
+
 	/**
 	 * Fetch content using wikit
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
@@ -112,7 +115,7 @@ public class SearchController {
 		_searchResultTF.clear();
 		_searchResultTF.setPromptText(loadingText);
 		Thread worker = new Thread(() -> {
-			try{
+			try {
 				MediaHelper mh = new MediaHelper(null);
 				String wikiText = mh.searchWiki(_searchTF.getText());
 				_searchTerm = _searchTF.getText();
@@ -131,18 +134,19 @@ public class SearchController {
 		});
 		worker.start();
 	}
-	
+
 	/**
 	 * Create the needed folders for temp creations
+	 * 
 	 * @param name
 	 * @throws Exception
 	 */
 	private void makeCreationFolder(String name) throws Exception {
-			ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) );
-			ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.temp");
-			ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.tempPhotos");
+		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name));
+		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.temp");
+		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.tempPhotos");
 	}
-	
+
 	/**
 	 * Reset creation to allow user to start again
 	 */
@@ -150,9 +154,10 @@ public class SearchController {
 		_searchResultTF.clear();
 		_nextBtn.setDisable(true);
 	}
-	
+
 	/**
 	 * Show alert dialog
+	 * 
 	 * @param message
 	 */
 	private void showAlert(String message) {
@@ -160,5 +165,5 @@ public class SearchController {
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
-	
+
 }

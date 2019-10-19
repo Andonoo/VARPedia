@@ -53,6 +53,12 @@ public class MediaHelper {
 		deleteFile(_workingDir + ".temp.txt");
 	}
 	
+	/**
+	 * Search wikipedia using wikit and return result
+	 * @param term
+	 * @return wiki information
+	 * @throws Exception
+	 */
 	public String searchWiki(String term) throws Exception {
 		// Search wikipedia using wikit
 		String command = String.format("wikit %s", term);
