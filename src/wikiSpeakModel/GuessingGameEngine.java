@@ -1,7 +1,12 @@
 package wikiSpeakModel;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +34,7 @@ public class GuessingGameEngine {
 	private MediaType _gameType;
 	private Map<String, GameRecord> _scoreBoard;
 	private GameRecord _currentPlayerScore;
+	private GuessMedia _currentMedia;
 	
 	/**
 	 * Creates an instance of the game for the user's given inputs.
@@ -45,10 +51,10 @@ public class GuessingGameEngine {
 		_gameType = gameType;
 		_guessMediaElements = new ArrayList<GuessMedia>();
 		_currentMediaElementIndex = 0;
-		_scoreBoard = new HashMap<String, GameRecord>();
+		loadScoreBoard();
 		addPlayerToBoard();
 	}
-
+	
 	/**
 	 * Produces the media elements (videos, audio clips, text) required for the game to begin. NOTE: This method should
 	 * be called on a background thread.
@@ -74,14 +80,52 @@ public class GuessingGameEngine {
 	}
 	
 	/**
+	 * Method called at end of game in order to save the ScoreBoard through serialization.
+	 */
+	public void saveScoreBoard() {
+		File boardFile = new File(".Game/ScoreBoard");
+		try {
+			if (!boardFile.exists()) {
+				boardFile.createNewFile();
+			}
+			
+			FileOutputStream fileOutput = new FileOutputStream(boardFile);
+			ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+			
+			objectOutput.writeObject(_scoreBoard);
+			
+			fileOutput.close();
+			objectOutput.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Method called to determine if the player's guess is correct.
+	 * @param guess
+	 * @return
+	 */
+	public boolean checkGuess(String guess) {
+		if (_currentMedia.checkGuess(guess)) {
+			_currentPlayerScore.incrementCorrect();
+			return true;
+		} else {
+			_currentPlayerScore.incrementWrong();
+			return false;
+		}
+	}
+	
+	/**
 	 * Returns the next GuessMedia component for the user to guess.
 	 * 
 	 * @return
 	 */
 	public GuessMedia nextMedia() {
-		GuessMedia media = _guessMediaElements.get(_currentMediaElementIndex);
+		_currentMedia = _guessMediaElements.get(_currentMediaElementIndex);
 		_currentMediaElementIndex ++;
-		return media;
+		_currentPlayerScore.incrementRounds();
+		return _currentMedia;
 	}
 	
 	/**
@@ -220,6 +264,28 @@ public class GuessingGameEngine {
 		} else {
 			_currentPlayerScore = new GameRecord();
 			_scoreBoard.put(_playerName, _currentPlayerScore);
+		}
+	}
+	
+	/**
+	 * Loads the existing scoreboard by deserialize the ScoreBoard file or creates a new one.
+	 */
+	private void loadScoreBoard() {
+		File boardFile = new File(".Game/ScoreBoard");
+		if (boardFile.exists()) {
+			try {
+				FileInputStream fis = new FileInputStream(boardFile);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				
+				_scoreBoard = (Map<String, GameRecord>) ois.readObject();
+				
+				fis.close();
+				ois.close();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} else {
+			_scoreBoard = new HashMap<String, GameRecord>();
 		}
 	}
 }

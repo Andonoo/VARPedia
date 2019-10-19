@@ -24,8 +24,8 @@ public class GameRecord {
 	public void incrementWrong() {
 		_wrongGuesses++;
 	}
-	
-	public void incrementTotal() {
+
+	public void incrementRounds() {
 		_totalRoundsPlayed++;
 	}
 }
