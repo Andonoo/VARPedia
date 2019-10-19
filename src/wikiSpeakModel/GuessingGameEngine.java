@@ -83,7 +83,7 @@ public class GuessingGameEngine {
 	 * Method called at end of game in order to save the ScoreBoard through serialization.
 	 */
 	public void saveScoreBoard() {
-		File boardFile = new File(".Game/ScoreBoard");
+		File boardFile = new File(".ScoreBoard");
 		try {
 			if (!boardFile.exists()) {
 				boardFile.createNewFile();
@@ -271,7 +271,7 @@ public class GuessingGameEngine {
 	 * Loads the existing scoreboard by deserialize the ScoreBoard file or creates a new one.
 	 */
 	private void loadScoreBoard() {
-		File boardFile = new File(".Game/ScoreBoard");
+		File boardFile = new File(".ScoreBoard");
 		if (boardFile.exists()) {
 			try {
 				FileInputStream fis = new FileInputStream(boardFile);
