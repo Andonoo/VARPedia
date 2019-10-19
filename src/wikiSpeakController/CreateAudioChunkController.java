@@ -1,5 +1,8 @@
 package wikiSpeakController;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +20,7 @@ import wikiSpeakModel.MediaHelper;
  *
  */
 public class CreateAudioChunkController {	
+	private static Map<String, String> _voiceMap;
 	private String _chunkName;
 	private String _creationName;
 	private Runnable onAdd;
@@ -35,12 +39,14 @@ public class CreateAudioChunkController {
 	
 	@FXML
     private void initialize() {
+		_voiceMap = new LinkedHashMap<String, String>();
+		_voiceMap.put("Default", "kal_diphone");
+		_voiceMap.put("NZ(Male)", "akl_nz_jdt_diphone");
+		_voiceMap.put("NZ(Female)", "akl_nz_cw_cg_cg");
 		// List of festival voices
-		voiceCombo.getItems().addAll(
-			"kal_diphone",
-		    "akl_nz_jdt_diphone",
-		    "akl_nz_cw_cg_cg"
-		);
+		for (String voiceName : _voiceMap.keySet()) {
+			voiceCombo.getItems().add(voiceName);
+		}
 		// Sets the combobox to select the first option by default
 		voiceCombo.getSelectionModel().selectFirst();
     }
@@ -49,7 +55,7 @@ public class CreateAudioChunkController {
     private void previewBtnClicked() {
 		setDisableButtons(true);
 		String text = getText();
-		String voiceOption = voiceCombo.getValue();
+		String voiceOption = _voiceMap.get(voiceCombo.getValue());
 		String creationDir = ShellHelper.WrapString("./Creations/" + _creationName + "/");
 		
 		Thread worker = new Thread(()->{
@@ -68,7 +74,7 @@ public class CreateAudioChunkController {
 	@FXML
     private void saveBtnClicked(ActionEvent event) {
 		String text = getText();
-		String voiceOption = voiceCombo.getValue();
+		String voiceOption = _voiceMap.get(voiceCombo.getValue());
 		String creationAudioPath = "./Creations/" + _creationName + "/.temp/";
 		setDisableButtons(true);
 		Thread worker = new Thread(()->{
