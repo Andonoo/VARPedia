@@ -56,6 +56,14 @@ public class GuessingGameEngine {
 	}
 	
 	/**
+	 * Return the type of the game, video, audio, text etc.
+	 * @return
+	 */
+	public MediaType getCategory() {
+		return _gameType;
+	}
+	
+	/**
 	 * Produces the media elements (videos, audio clips, text) required for the game to begin. NOTE: This method should
 	 * be called on a background thread.
 	 */
@@ -150,8 +158,8 @@ public class GuessingGameEngine {
 		MediaHelper mediaHelper = new MediaHelper(dirForRound);
 		try {
 			mediaHelper.createSlideShowToLength(10, 5, term, ".tempPhotos/", "");
-			File video = new File(dirForRound + "term.mp4");
-			GuessMedia guessVideo = new GuessMedia(_gameType, video);
+			File video = new File(dirForRound + String.format("%s.mp4", term));
+			GuessMedia guessVideo = new GuessMedia(_gameType, video, term);
 			_guessMediaElements.add(guessVideo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -164,7 +172,7 @@ public class GuessingGameEngine {
 	private void createText() {
 		String term = getRandomTerm();
 		List<String> text = fetchText(term);
-		GuessMedia textMedia = new GuessMedia(_gameType, text);
+		GuessMedia textMedia = new GuessMedia(_gameType, text, term);
 		_guessMediaElements.add(textMedia);
 	}
 	
@@ -208,7 +216,7 @@ public class GuessingGameEngine {
 			e.printStackTrace();
 		}
 		File audio = new File(String.format(".Game/.Round%s/%s.wav", audioNumber, term));
-		GuessMedia guessMedia = new GuessMedia(_gameType, audio);
+		GuessMedia guessMedia = new GuessMedia(_gameType, audio, term);
 	}
 	
 	/**
@@ -227,7 +235,7 @@ public class GuessingGameEngine {
 	 * @return
 	 */
 	private List<String> getTerms() {
-		String pathToTxt = String.format(".GameTerms/Age%s/%s.txt", Integer.toString(_age), ShellHelper.WrapString(_category.toString()));
+		String pathToTxt = String.format(".GameTerms/Age%s/%s.txt", Integer.toString(_age), _category.toString());
 		File terms = new File(pathToTxt);
 		List<String> strings = txtToList(terms);
 		return strings;

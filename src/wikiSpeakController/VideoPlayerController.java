@@ -81,4 +81,15 @@ public class VideoPlayerController {
 		_videoPlayer.setAutoPlay(false);
 		_videoDisplay.setMediaPlayer(_videoPlayer);
 	}
+	
+	/**
+	 * Sets the name of the creation to be played by this PlayerUI component.
+	 * @param creationName
+	 */
+	public void setVideo(File file) {
+		_video = new Media("file://" + file.getAbsolutePath());
+		_videoPlayer = new MediaPlayer(_video);
+		_videoPlayer.setAutoPlay(false);
+		_videoDisplay.setMediaPlayer(_videoPlayer);
+	}
 }

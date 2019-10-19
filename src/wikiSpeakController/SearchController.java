@@ -1,7 +1,6 @@
 package wikiSpeakController;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import javafx.application.Platform;

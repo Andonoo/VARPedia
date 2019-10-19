@@ -12,9 +12,6 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
-import javafx.application.Platform;
 import wikiSpeakController.ShellHelper;
 
 /**
