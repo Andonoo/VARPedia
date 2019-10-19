@@ -201,7 +201,9 @@ public class FinalizeCreationController {
 	 * @param e
 	 * @throws IOException
 	 */
-	 	private void onCreate(ActionEvent e) throws IOException {	_createButton.setDisable(true);
+	@FXML
+	private void onCreate(ActionEvent e) throws IOException {	
+		_createButton.setDisable(true);
 		_createButton.setText("Creating...");
 		makeCreation(e);
 	}
