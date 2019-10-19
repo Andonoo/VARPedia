@@ -37,11 +37,7 @@ public class GameStageController extends VideoPlayerController{
 		if (_engine.hasNextMedia()){
 			GuessMedia media;
 			switch (_engine.getCategory()) {
-				case Video:
-					media = _engine.nextMedia();
-					this.setVideo(media.getAudioVideo());
-					break;
-				case Audio:
+				case Video: case Audio:
 					media = _engine.nextMedia();
 					this.setVideo(media.getAudioVideo());
 					break;

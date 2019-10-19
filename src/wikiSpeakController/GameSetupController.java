@@ -46,7 +46,7 @@ public class GameSetupController {
 	@FXML Button _playBtn;
 	@FXML TextField _nameTF;
 	
-	ToggleGroup radioButtonGroup = new ToggleGroup(); 
+	ToggleGroup _radioButtonGroup = new ToggleGroup(); 
 	
 	@FXML
 	private void initialize() {
@@ -54,9 +54,9 @@ public class GameSetupController {
 		_ageSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 10));
 		
 		// Toggle group ensures only one is selected at a time
-		_textRB.setToggleGroup(radioButtonGroup);
-		_audioRB.setToggleGroup(radioButtonGroup);
-		_videoRB.setToggleGroup(radioButtonGroup);
+		_textRB.setToggleGroup(_radioButtonGroup);
+		_audioRB.setToggleGroup(_radioButtonGroup);
+		_videoRB.setToggleGroup(_radioButtonGroup);
 		_audioRB.setSelected(true);
 	}
 	
@@ -91,6 +91,7 @@ public class GameSetupController {
 	
 	@FXML
 	private void onPlayBtnClicked(ActionEvent event) throws Exception {
+		MediaType mediaType = this.getMediaType();
 		if (_categoryTV.getSelectionModel().getSelectedItem() == null) {
 			showAlert("You haven't selected a category");
 		};
@@ -101,7 +102,7 @@ public class GameSetupController {
 		int age = _ageSpinner.getValue();
 		int nOfGames = (int) _nOfGameSlider.getValue();
 		GameCategory category = GameCategory.Animals;
-		MediaType mediaType = MediaType.Audio;
+		
 		// TODO: Integrate with GuessingGameEngine
 		GuessingGameEngine engine = new GuessingGameEngine(name, age, nOfGames, category, mediaType);
 		Thread worker = new Thread(() -> {
@@ -142,6 +143,20 @@ public class GameSetupController {
 		alert.setHeaderText("Can't proceed");
 		alert.setContentText(text);
 		alert.showAndWait();
+	}
+	
+	private MediaType getMediaType() throws Exception{
+		RadioButton selectedRadioButton = (RadioButton) _radioButtonGroup.getSelectedToggle();
+		String radioBtnText = selectedRadioButton.getText();
+		switch (radioBtnText) {
+			case ("Video"):
+				return MediaType.Video;
+			case ("Audio"):
+				return MediaType.Audio;
+			case ("Text"):
+				return MediaType.Text;
+		}
+		throw new Exception("Wrong MediaType");
 	}
 	
 }
