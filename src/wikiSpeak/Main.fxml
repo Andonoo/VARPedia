@@ -13,12 +13,17 @@
             <Font size="49.0" />
          </font>
       </Text>
-      <Button layoutX="180.0" layoutY="317.0" mnemonicParsing="false" onAction="#onViewBtnClicked" prefHeight="75.0" prefWidth="154.0" text="View Creations">
+      <Button layoutX="180.0" layoutY="317.0" mnemonicParsing="false" onAction="#onViewBtnClicked" prefHeight="75.0" prefWidth="154.0" text="View">
          <font>
             <Font size="17.0" />
          </font>
       </Button>
-      <Button layoutX="595.0" layoutY="317.0" mnemonicParsing="false" onAction="#onCreateBtnClicked" prefHeight="75.0" prefWidth="154.0" text="Make Creation">
+      <Button layoutX="595.0" layoutY="317.0" mnemonicParsing="false" onAction="#onCreateBtnClicked" prefHeight="75.0" prefWidth="154.0" text="Create">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
+      <Button layoutX="393.0" layoutY="317.0" mnemonicParsing="false" onAction="#onPlayBtnClicked" prefHeight="75.0" prefWidth="154.0" text="Play">
          <font>
             <Font size="17.0" />
          </font>

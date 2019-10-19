@@ -44,20 +44,11 @@ public class CreateAudioController {
 	private String _wikiContent;
 	private int _chunkCount;
 	
-	@FXML
-	private Button _nxtButton;
-	
-	@FXML
-	private TextArea wikiTextTA;
-	
-	@FXML
-	private TextArea selectedTextTA;
-	
-	@FXML
-	private TableView audioChunkTV;
-	
-	@FXML
-	private Button addAudioChunkBtn;
+	@FXML private Button _nxtButton;
+	@FXML private TextArea _wikiTextTA;
+	@FXML private TextArea _selectedTextTA;
+	@FXML private TableView _audioChunkTV;
+	@FXML private Button _addAudioChunkBtn;
 	
 	/**
 	 * Finds the number of words in a string
@@ -78,22 +69,22 @@ public class CreateAudioController {
 	@FXML
     public void initialize() {
 		_nxtButton.setDisable(true);
-        wikiTextTA.setText(_wikiContent);
-        wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
+        _wikiTextTA.setText(_wikiContent);
+        _wikiTextTA.selectedTextProperty().addListener((observable, oldValue, newValue) -> {
         	if (countWords(newValue) < 40) {
-        		selectedTextTA.setText(newValue);   
-        		addAudioChunkBtn.setDisable(false);    		
+        		_selectedTextTA.setText(newValue);   
+        		_addAudioChunkBtn.setDisable(false);    		
         	} else {
-        		selectedTextTA.setText("You've selected too many words."); 
-        		addAudioChunkBtn.setDisable(true);
+        		_selectedTextTA.setText("You've selected too many words."); 
+        		_addAudioChunkBtn.setDisable(true);
         	}
         });
         
         // Ensure only enable the next button when there is something to play
-        audioChunkTV.getItems().addListener(new ListChangeListener() {
+        _audioChunkTV.getItems().addListener(new ListChangeListener() {
 			@Override
 			public void onChanged(Change arg0) {
-				if (audioChunkTV.getItems().size() > 0) {
+				if (_audioChunkTV.getItems().size() > 0) {
 					_nxtButton.setDisable(false);
 				} else {
 					_nxtButton.setDisable(true);
@@ -118,10 +109,10 @@ public class CreateAudioController {
 		for (int i = 0; i < creationFieldNames.size(); i++) {
 			TableColumn<String, Creation> col = new TableColumn<>(tableColumnNames.get(i));
 			col.setCellValueFactory(new PropertyValueFactory<>(creationFieldNames.get(i)));
-			col.prefWidthProperty().bind(audioChunkTV.widthProperty().multiply(widthMultiplier[i]));
+			col.prefWidthProperty().bind(_audioChunkTV.widthProperty().multiply(widthMultiplier[i]));
 			columns.add(col);
 		}
-		audioChunkTV.getColumns().addAll(columns);
+		_audioChunkTV.getColumns().addAll(columns);
 	}
 	
 	@FXML
@@ -133,7 +124,7 @@ public class CreateAudioController {
 		Parent layout = loader.load();
 
 		String chunkName = _creationName + _chunkCount;
-		String text = wikiTextTA.getSelectedText();
+		String text = _wikiTextTA.getSelectedText();
 		CreateAudioChunkController controller = loader.<CreateAudioChunkController>getController();
 		controller.setContent(_creationName, chunkName, text);
 		controller.setOnAddAction(()->onChunkCreation());
@@ -170,17 +161,17 @@ public class CreateAudioController {
 	 * Refresh the table when there are changes to the content
 	 */
 	private void refreshTableAsync() {
-		audioChunkTV.getItems().clear();
-		audioChunkTV.setPlaceholder(new Label("Loading..."));
+		_audioChunkTV.getItems().clear();
+		_audioChunkTV.setPlaceholder(new Label("Loading..."));
 		Thread worker = new Thread(()->{
 			List<Playable> creations = getCreations();
 			Platform.runLater(()->{
 				// Hint that there are no creations
-				audioChunkTV.setPlaceholder(new Label("There are no audio chunks"));
+				_audioChunkTV.setPlaceholder(new Label("There are no audio chunks"));
 
 				// If there are creations, placeholder will not be shown
 				for (int i = 0; i < creations.size(); i++) {
-					audioChunkTV.getItems().add(creations.get(i));
+					_audioChunkTV.getItems().add(creations.get(i));
 				}
 			});
 		});
@@ -240,6 +231,6 @@ public class CreateAudioController {
 		_creationName = creationName;
 		_searchTerm = searchTerm;
 		_wikiContent = wikiContent;
-		wikiTextTA.setText(_wikiContent);
+		_wikiTextTA.setText(_wikiContent);
 	}
 }

@@ -11,6 +11,7 @@ public class SceneSwitcher {
 	public enum SceneOption {
 		Main,
 		View,
+		GameSetup,
 		VideoPlayer,
 		Search,
 		CreateAudio,
@@ -31,6 +32,15 @@ public class SceneSwitcher {
 		Parent layout = loader.load();
 		VideoPlayerController controller = loader.<VideoPlayerController>getController();
 		controller.setVideo(playable);
+		return layout;
+	}
+	
+	public static Parent getGameAudioPlayer(String guessName) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("GameAudioPlayer.fxml"));
+		Parent layout = loader.load();
+		GameAudioPlayerController controller = loader.<GameAudioPlayerController>getController();
+		controller.setAudio("./.Game/temp.mp3");
 		return layout;
 	}
 

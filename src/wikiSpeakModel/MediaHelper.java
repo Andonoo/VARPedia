@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
@@ -13,6 +14,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import javafx.application.Platform;
 import wikiSpeakController.ShellHelper;
 
 /**
@@ -41,14 +43,33 @@ public class MediaHelper {
 	 */
 	public void createAudioChunk(String text, String voice, String chunkName) throws Exception {
 		// Save the text file and save it to provided location
-		String command = String.format("echo \"%s\" > %s.temp.txt", text, ShellHelper.WrapString(_workingDir));
+		String command = String.format("echo \"%s\" > %s", text, ShellHelper.WrapString(_workingDir + ".temp.txt"));
 		ShellHelper.execute(command);
 		// Turn the text file into an audio chunk
-		command = String.format("text2wave -o %s.wav -eval \'(voice_%s)\' < %s.temp.txt",
-				ShellHelper.WrapString(_workingDir + chunkName), voice, ShellHelper.WrapString(_workingDir));
+		command = String.format("text2wave -o %s -eval \'(voice_%s)\' < %s",
+				ShellHelper.WrapString(_workingDir + chunkName + ".wav"), voice, ShellHelper.WrapString(_workingDir + ".temp.txt"));
 		ShellHelper.execute(command);
 		// Deleting .temp.txt text file
 		deleteFile(_workingDir + ".temp.txt");
+	}
+	
+	/**
+	 * Search wikipedia using wikit and return result
+	 * @param term
+	 * @return wiki information
+	 * @throws Exception
+	 */
+	public String searchWiki(String term) throws Exception {
+		// Search wikipedia using wikit
+		String command = String.format("wikit %s", term);
+		List<String> output = ShellHelper.execute(command);
+		
+		// Error check from wikit
+		if (output.size() == 0 || output.get(0).contains("not found :^(")) {
+			throw new Exception("Nothing found");
+		}
+		// Return the string with the first two whitespace removed
+		return output.get(0).substring(2);
 	}
 	
 	/**
@@ -186,6 +207,16 @@ public class MediaHelper {
 	 */
 	private static void deleteFile(String file) throws Exception {
 		String command = "rm " + ShellHelper.WrapString(file);
+		ShellHelper.execute(command);
+	}
+	
+	/**
+	 * Play audio using bash command "play"
+	 * @param filePath
+	 * @throws Exception
+	 */
+	public static void playAudio(String filePath) throws Exception {
+		String command = String.format("play %s", filePath);
 		ShellHelper.execute(command);
 	}
 	

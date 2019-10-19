@@ -23,8 +23,7 @@ import wikiSpeakModel.Creation;
  * 
  */
 public class ViewController {
-	@FXML
-	private TableView creationTable;
+	@FXML private TableView creationTable;
 	
 	/**
 	 * Sets initial state for UI component.

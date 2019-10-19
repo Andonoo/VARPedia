@@ -23,19 +23,12 @@ public class CreateAudioChunkController {
 	private static Map<String, String> _voiceMap;
 	private String _chunkName;
 	private String _creationName;
-	private Runnable onAdd;
+	private Runnable _onAdd;
 	
-	@FXML
-	private TextArea selectedTextTA;
-	
-	@FXML
-	private ComboBox<String> voiceCombo;
-	
-	@FXML
-	private Button saveBtn;
-	
-	@FXML
-	private Button previewBtn;
+	@FXML private TextArea _selectedTextTA;
+	@FXML private ComboBox<String> _voiceCombo;
+	@FXML private Button _saveBtn;
+	@FXML private Button _previewBtn;
 	
 	@FXML
     private void initialize() {
@@ -45,17 +38,17 @@ public class CreateAudioChunkController {
 		_voiceMap.put("NZ(Female)", "akl_nz_cw_cg_cg");
 		// List of festival voices
 		for (String voiceName : _voiceMap.keySet()) {
-			voiceCombo.getItems().add(voiceName);
+			_voiceCombo.getItems().add(voiceName);
 		}
 		// Sets the combobox to select the first option by default
-		voiceCombo.getSelectionModel().selectFirst();
+		_voiceCombo.getSelectionModel().selectFirst();
     }
 	
 	@FXML
     private void previewBtnClicked() {
 		setDisableButtons(true);
 		String text = getText();
-		String voiceOption = _voiceMap.get(voiceCombo.getValue());
+		String voiceOption = _voiceMap.get(_voiceCombo.getValue());
 		String creationDir = ShellHelper.WrapString("./Creations/" + _creationName + "/");
 		
 		Thread worker = new Thread(()->{
@@ -74,7 +67,7 @@ public class CreateAudioChunkController {
 	@FXML
     private void saveBtnClicked(ActionEvent event) {
 		String text = getText();
-		String voiceOption = _voiceMap.get(voiceCombo.getValue());
+		String voiceOption = _voiceMap.get(_voiceCombo.getValue());
 		String creationAudioPath = "./Creations/" + _creationName + "/.temp/";
 		setDisableButtons(true);
 		Thread worker = new Thread(()->{
@@ -85,7 +78,7 @@ public class CreateAudioChunkController {
 				Platform.runLater(()->{
 					setDisableButtons(false);
 					Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-					this.onAdd.run();
+					this._onAdd.run();
 				    stage.close();
 				});
 			} catch (Exception e) {
@@ -103,7 +96,7 @@ public class CreateAudioChunkController {
 	 * @return
 	 */
 	private String getText() {
-		String text = selectedTextTA.getText();
+		String text = _selectedTextTA.getText();
 		// Filter out all special character that the text synthesizer can't speak
 		text = text.replaceAll("[^a-zA-Z\\s\\,\\.0-9\\-\\']", " ");
 		return text;
@@ -128,7 +121,7 @@ public class CreateAudioChunkController {
 	public void setContent(String creationName, String chunkName, String text) {
 		_creationName = creationName;
 		_chunkName = chunkName;
-		selectedTextTA.setText(text);
+		_selectedTextTA.setText(text);
 	}
 	
 	/**
@@ -136,12 +129,12 @@ public class CreateAudioChunkController {
 	 * @param r
 	 */
 	public void setOnAddAction(Runnable r) {
-		this.onAdd = r;
+		this._onAdd = r;
 	}
 	
 	private void setDisableButtons(Boolean condition) {
-		this.saveBtn.setDisable(condition);
-		this.previewBtn.setDisable(condition);
+		this._saveBtn.setDisable(condition);
+		this._previewBtn.setDisable(condition);
 	}
 	
 	
