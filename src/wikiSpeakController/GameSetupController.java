@@ -101,29 +101,35 @@ public class GameSetupController {
 		int age = _ageSpinner.getValue();
 		int nOfGames = (int) _nOfGameSlider.getValue();
 		GameCategory category = GameCategory.Animals;
-		MediaType mediaType = MediaType.Video;
+		MediaType mediaType = MediaType.Audio;
 		// TODO: Integrate with GuessingGameEngine
 		GuessingGameEngine engine = new GuessingGameEngine(name, age, nOfGames, category, mediaType);
 		Thread worker = new Thread(() -> {
-			engine.prepareGame();
+			try {
+				engine.prepareGame();
+				Platform.runLater(()->{
+					Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(Main.class.getResource("GameStage.fxml"));
+					Parent layout;
+					try {
+						layout = loader.load();
+						GameStageController controller = loader.<GameStageController>getController();
+						controller.setEngine(engine);
+						Scene scene = new Scene(layout);
+						stage.setScene(scene);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				});
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			while (!engine.hasNextMedia()) {
 			}
-			Platform.runLater(()->{
-				Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(Main.class.getResource("GameStage.fxml"));
-				Parent layout;
-				try {
-					layout = loader.load();
-					GameStageController controller = loader.<GameStageController>getController();
-					controller.setEngine(engine);
-					Scene scene = new Scene(layout);
-					stage.setScene(scene);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
+			
 			
 			
 		}); 

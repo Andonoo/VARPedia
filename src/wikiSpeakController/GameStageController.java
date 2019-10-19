@@ -28,23 +28,34 @@ public class GameStageController extends VideoPlayerController{
 	
 	public void setEngine(GuessingGameEngine engine) {
 		_engine = engine;
+//		_videoPane.setVisible(false);
 	}
 	
 	private void displayNextMedia() {
+		prepareForNewQuestion();
+		
 		if (_engine.hasNextMedia()){
+			GuessMedia media;
 			switch (_engine.getCategory()) {
 				case Video:
-					GuessMedia media = _engine.nextMedia();
+					media = _engine.nextMedia();
 					this.setVideo(media.getAudioVideo());
 					break;
 				case Audio:
+					media = _engine.nextMedia();
+					this.setVideo(media.getAudioVideo());
 					break;
 				case Text:
 					break;
 			}
 		} else {
 			_engine.saveScoreBoard();
+			showAlert("Done!");
 		}
+	}
+	
+	private void prepareForNewQuestion() {
+		_guessTF.clear();
 	}
 	
 	@FXML

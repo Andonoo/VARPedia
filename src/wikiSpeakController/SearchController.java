@@ -115,8 +115,7 @@ public class SearchController {
 		_searchResultTF.setPromptText(loadingText);
 		Thread worker = new Thread(() -> {
 			try {
-				MediaHelper mh = new MediaHelper(null);
-				String wikiText = mh.searchWiki(_searchTF.getText());
+				String wikiText = MediaHelper.searchWiki(_searchTF.getText());
 				_searchTerm = _searchTF.getText();
 
 				Platform.runLater(() -> {

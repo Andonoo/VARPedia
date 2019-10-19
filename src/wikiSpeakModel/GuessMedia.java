@@ -13,7 +13,7 @@ public class GuessMedia {
 	private String _guessTerm;
 	private File _guessVideo;
 	private File _guessAudio;
-	private List<String> _guessText;
+	private String _guessText;
 	private MediaType _mediaType;
 
 	/**
@@ -39,7 +39,7 @@ public class GuessMedia {
 	 * @param type should be MediaType.Text
 	 * @param text
 	 */
-	public GuessMedia(MediaType type, List<String> text, String term) {
+	public GuessMedia(MediaType type, String text, String term) {
 		_mediaType = type;
 		_guessText = text;
 		_guessTerm = term;
@@ -72,7 +72,7 @@ public class GuessMedia {
 	 * Returns this media objects text.
 	 * @return
 	 */
-	public List<String> getText() {
+	public String getText() {
 		return _guessText;
 	}
 }
