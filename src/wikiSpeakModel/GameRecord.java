@@ -1,12 +1,14 @@
 package wikiSpeakModel;
 
+import java.io.Serializable;
+
 /**
  * Data structure used to store the record for any player.
  * 
  * @author Andrew Donovan
  *
  */
-public class GameRecord {
+public class GameRecord implements Serializable {
 	private int _correctGuesses;
 	private int _wrongGuesses;
 	private int _totalRoundsPlayed;
