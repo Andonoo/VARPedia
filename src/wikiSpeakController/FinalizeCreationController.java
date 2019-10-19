@@ -41,9 +41,7 @@ import wikiSpeakModel.MediaHelper;
 public class FinalizeCreationController {
 	private String _searchTerm;
 	private String _creationName;
-	@FXML
-	private Spinner<Integer> _numberImages;
-	
+	@FXML private Spinner<Integer> _numberImages;
 	@FXML Button _createButton;
 	
 	/**
@@ -204,7 +202,7 @@ public class FinalizeCreationController {
 	 * @throws IOException
 	 */
 	@FXML
-	private void onCreate(ActionEvent e) throws IOException {
+	private void onCreate(ActionEvent e) throws IOException {	
 		_createButton.setDisable(true);
 		_createButton.setText("Creating...");
 		makeCreation(e);

@@ -48,4 +48,16 @@ public class MainController {
 		Scene scene = new Scene(SceneSwitcher.getLayout(SceneSwitcher.SceneOption.Search));
 		stage.setScene(scene);
 	}
+	
+	/**
+	 * Go to game wizard
+	 * @param event
+	 * @throws IOException
+	 */
+	@FXML
+	private void onPlayBtnClicked(ActionEvent event) throws IOException {
+		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+		Scene scene = new Scene(SceneSwitcher.getLayout(SceneSwitcher.SceneOption.GameSetup));
+		stage.setScene(scene);
+	}
 }

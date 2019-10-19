@@ -22,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakModel.MediaHelper;
 
 /**
  * Controller class for text search UI component.
@@ -32,27 +33,21 @@ public class SearchController {
 	public static final String loadingText = "Loading...";
 	private String _searchTerm;
 	private String _creationName;
-	
+
+	@FXML private TextField _searchTF;
+	@FXML private TextArea _searchResultTF;
+	@FXML private TextField _creationNameTF;
+	@FXML private Button _nextBtn;
+
 	@FXML
-	private TextField searchTF;
-	
-	@FXML
-	private TextArea searchResultTF;
-	
-	@FXML
-	private TextField creationNameTF;
-	
-	@FXML
-	private Button nextBtn;
-	
-	@FXML
-    public void initialize() {
-        searchResultTF.setEditable(false);
-        nextBtn.setDisable(true);
-    }
-	
+	public void initialize() {
+		_searchResultTF.setEditable(false);
+		_nextBtn.setDisable(true);
+	}
+
 	/**
 	 * Show an alert dialog with actionable buttons
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
@@ -67,107 +62,102 @@ public class SearchController {
 		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeYes){
-			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+		if (result.get() == buttonTypeYes) {
+			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 			stage.setScene(scene);
 		}
 	}
-	
+
 	/**
 	 * Do all the checks and attempt to go to the next step of the wizard
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
 	@FXML
 	private void onNextBtnClicked(ActionEvent event) throws IOException {
-		String wikiText = searchResultTF.getText();
-		_creationName = creationNameTF.getText();
-		
+		String wikiText = _searchResultTF.getText();
+		_creationName = _creationNameTF.getText();
+
 		if (_creationName.length() <= 0) {
 			showAlert("Creation name must be entered");
 			return;
 		}
-		
+
 		try {
 			makeCreationFolder(_creationName);
 		} catch (Exception e) {
 			showAlert("Creation already exists, please try another name.");
 			return;
 		}
-		
+
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("CreateAudio.fxml"));
 		Parent layout = loader.load();
-		
+
 		CreateAudioController controller = loader.<CreateAudioController>getController();
 		controller.setCreationData(_creationName, _searchTerm, wikiText);
 		Scene scene = new Scene(layout);
-		
-		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		stage.setScene(scene);
 	}
-	
+
 	/**
 	 * Fetch content using wikit
+	 * 
 	 * @param event
 	 * @throws IOException
 	 */
 	@FXML
 	private void onSearchBtnClicked(ActionEvent event) throws IOException {
-		searchResultTF.setPromptText(loadingText);
+		_searchResultTF.clear();
+		_searchResultTF.setPromptText(loadingText);
 		Thread worker = new Thread(() -> {
-			try{
-				String command = String.format("wikit %s", searchTF.getText());
-				List<String> output = ShellHelper.execute(command);
-				if (output.size() == 0 || output.get(0).contains("not found :^(")) {
-					// Show alert and exit
-					Platform.runLater(() -> {
-						String message = String.format("%s: Nothing found :(", searchTF.getText());
-						showAlert(message);
-						resetCreate();
-					});
-					return;
-				}
-				String wikiText = output.get(0);
-				_searchTerm = searchTF.getText();
+			try {
+				MediaHelper mh = new MediaHelper(null);
+				String wikiText = mh.searchWiki(_searchTF.getText());
+				_searchTerm = _searchTF.getText();
 
 				Platform.runLater(() -> {
 					// Update wikitContents table to show wikit text, remove the first two spaces
-					searchResultTF.setText(wikiText.substring(2));
-					nextBtn.setDisable(false);
+					_searchResultTF.setText(wikiText);
+					_nextBtn.setDisable(false);
 				});
 			} catch (Exception e) {
 				Platform.runLater(() -> {
-					searchResultTF.setPromptText(contentPlaceHolder);
+					_searchResultTF.setPromptText(contentPlaceHolder);
 					showAlert("Invalid search, please search with a different word");
 				});
 			}
 		});
 		worker.start();
 	}
-	
+
 	/**
 	 * Create the needed folders for temp creations
+	 * 
 	 * @param name
 	 * @throws Exception
 	 */
 	private void makeCreationFolder(String name) throws Exception {
-			ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) );
-			ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.temp");
-			ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.tempPhotos");
+		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name));
+		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.temp");
+		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.tempPhotos");
 	}
-	
+
 	/**
 	 * Reset creation to allow user to start again
 	 */
 	private void resetCreate() {
-		searchResultTF.clear();
-		nextBtn.setDisable(true);
+		_searchResultTF.clear();
+		_nextBtn.setDisable(true);
 	}
-	
+
 	/**
 	 * Show alert dialog
+	 * 
 	 * @param message
 	 */
 	private void showAlert(String message) {
@@ -175,5 +165,5 @@ public class SearchController {
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
-	
+
 }

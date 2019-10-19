@@ -21,35 +21,28 @@ public class CreateAudioChunkController {
 	private String _creationName;
 	private Runnable onAdd;
 	
-	@FXML
-	private TextArea selectedTextTA;
-	
-	@FXML
-	private ComboBox<String> voiceCombo;
-	
-	@FXML
-	private Button saveBtn;
-	
-	@FXML
-	private Button previewBtn;
+	@FXML private TextArea _selectedTextTA;
+	@FXML private ComboBox<String> _voiceCombo;
+	@FXML private Button _saveBtn;
+	@FXML private Button _previewBtn;
 	
 	@FXML
     private void initialize() {
 		// List of festival voices
-		voiceCombo.getItems().addAll(
+		_voiceCombo.getItems().addAll(
 			"kal_diphone",
 		    "akl_nz_jdt_diphone",
 		    "akl_nz_cw_cg_cg"
 		);
 		// Sets the combobox to select the first option by default
-		voiceCombo.getSelectionModel().selectFirst();
+		_voiceCombo.getSelectionModel().selectFirst();
     }
 	
 	@FXML
     private void previewBtnClicked() {
 		setDisableButtons(true);
 		String text = getText();
-		String voiceOption = voiceCombo.getValue();
+		String voiceOption = _voiceCombo.getValue();
 		String creationDir = ShellHelper.WrapString("./Creations/" + _creationName + "/");
 		
 		Thread worker = new Thread(()->{
@@ -68,7 +61,7 @@ public class CreateAudioChunkController {
 	@FXML
     private void saveBtnClicked(ActionEvent event) {
 		String text = getText();
-		String voiceOption = voiceCombo.getValue();
+		String voiceOption = _voiceCombo.getValue();
 		String creationAudioPath = "./Creations/" + _creationName + "/.temp/";
 		setDisableButtons(true);
 		Thread worker = new Thread(()->{
@@ -97,7 +90,7 @@ public class CreateAudioChunkController {
 	 * @return
 	 */
 	private String getText() {
-		String text = selectedTextTA.getText();
+		String text = _selectedTextTA.getText();
 		// Filter out all special character that the text synthesizer can't speak
 		text = text.replaceAll("[^a-zA-Z\\s\\,\\.0-9\\-\\']", " ");
 		return text;
@@ -122,7 +115,7 @@ public class CreateAudioChunkController {
 	public void setContent(String creationName, String chunkName, String text) {
 		_creationName = creationName;
 		_chunkName = chunkName;
-		selectedTextTA.setText(text);
+		_selectedTextTA.setText(text);
 	}
 	
 	/**
@@ -134,8 +127,8 @@ public class CreateAudioChunkController {
 	}
 	
 	private void setDisableButtons(Boolean condition) {
-		this.saveBtn.setDisable(condition);
-		this.previewBtn.setDisable(condition);
+		this._saveBtn.setDisable(condition);
+		this._previewBtn.setDisable(condition);
 	}
 	
 	
