@@ -33,22 +33,15 @@ public class SearchController {
 	private String _searchTerm;
 	private String _creationName;
 	
-	@FXML
-	private TextField searchTF;
-	
-	@FXML
-	private TextArea searchResultTF;
-	
-	@FXML
-	private TextField creationNameTF;
-	
-	@FXML
-	private Button nextBtn;
+	@FXML private TextField _searchTF;
+	@FXML private TextArea _searchResultTF;
+	@FXML private TextField _creationNameTF;
+	@FXML private Button _nextBtn;
 	
 	@FXML
     public void initialize() {
-        searchResultTF.setEditable(false);
-        nextBtn.setDisable(true);
+        _searchResultTF.setEditable(false);
+        _nextBtn.setDisable(true);
     }
 	
 	/**
@@ -81,8 +74,8 @@ public class SearchController {
 	 */
 	@FXML
 	private void onNextBtnClicked(ActionEvent event) throws IOException {
-		String wikiText = searchResultTF.getText();
-		_creationName = creationNameTF.getText();
+		String wikiText = _searchResultTF.getText();
+		_creationName = _creationNameTF.getText();
 		
 		if (_creationName.length() <= 0) {
 			showAlert("Creation name must be entered");
@@ -115,31 +108,31 @@ public class SearchController {
 	 */
 	@FXML
 	private void onSearchBtnClicked(ActionEvent event) throws IOException {
-		searchResultTF.setPromptText(loadingText);
+		_searchResultTF.setPromptText(loadingText);
 		Thread worker = new Thread(() -> {
 			try{
-				String command = String.format("wikit %s", searchTF.getText());
+				String command = String.format("wikit %s", _searchTF.getText());
 				List<String> output = ShellHelper.execute(command);
 				if (output.size() == 0 || output.get(0).contains("not found :^(")) {
 					// Show alert and exit
 					Platform.runLater(() -> {
-						String message = String.format("%s: Nothing found :(", searchTF.getText());
+						String message = String.format("%s: Nothing found :(", _searchTF.getText());
 						showAlert(message);
 						resetCreate();
 					});
 					return;
 				}
 				String wikiText = output.get(0);
-				_searchTerm = searchTF.getText();
+				_searchTerm = _searchTF.getText();
 
 				Platform.runLater(() -> {
 					// Update wikitContents table to show wikit text, remove the first two spaces
-					searchResultTF.setText(wikiText.substring(2));
-					nextBtn.setDisable(false);
+					_searchResultTF.setText(wikiText.substring(2));
+					_nextBtn.setDisable(false);
 				});
 			} catch (Exception e) {
 				Platform.runLater(() -> {
-					searchResultTF.setPromptText(contentPlaceHolder);
+					_searchResultTF.setPromptText(contentPlaceHolder);
 					showAlert("Invalid search, please search with a different word");
 				});
 			}
@@ -162,8 +155,8 @@ public class SearchController {
 	 * Reset creation to allow user to start again
 	 */
 	private void resetCreate() {
-		searchResultTF.clear();
-		nextBtn.setDisable(true);
+		_searchResultTF.clear();
+		_nextBtn.setDisable(true);
 	}
 	
 	/**

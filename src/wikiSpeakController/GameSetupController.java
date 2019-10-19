@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
@@ -33,14 +34,14 @@ import wikiSpeakController.SceneSwitcher.SceneOption;
 import wikiSpeakModel.MediaHelper;
 
 public class GameSetupController {
-	@FXML Spinner<Integer> ageSpinner;
-	@FXML Spinner<Integer> nOfGamesSpinner;
-	@FXML TableView<String> categoryTV;
-	@FXML TableColumn<String, String> categoryCol;
-	@FXML RadioButton textRB;
-	@FXML RadioButton audioRB;
-	@FXML RadioButton videoRB;
-	@FXML Button playBtn;
+	@FXML Spinner<Integer> _ageSpinner;
+	@FXML Slider _nOfGameSlider;
+	@FXML TableView<String> _categoryTV;
+	@FXML TableColumn<String, String> _categoryCol;
+	@FXML RadioButton _textRB;
+	@FXML RadioButton _audioRB;
+	@FXML RadioButton _videoRB;
+	@FXML Button _playBtn;
 	
 	ToggleGroup radioButtonGroup = new ToggleGroup(); 
 	
@@ -48,14 +49,13 @@ public class GameSetupController {
 	@FXML
 	private void initialize() {
 		loadCategoryTable();
-		ageSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(7, 7));
-		nOfGamesSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1));
+		_ageSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(7, 7));
 		
 		// Toggle group ensures only one is selected at a time
-		textRB.setToggleGroup(radioButtonGroup);
-		audioRB.setToggleGroup(radioButtonGroup);
-		videoRB.setToggleGroup(radioButtonGroup);
-		audioRB.setSelected(true);
+		_textRB.setToggleGroup(radioButtonGroup);
+		_audioRB.setToggleGroup(radioButtonGroup);
+		_videoRB.setToggleGroup(radioButtonGroup);
+		_audioRB.setSelected(true);
 	}
 	
 	/***
@@ -63,10 +63,10 @@ public class GameSetupController {
 	 */
 	private void loadCategoryTable() {
 		ObservableList<String> categories = FXCollections.observableArrayList("Fruits", "Animal", "Country", "Celebrity");
-		categoryCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
-		categoryTV.setItems(categories);
-		categoryTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		categoryTV.getSelectionModel().selectFirst();
+		_categoryCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
+		_categoryTV.setItems(categories);
+		_categoryTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		_categoryTV.getSelectionModel().selectFirst();
 	}
 	
 	@FXML
@@ -89,11 +89,12 @@ public class GameSetupController {
 	
 	@FXML
 	private void onPlayBtnClicked(ActionEvent event) throws Exception {
-		if (categoryTV.getSelectionModel().getSelectedItem() == null) {
+		if (_categoryTV.getSelectionModel().getSelectedItem() == null) {
 			showAlert("You haven't selected a category");
 		};
-		playBtn.setDisable(true);
-		playBtn.setText("Wait...");
+		_playBtn.setDisable(true);
+		_playBtn.setText("Wait...");
+		System.out.println(_nOfGameSlider.getValue());
 		Thread worker = new Thread(() -> {
 			String command = String.format("wikit %s", "apple");
 			List<String> output;
@@ -121,7 +122,7 @@ public class GameSetupController {
 				}
 			});
 		});
-		worker.start();
+//		worker.start();
 	}
 	
 	private void showAlert(String text) {

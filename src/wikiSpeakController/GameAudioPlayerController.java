@@ -18,7 +18,7 @@ import wikiSpeakModel.MediaHelper;
 
 public class GameAudioPlayerController {
 	private String _audioFilePath;
-	@FXML private TextField guessTF;
+	@FXML private TextField _guessTF;
 	
 	public void setAudio(String path) {
 		_audioFilePath = path;
@@ -39,7 +39,7 @@ public class GameAudioPlayerController {
 	
 	@FXML
 	private void onCheckBtnClicked(ActionEvent event) {
-		if (guessTF.getText().toLowerCase().equals("apple")) {
+		if (_guessTF.getText().toLowerCase().equals("apple")) {
 			showAlert("GOOD GUESS! Please go back now");
 		} else {
 			showAlert("Try again :(");

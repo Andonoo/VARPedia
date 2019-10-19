@@ -25,16 +25,11 @@ import wikiSpeakModel.Playable;
  *
  */
 public class GameVideoController {
-	@FXML
-	private Media _video;
-	@FXML
-	private MediaPlayer _videoPlayer;
-	@FXML
-	private MediaView _videoDisplay;
-	@FXML
-	private Button _playButton;
-	@FXML
-	private Text _creationTitle;
+	@FXML private Media _video;
+	@FXML private MediaPlayer _videoPlayer;
+	@FXML private MediaView _videoDisplay;
+	@FXML private Button _playButton;
+	@FXML private Text _creationTitle;
 
 	/**
 	 * Method executed when play button is pressed.
