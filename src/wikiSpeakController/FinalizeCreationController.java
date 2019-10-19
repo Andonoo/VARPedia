@@ -30,6 +30,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakModel.FlickrHelper;
 import wikiSpeakModel.MediaHelper;
 
 /**
@@ -70,7 +71,7 @@ public class FinalizeCreationController {
 	 */
 	private void getImages() {
 		Thread flickrWorker = new Thread(() -> {
-			FlickrHelper.getImages(_creationName, _searchTerm);
+			FlickrHelper.getImages("Creations/" + _creationName + "/", _searchTerm);
 			Platform.runLater(()-> {
 				_createButton.setDisable(false);
 				_createButton.setText("Create!");

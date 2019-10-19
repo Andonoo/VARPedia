@@ -45,7 +45,6 @@ public class GameSetupController {
 	
 	ToggleGroup radioButtonGroup = new ToggleGroup(); 
 	
-	
 	@FXML
 	private void initialize() {
 		loadCategoryTable();
