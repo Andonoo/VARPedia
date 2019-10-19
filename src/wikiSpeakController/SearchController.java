@@ -22,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakModel.MediaHelper;
 
 /**
  * Controller class for text search UI component.
@@ -108,26 +109,17 @@ public class SearchController {
 	 */
 	@FXML
 	private void onSearchBtnClicked(ActionEvent event) throws IOException {
+		_searchResultTF.clear();
 		_searchResultTF.setPromptText(loadingText);
 		Thread worker = new Thread(() -> {
 			try{
-				String command = String.format("wikit %s", _searchTF.getText());
-				List<String> output = ShellHelper.execute(command);
-				if (output.size() == 0 || output.get(0).contains("not found :^(")) {
-					// Show alert and exit
-					Platform.runLater(() -> {
-						String message = String.format("%s: Nothing found :(", _searchTF.getText());
-						showAlert(message);
-						resetCreate();
-					});
-					return;
-				}
-				String wikiText = output.get(0);
+				MediaHelper mh = new MediaHelper(null);
+				String wikiText = mh.searchWiki(_searchTF.getText());
 				_searchTerm = _searchTF.getText();
 
 				Platform.runLater(() -> {
 					// Update wikitContents table to show wikit text, remove the first two spaces
-					_searchResultTF.setText(wikiText.substring(2));
+					_searchResultTF.setText(wikiText);
 					_nextBtn.setDisable(false);
 				});
 			} catch (Exception e) {

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
@@ -13,6 +14,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import javafx.application.Platform;
 import wikiSpeakController.ShellHelper;
 
 /**
@@ -49,6 +51,19 @@ public class MediaHelper {
 		ShellHelper.execute(command);
 		// Deleting .temp.txt text file
 		deleteFile(_workingDir + ".temp.txt");
+	}
+	
+	public String searchWiki(String term) throws Exception {
+		// Search wikipedia using wikit
+		String command = String.format("wikit %s", term);
+		List<String> output = ShellHelper.execute(command);
+		
+		// Error check from wikit
+		if (output.size() == 0 || output.get(0).contains("not found :^(")) {
+			throw new Exception("Nothing found");
+		}
+		// Return the string with the first two whitespace removed
+		return output.get(0).substring(2);
 	}
 	
 	/**

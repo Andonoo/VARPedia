@@ -95,33 +95,34 @@ public class GameSetupController {
 		_playBtn.setDisable(true);
 		_playBtn.setText("Wait...");
 		System.out.println(_nOfGameSlider.getValue());
-		Thread worker = new Thread(() -> {
-			String command = String.format("wikit %s", "apple");
-			List<String> output;
-			try {
-				output = ShellHelper.execute(command);
-				String wikitText = output.get(0);
-				wikitText = wikitText.toLowerCase();
-				wikitText = wikitText.replaceAll("apple", "something");
-				MediaHelper mh = new MediaHelper("./.Game/");
-				mh.createAudioChunk(wikitText.substring(0, 290), "kal_diphone", "temp");
-				ShellHelper.execute(command);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Platform.runLater(()->{
-				Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-				Scene scene;
-				try {
-					scene = new Scene(SceneSwitcher.getGameAudioPlayer("apple"));
-					stage.setScene(scene);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-		});
+		// TODO: Integrate with GuessingGameEngine
+//		Thread worker = new Thread(() -> {
+//			String command = String.format("wikit %s", "apple");
+//			List<String> output;
+//			try {
+//				output = ShellHelper.execute(command);
+//				String wikitText = output.get(0);
+//				wikitText = wikitText.toLowerCase();
+//				wikitText = wikitText.replaceAll("apple", "something");
+//				MediaHelper mh = new MediaHelper("./.Game/");
+//				mh.createAudioChunk(wikitText.substring(0, 290), "kal_diphone", "temp");
+//				ShellHelper.execute(command);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			Platform.runLater(()->{
+//				Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+//				Scene scene;
+//				try {
+//					scene = new Scene(SceneSwitcher.getGameAudioPlayer("apple"));
+//					stage.setScene(scene);
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			});
+//		});
 //		worker.start();
 	}
 	
