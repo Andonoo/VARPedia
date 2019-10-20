@@ -12,9 +12,6 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
-import javafx.application.Platform;
 import wikiSpeakController.ShellHelper;
 
 /**
@@ -30,8 +27,10 @@ public class MediaHelper {
 	 */
 	public MediaHelper(String workingDir) {
 		_workingDir = workingDir;
+		createFolder();
 	}
 	
+		
 	/**
 	 * Uses text to speech to turn the provided string into an audio file and saves it in
 	 * the provided location.
@@ -42,6 +41,7 @@ public class MediaHelper {
 	 * @throws Exception
 	 */
 	public void createAudioChunk(String text, String voice, String chunkName) throws Exception {
+		text = cleanText(text);
 		// Save the text file and save it to provided location
 		String command = String.format("echo \"%s\" > %s", text, ShellHelper.WrapString(_workingDir + ".temp.txt"));
 		ShellHelper.execute(command);
@@ -59,7 +59,7 @@ public class MediaHelper {
 	 * @return wiki information
 	 * @throws Exception
 	 */
-	public String searchWiki(String term) throws Exception {
+	public static String searchWiki(String term) throws Exception {
 		// Search wikipedia using wikit
 		String command = String.format("wikit %s", term);
 		List<String> output = ShellHelper.execute(command);
@@ -73,6 +73,16 @@ public class MediaHelper {
 	}
 	
 	/**
+	 * Clean text so festival could read it.
+	 * @return
+	 */
+	private static String cleanText(String text) {
+		// Filter out all special character that the text synthesizer can't speak
+		text = text.replaceAll("[^a-zA-Z\\s\\,\\.0-9\\-\\']", " ");
+		return text;
+	}
+	
+	/**
 	 * Uses text to speech to play a preview of the provided text in the provided voice option.
 	 * Destination is where temp files will be located while playing (deleted afterwards).
 	 * @param text to be converted to audio
@@ -81,6 +91,7 @@ public class MediaHelper {
 	 * @throws Exception
 	 */
 	public void previewAudioChunk(String text, String voice) throws Exception {
+		text = cleanText(text);
 		// Create a wav file using text2wave
 		String command = String.format("echo \"%s\" > %s.temp.txt", text, _workingDir);
 		ShellHelper.execute(command);
@@ -183,6 +194,22 @@ public class MediaHelper {
 	}
 	
 	/**
+	 * Takes the images at the provided image directory and turns them into a slideshow to fit the length
+	 * provided. Video will be created in specified destination path.
+	 * @param noImages number of images
+	 * @param length
+	 * @param videoName of output video
+	 * @param destPath path from working directory where output video will be created
+	 * @throws Exception
+	 */
+	public void createSlideShowToLength(int noImages, int length, String videoName, String imageDir, String destPath) throws Exception {
+		int imageRate = noImages/length;
+		String command = "cat " + ShellHelper.WrapString(_workingDir + imageDir) + "*.jpg | ffmpeg -f image2pipe -framerate " + imageRate + " "
+				+ "-i - -c:v libx264 -pix_fmt yuv420p -vf \"scale=320x240\" -r 25 -max_muxing_queue_size 1024 " + ShellHelper.WrapString(_workingDir + destPath + videoName) + ".mp4";
+		ShellHelper.execute(command);
+	}
+	
+	/**
 	 * Takes audio file and combines with video file with overlaid text. 
 	 * @param audioFile
 	 * @param audioDir
@@ -218,6 +245,20 @@ public class MediaHelper {
 	public static void playAudio(String filePath) throws Exception {
 		String command = String.format("play %s", filePath);
 		ShellHelper.execute(command);
+	}
+	
+
+	/**
+	 * Create folder if it doesn't exist already
+	 */
+	private void createFolder() {
+		String command = String.format("mkdir -p %s", ShellHelper.WrapString(_workingDir));
+		try {
+			ShellHelper.execute(command);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

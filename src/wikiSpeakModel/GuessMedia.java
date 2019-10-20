@@ -1,0 +1,86 @@
+package wikiSpeakModel;
+
+import java.io.File;
+import java.util.List;
+
+/**
+ * Class to represent one media component for the user to guess against (text, audio or video).
+ * 
+ * @author Andrew Donovan
+ *
+ */
+public class GuessMedia {
+	private String _guessTerm;
+	private File _guessVideo;
+	private File _guessAudio;
+	private String _guessText;
+	private MediaType _mediaType;
+
+	/**
+	 * Creates a video or audio GuessMedia instance.
+	 * @param type of media (audio or video)
+	 * @param media 
+	 */
+	public GuessMedia(MediaType type, File media, String term) {
+		_mediaType = type;
+		_guessTerm = term;
+		switch(type) {
+			case Video: 
+				_guessVideo = media;
+			break;
+			case Audio: 
+				_guessAudio = media;
+			break;
+		}
+	}
+	
+	/**
+	 * Creates a text GuessMedia instance.
+	 * @param type should be MediaType.Text
+	 * @param text
+	 */
+	public GuessMedia(MediaType type, String text, String term) {
+		_mediaType = type;
+		_guessText = text;
+		_guessTerm = term;
+	}
+	
+	/**
+	 * Checks if the user's guess is correct.
+	 * @param guessTerm
+	 * @return
+	 */
+	public boolean checkGuess(String guessTerm) {
+		return _guessTerm.equals(guessTerm);
+	}
+	
+	/**
+	 * Get the answer to the GuessMedia.
+	 * @return
+	 */
+	public String getAnswer() {
+		return _guessTerm;
+	}
+	
+	/**
+	 * Returns this media objects video or audio file depending on the type.
+	 * @return
+	 */
+	public File getAudioVideo() {
+		switch(_mediaType) {
+			case Audio: 
+				return _guessAudio;
+			case Video: 
+				return _guessVideo;	
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns this media objects text.
+	 * @return
+	 */
+	public String getText() {
+		return _guessText;
+	}
+}
