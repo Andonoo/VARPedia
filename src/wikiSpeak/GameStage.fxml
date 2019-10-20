@@ -14,6 +14,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.GameStageController">
    <children>
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
       <Text layoutX="-135.0" layoutY="-175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <Label layoutX="407.0" layoutY="40.0" text="Game Round">
          <font>
