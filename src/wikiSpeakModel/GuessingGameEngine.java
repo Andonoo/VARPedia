@@ -125,6 +125,10 @@ public class GuessingGameEngine {
 		}
 	}
 	
+	public String getAnswer() {
+		return(_currentMedia.getAnswer());
+	}
+	
 	/**
 	 * Returns the next GuessMedia component for the user to guess.
 	 * 

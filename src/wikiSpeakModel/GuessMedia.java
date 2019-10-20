@@ -55,6 +55,14 @@ public class GuessMedia {
 	}
 	
 	/**
+	 * Get the answer to the GuessMedia.
+	 * @return
+	 */
+	public String getAnswer() {
+		return _guessTerm;
+	}
+	
+	/**
 	 * Returns this media objects video or audio file depending on the type.
 	 * @return
 	 */

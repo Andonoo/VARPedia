@@ -40,7 +40,7 @@ public class VideoPlayerController {
 	 * Method executed when play button is pressed.
 	 */
 	@FXML
-	private void handlePlay() {
+	protected void handlePlay() {
 		_videoPlayer.play();
 	}
 	
@@ -48,7 +48,7 @@ public class VideoPlayerController {
 	 * Method executed when pause button is pushed
 	 */
 	@FXML
-	private void handlePause() {
+	protected void handlePause() {
 		_videoPlayer.pause();
 	}
 	
