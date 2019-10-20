@@ -56,10 +56,19 @@ public class GuessingGameEngine {
 	}
 	
 	/**
+	 * Return the type of the game, video, audio, text etc.
+	 * @return
+	 */
+	public MediaType getCategory() {
+		return _gameType;
+	}
+	
+	/**
 	 * Produces the media elements (videos, audio clips, text) required for the game to begin. NOTE: This method should
 	 * be called on a background thread.
+	 * @throws Exception 
 	 */
-	public void prepareGame() {
+	public void prepareGame() throws Exception {
 		switch(_gameType) {
 			case Video:
 				for (int i = 1; i <= _numRounds; i ++) {
@@ -116,6 +125,10 @@ public class GuessingGameEngine {
 		}
 	}
 	
+	public String getAnswer() {
+		return(_currentMedia.getAnswer());
+	}
+	
 	/**
 	 * Returns the next GuessMedia component for the user to guess.
 	 * 
@@ -150,8 +163,8 @@ public class GuessingGameEngine {
 		MediaHelper mediaHelper = new MediaHelper(dirForRound);
 		try {
 			mediaHelper.createSlideShowToLength(10, 5, term, ".tempPhotos/", "");
-			File video = new File(dirForRound + "term.mp4");
-			GuessMedia guessVideo = new GuessMedia(_gameType, video);
+			File video = new File(dirForRound + String.format("%s.mp4", term));
+			GuessMedia guessVideo = new GuessMedia(_gameType, video, term);
 			_guessMediaElements.add(guessVideo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -160,47 +173,22 @@ public class GuessingGameEngine {
 		
 	/**
 	 * Builds an text chunk for the user's current input.
+	 * @throws Exception 
 	 */
-	private void createText() {
+	private void createText() throws Exception {
 		String term = getRandomTerm();
-		List<String> text = fetchText(term);
-		GuessMedia textMedia = new GuessMedia(_gameType, text);
+		String text = MediaHelper.searchWiki(term);
+		GuessMedia textMedia = new GuessMedia(_gameType, text, term);
 		_guessMediaElements.add(textMedia);
-	}
-	
-	/**
-	 * Returns a list of strings from wikit for a random term with the current inputs.
-	 * @return wikit result
-	 */
-	private List<String> fetchText(String term) {
-		boolean successful = false;
-		List<String> output = null;
-		while (!successful) {
-			String command = String.format("wikit %s", term);
-			try {
-				output = ShellHelper.execute(command);
-				if (output.size() != 0 && !output.get(0).equals("not found :^(")) {
-					successful = true;
-				} else {
-					System.out.println("Term: " + term + " should be removed as it is not wikit-compatible");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return output;
 	}
  
 	/**
 	 * Builds an audio chunk for the user's current input.
+	 * @throws Exception 
 	 */
-	private void createAudio(int audioNumber) {
+	private void createAudio(int audioNumber) throws Exception {
 		String term = getRandomTerm();
-		List<String> textList = fetchText(term);
-		String text = "";
-		for (String s: textList) {
-			text = text + s;
-		}
+		String text = MediaHelper.searchWiki(term);
 		MediaHelper mediaHelper = new MediaHelper(String.format(".Game/.Round%s/", audioNumber));
 		try {
 			mediaHelper.createAudioChunk(text, "kal_diphone", term);
@@ -208,7 +196,8 @@ public class GuessingGameEngine {
 			e.printStackTrace();
 		}
 		File audio = new File(String.format(".Game/.Round%s/%s.wav", audioNumber, term));
-		GuessMedia guessMedia = new GuessMedia(_gameType, audio);
+		GuessMedia guessMedia = new GuessMedia(_gameType, audio, term);
+		_guessMediaElements.add(guessMedia);
 	}
 	
 	/**
@@ -227,7 +216,7 @@ public class GuessingGameEngine {
 	 * @return
 	 */
 	private List<String> getTerms() {
-		String pathToTxt = String.format(".GameTerms/Age%s/%s.txt", Integer.toString(_age), ShellHelper.WrapString(_category.toString()));
+		String pathToTxt = String.format(".GameTerms/Age%s/%s.txt", Integer.toString(_age), _category.toString());
 		File terms = new File(pathToTxt);
 		List<String> strings = txtToList(terms);
 		return strings;

@@ -3,8 +3,6 @@ package wikiSpeakModel;
 import java.io.File;
 import java.util.List;
 
-import javafx.event.ActionEvent;
-
 /**
  * Class to represent one media component for the user to guess against (text, audio or video).
  * 
@@ -15,7 +13,7 @@ public class GuessMedia {
 	private String _guessTerm;
 	private File _guessVideo;
 	private File _guessAudio;
-	private List<String> _guessText;
+	private String _guessText;
 	private MediaType _mediaType;
 
 	/**
@@ -23,8 +21,9 @@ public class GuessMedia {
 	 * @param type of media (audio or video)
 	 * @param media 
 	 */
-	public GuessMedia(MediaType type, File media) {
+	public GuessMedia(MediaType type, File media, String term) {
 		_mediaType = type;
+		_guessTerm = term;
 		switch(type) {
 			case Video: 
 				_guessVideo = media;
@@ -40,9 +39,10 @@ public class GuessMedia {
 	 * @param type should be MediaType.Text
 	 * @param text
 	 */
-	public GuessMedia(MediaType type, List<String> text) {
+	public GuessMedia(MediaType type, String text, String term) {
 		_mediaType = type;
 		_guessText = text;
+		_guessTerm = term;
 	}
 	
 	/**
@@ -52,6 +52,14 @@ public class GuessMedia {
 	 */
 	public boolean checkGuess(String guessTerm) {
 		return _guessTerm.equals(guessTerm);
+	}
+	
+	/**
+	 * Get the answer to the GuessMedia.
+	 * @return
+	 */
+	public String getAnswer() {
+		return _guessTerm;
 	}
 	
 	/**
@@ -72,7 +80,7 @@ public class GuessMedia {
 	 * Returns this media objects text.
 	 * @return
 	 */
-	public List<String> getText() {
+	public String getText() {
 		return _guessText;
 	}
 }

@@ -40,7 +40,7 @@ public class VideoPlayerController {
 	 * Method executed when play button is pressed.
 	 */
 	@FXML
-	private void handlePlay() {
+	protected void handlePlay() {
 		_videoPlayer.play();
 	}
 	
@@ -48,7 +48,7 @@ public class VideoPlayerController {
 	 * Method executed when pause button is pushed
 	 */
 	@FXML
-	private void handlePause() {
+	protected void handlePause() {
 		_videoPlayer.pause();
 	}
 	
@@ -77,6 +77,17 @@ public class VideoPlayerController {
 		_creationTitle.setText(playable.getPlayableName());
 		File vid = new File(playable.getPath().replaceAll("\\s", "%20"));
 		_video = new Media("file://" + vid.getAbsolutePath());
+		_videoPlayer = new MediaPlayer(_video);
+		_videoPlayer.setAutoPlay(false);
+		_videoDisplay.setMediaPlayer(_videoPlayer);
+	}
+	
+	/**
+	 * Sets the name of the creation to be played by this PlayerUI component.
+	 * @param creationName
+	 */
+	public void setVideo(File file) {
+		_video = new Media("file://" + file.getAbsolutePath());
 		_videoPlayer = new MediaPlayer(_video);
 		_videoPlayer.setAutoPlay(false);
 		_videoDisplay.setMediaPlayer(_videoPlayer);
