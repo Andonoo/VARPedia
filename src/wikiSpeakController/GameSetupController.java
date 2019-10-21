@@ -17,7 +17,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -67,7 +66,7 @@ public class GameSetupController {
 	 * Load category names into table.
 	 */
 	private void loadCategoryTable() {
-		ObservableList<String> categories = FXCollections.observableArrayList("Fruits", "Animal", "Country", "Celebrity");
+		ObservableList<String> categories = FXCollections.observableArrayList("Fruits", "Animals", "Countries", "Celebrities");
 		_categoryCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
 		_categoryTV.setItems(categories);
 		_categoryTV.getSelectionModel().selectFirst();
@@ -113,7 +112,6 @@ public class GameSetupController {
 		}
 		_playBtn.setDisable(true);
 		_playBtn.setText("Wait...");
-		System.out.println(_nOfGameSlider.getValue());
 		String name = _nameTF.getText();
 		int age = _ageSpinner.getValue();
 		int nOfGames = (int) _nOfGameSlider.getValue();
@@ -185,13 +183,13 @@ public class GameSetupController {
 	private GameCategory getGameCategory() throws Exception{
 		String category = _categoryTV.getSelectionModel().getSelectedItem();
 		switch (category) {
-			case ("Animal"):
+			case ("Animals"):
 				return GameCategory.Animals;
-			case ("Celebrity"):
+			case ("Celebrities"):
 				return GameCategory.Celebrities;
-			case ("Country"):
+			case ("Countries"):
 				return GameCategory.Countries;
-			case ("Fruit"):
+			case ("Fruits"):
 				return GameCategory.Fruits;
 		}
 		throw new Exception("Wrong GameType");
