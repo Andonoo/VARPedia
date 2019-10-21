@@ -39,6 +39,7 @@ public class FinalizeCreationController {
 	private String _searchTerm;
 	private String _creationName;
 	private static Map<String, String> _musicMap;
+	private String _musicTrack;
 	
 	@FXML private Spinner<Integer> _numberImages;
 	@FXML Button _createButton;
@@ -147,7 +148,15 @@ public class FinalizeCreationController {
 				mh.combineAudioFiles(".temp/", audioFiles, _creationName);
 				File creationAudio = new File(creationDir + ".temp/" + _creationName + ".wav");
 				mh.createSlideShowToFit(noImages, creationAudio, _creationName, ".tempPhotos/", ".temp/");
-				mh.combineAudioVideoWithTerm(_creationName, ".temp/", _creationName, ".temp/", _searchTerm, creationDir, _creationName + "Creation");
+				
+				// Adding music if requested
+				if (!_musicCombo.getValue().equals("None")) {
+					String musicFile = _musicMap.get(_musicCombo.getValue());
+					mh.layerAudioFiles("", musicFile, ".temp/", _creationName + ".wav", ".temp/", _creationName + "WithMusic.wav");
+					mh.combineAudioVideoWithTerm(_creationName + "WithMusic", ".temp/", _creationName, ".temp/", _searchTerm, creationDir, _creationName + "Creation");
+				} else {
+					mh.combineAudioVideoWithTerm(_creationName, ".temp/", _creationName, ".temp/", _searchTerm, creationDir, _creationName + "Creation");
+				}
 				
 				String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos";
 				ShellHelper.execute(command);
@@ -217,9 +226,6 @@ public class FinalizeCreationController {
 	private void onCreate(ActionEvent e) throws IOException {	
 		_createButton.setDisable(true);
 		_createButton.setText("Creating...");
-		// TODO: Use this in MediaHelper
-		String musicPath = _musicMap.get(_musicCombo.getValue());
-		System.out.println(musicPath);
 		makeCreation(e);
 	}
 	

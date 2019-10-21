@@ -228,6 +228,31 @@ public class MediaHelper {
 	}
 	
 	/**
+	 * Takes the provided audio file and loops it to match the other audio file's length.
+	 * @param audioFile
+	 * @param audioDir
+	 * @param outputDir
+	 * @param outputName
+	 */
+	public void layerAudioFiles(String audioDir, String audioFile, String audioDirToFit, String audioFileToFit, String outputDir, String outputName) {
+		File aFile = new File(audioDir + audioFile);
+	    long audioFileLength = aFile.length();
+	    File afFile = new File(_workingDir + audioDirToFit + audioFileToFit);
+	    long audioToFitFileLength = afFile.length();
+	    int loopsRequired = (int) (audioToFitFileLength/audioFileLength + 2);
+	    	    
+		try {
+			String command = String.format("ffmpeg -stream_loop %s -i %s %s", loopsRequired, ShellHelper.WrapString(audioDir + audioFile), ShellHelper.WrapString(_workingDir + audioDirToFit + "LoopedAudio.mp3"));
+			ShellHelper.execute(command);
+			command = String.format("ffmpeg -i %s -i %s -filter_complex amerge %s", ShellHelper.WrapString(_workingDir + audioDirToFit + "LoopedAudio.mp3"), 
+					ShellHelper.WrapString(_workingDir + audioDirToFit + audioFileToFit), ShellHelper.WrapString(_workingDir + outputDir + outputName));
+			ShellHelper.execute(command);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Deletes the file at the provided location
 	 * @param file
 	 * @throws Exception
