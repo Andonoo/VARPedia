@@ -6,9 +6,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,13 +23,21 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
 import wikiSpeakModel.FlickrHelper;
+import wikiSpeakModel.ImageGalleryEngine;
+import wikiSpeakModel.ImageItem;
 import wikiSpeakModel.MediaHelper;
 
 /**
@@ -40,6 +51,9 @@ public class FinalizeCreationController {
 	private String _creationName;
 	private static Map<String, String> _musicMap;
 	
+	@FXML private TableView<ImageItem> _imageTable;
+	@FXML private TableColumn<ImageItem, ImageView> _imageCol;
+	@FXML private TableColumn<ImageItem, CheckBox> _checkBoxCol;
 	@FXML private Spinner<Integer> _numberImages;
 	@FXML Button _createButton;
 	@FXML ComboBox<String> _musicCombo;
@@ -84,8 +98,15 @@ public class FinalizeCreationController {
 		Thread flickrWorker = new Thread(() -> {
 			FlickrHelper.getImages("Creations/" + _creationName + "/", _searchTerm);
 			Platform.runLater(()-> {
-				_createButton.setDisable(false);
-				_createButton.setText("Create!");
+				try {
+					initImageTable();
+					_createButton.setDisable(false);
+					_createButton.setText("Create!");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			});
 		});
 		flickrWorker.start();
@@ -221,6 +242,20 @@ public class FinalizeCreationController {
 		String musicPath = _musicMap.get(_musicCombo.getValue());
 		System.out.println(musicPath);
 		makeCreation(e);
+	}
+	
+	/**
+	 * Load the image into the table
+	 * @throws Exception 
+	 */
+	private void initImageTable() throws Exception {
+		ImageGalleryEngine engine = new ImageGalleryEngine(new File("Creations/" + _creationName + "/" + ".tempPhotos/"));
+		List<ImageItem> images = engine.getImages();
+		ObservableList<ImageItem> imagesObv = FXCollections.observableArrayList(images);
+		
+		_imageCol.setCellValueFactory(new PropertyValueFactory<ImageItem, ImageView>("ImageView"));
+		_checkBoxCol.setCellValueFactory(new PropertyValueFactory<ImageItem, CheckBox>("CheckBox"));
+		_imageTable.setItems(imagesObv);
 	}
 	
 	
