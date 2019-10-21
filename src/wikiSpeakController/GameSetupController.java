@@ -92,9 +92,13 @@ public class GameSetupController {
 	@FXML
 	private void onPlayBtnClicked(ActionEvent event) throws Exception {
 		MediaType mediaType = this.getMediaType();
+		GameCategory gameCategory;
 		if (_categoryTV.getSelectionModel().getSelectedItem() == null) {
 			showAlert("You haven't selected a category");
-		};
+			return;
+		} else {
+			gameCategory = this.getGameCategory();
+		}
 		_playBtn.setDisable(true);
 		_playBtn.setText("Wait...");
 		System.out.println(_nOfGameSlider.getValue());
@@ -104,7 +108,7 @@ public class GameSetupController {
 		GameCategory category = GameCategory.Animals;
 		
 		// TODO: Integrate with GuessingGameEngine
-		GuessingGameEngine engine = new GuessingGameEngine(name, age, nOfGames, category, mediaType);
+		GuessingGameEngine engine = new GuessingGameEngine(name, age, nOfGames, gameCategory, mediaType);
 		Thread worker = new Thread(() -> {
 			try {
 				engine.prepareGame();
@@ -157,6 +161,21 @@ public class GameSetupController {
 				return MediaType.Text;
 		}
 		throw new Exception("Wrong MediaType");
+	}
+	
+	private GameCategory getGameCategory() throws Exception{
+		String category = _categoryTV.getSelectionModel().getSelectedItem();
+		switch (category) {
+			case ("Animal"):
+				return GameCategory.Animals;
+			case ("Celebrity"):
+				return GameCategory.Celebrities;
+			case ("Country"):
+				return GameCategory.Countries;
+			case ("Fruit"):
+				return GameCategory.Fruits;
+		}
+		throw new Exception("Wrong GameType");
 	}
 	
 }

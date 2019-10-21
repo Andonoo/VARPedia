@@ -216,7 +216,7 @@ public class GuessingGameEngine {
 	 * @return
 	 */
 	private List<String> getTerms() {
-		String pathToTxt = String.format(".GameTerms/Age%s/%s.txt", Integer.toString(_age), _category.toString());
+		String pathToTxt = String.format("res/Quiz/%s/Easy.txt", _category.toString());
 		File terms = new File(pathToTxt);
 		List<String> strings = txtToList(terms);
 		return strings;

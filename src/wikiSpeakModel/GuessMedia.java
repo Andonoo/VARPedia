@@ -51,7 +51,18 @@ public class GuessMedia {
 	 * @return
 	 */
 	public boolean checkGuess(String guessTerm) {
-		return _guessTerm.equals(guessTerm);
+		boolean isCorrect = false;
+		if (_guessTerm.toLowerCase().equals(guessTerm.toLowerCase())){
+			return true;
+		} else {
+			// Very rudimentary way of trying to remove plurals
+			isCorrect = checkTermIgnorePlural(_guessTerm.toLowerCase(), guessTerm.toLowerCase());
+			if (isCorrect) {
+				return true;
+			}
+			isCorrect = checkTermIgnorePlural(guessTerm.toLowerCase(), _guessTerm.toLowerCase());
+		}
+		return isCorrect;
 	}
 	
 	/**
@@ -82,5 +93,28 @@ public class GuessMedia {
 	 */
 	public String getText() {
 		return _guessText;
+	}
+	
+	/**
+	 * A very simple method to check is the word has the same meaning ignoring its plurality
+	 * @param singular
+	 * @param potentiallyPlural
+	 * @return
+	 */
+	private boolean checkTermIgnorePlural(String singular, String potentiallyPlural) {
+		int length = potentiallyPlural.length();
+		if (potentiallyPlural.substring(0, length-1).equals(singular)) {
+			return true;
+		} 
+		if (potentiallyPlural.charAt(length-1) == 'y') {
+			// Strip out the y
+			potentiallyPlural = potentiallyPlural.substring(0, length-1);
+			// Replace it with ies
+			potentiallyPlural += "ies";
+			if (potentiallyPlural.equals(singular)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
