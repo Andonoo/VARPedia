@@ -46,14 +46,17 @@ public class GameSetupController {
 	@FXML Button _playBtn;
 	@FXML TextField _nameTF;
 	
-	ToggleGroup _radioButtonGroup = new ToggleGroup(); 
+	ToggleGroup _radioButtonGroup;
 	
+	/**
+	 * Setup GUI elements
+	 */
 	@FXML
 	private void initialize() {
 		loadCategoryTable();
 		_ageSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15));
-		
 		// Toggle group ensures only one is selected at a time
+		_radioButtonGroup = new ToggleGroup();
 		_textRB.setToggleGroup(_radioButtonGroup);
 		_audioRB.setToggleGroup(_radioButtonGroup);
 		_videoRB.setToggleGroup(_radioButtonGroup);
@@ -61,7 +64,7 @@ public class GameSetupController {
 	}
 	
 	/***
-	 * Load category names into table
+	 * Load category names into table.
 	 */
 	private void loadCategoryTable() {
 		ObservableList<String> categories = FXCollections.observableArrayList("Fruits", "Animal", "Country", "Celebrity");
@@ -70,6 +73,11 @@ public class GameSetupController {
 		_categoryTV.getSelectionModel().selectFirst();
 	}
 	
+	/**
+	 * Attempts to go home by switching scene.
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void onHomeBtnClicked(ActionEvent event) throws IOException {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -88,6 +96,11 @@ public class GameSetupController {
 		}
 	}
 	
+	/**
+	 * Attempts to create a game session.
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML
 	private void onPlayBtnClicked(ActionEvent event) throws Exception {
 		MediaType mediaType = this.getMediaType();
@@ -121,12 +134,10 @@ public class GameSetupController {
 						Scene scene = new Scene(layout);
 						stage.setScene(scene);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				});
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			while (!engine.hasNextMedia()) {
@@ -135,6 +146,10 @@ public class GameSetupController {
 		worker.start();
 	}
 	
+	/**
+	 * Show alert popup
+	 * @param text
+	 */
 	private void showAlert(String text) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Error");
@@ -143,6 +158,11 @@ public class GameSetupController {
 		alert.showAndWait();
 	}
 	
+	/**
+	 * Get MediaType Enum from input
+	 * @return
+	 * @throws Exception
+	 */
 	private MediaType getMediaType() throws Exception{
 		RadioButton selectedRadioButton = (RadioButton) _radioButtonGroup.getSelectedToggle();
 		String radioBtnText = selectedRadioButton.getText();
@@ -157,6 +177,11 @@ public class GameSetupController {
 		throw new Exception("Wrong MediaType");
 	}
 	
+	/**
+	 * Get the game category Enum from input
+	 * @return
+	 * @throws Exception
+	 */
 	private GameCategory getGameCategory() throws Exception{
 		String category = _categoryTV.getSelectionModel().getSelectedItem();
 		switch (category) {
