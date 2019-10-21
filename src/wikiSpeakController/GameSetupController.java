@@ -51,7 +51,7 @@ public class GameSetupController {
 	@FXML
 	private void initialize() {
 		loadCategoryTable();
-		_ageSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 10));
+		_ageSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15));
 		
 		// Toggle group ensures only one is selected at a time
 		_textRB.setToggleGroup(_radioButtonGroup);
@@ -67,7 +67,6 @@ public class GameSetupController {
 		ObservableList<String> categories = FXCollections.observableArrayList("Fruits", "Animal", "Country", "Celebrity");
 		_categoryCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
 		_categoryTV.setItems(categories);
-		_categoryTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		_categoryTV.getSelectionModel().selectFirst();
 	}
 	
@@ -105,9 +104,7 @@ public class GameSetupController {
 		String name = _nameTF.getText();
 		int age = _ageSpinner.getValue();
 		int nOfGames = (int) _nOfGameSlider.getValue();
-		GameCategory category = GameCategory.Animals;
 		
-		// TODO: Integrate with GuessingGameEngine
 		GuessingGameEngine engine = new GuessingGameEngine(name, age, nOfGames, gameCategory, mediaType);
 		Thread worker = new Thread(() -> {
 			try {
@@ -134,9 +131,6 @@ public class GameSetupController {
 			}
 			while (!engine.hasNextMedia()) {
 			}
-			
-			
-			
 		}); 
 		worker.start();
 	}
