@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
@@ -30,20 +32,35 @@ import wikiSpeakModel.MediaHelper;
 /**
  * Controller class for controlling the finalize creation UI page and producing the creation videos.
  * 
- * @author Andrew Donovan
+ * @author Andrew Donovan, Xiaobin Lin
  *
  */
 public class FinalizeCreationController {
 	private String _searchTerm;
 	private String _creationName;
+	private static Map<String, String> _musicMap;
+	
 	@FXML private Spinner<Integer> _numberImages;
 	@FXML Button _createButton;
+	@FXML ComboBox<String> _musicCombo;
 	
 	/**
 	 * Set initial state of UI components
 	 */
 	@FXML
 	private void initialize() {
+		_musicMap = new LinkedHashMap<String, String>();
+		_musicMap.put("None", "");
+		_musicMap.put("Groove", "./res/groove.mp3");
+		_musicMap.put("Melancholy", "./res/melancholy.mp3");
+		_musicMap.put("Starry Night", "./res/starry.mp3");
+		// List of festival voices
+		for (String musicName : _musicMap.keySet()) {
+			_musicCombo.getItems().add(musicName);
+		}
+		// Sets the combobox to select the first option by default
+		_musicCombo.getSelectionModel().selectFirst();
+		
 		_numberImages.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10));
 		_createButton.setDisable(true);
 		_createButton.setText("Fetching images\nPlease wait...");
@@ -200,6 +217,9 @@ public class FinalizeCreationController {
 	private void onCreate(ActionEvent e) throws IOException {	
 		_createButton.setDisable(true);
 		_createButton.setText("Creating...");
+		// TODO: Use this in MediaHelper
+		String musicPath = _musicMap.get(_musicCombo.getValue());
+		System.out.println(musicPath);
 		makeCreation(e);
 	}
 	
