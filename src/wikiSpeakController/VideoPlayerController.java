@@ -2,6 +2,7 @@ package wikiSpeakController;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -85,9 +86,14 @@ public class VideoPlayerController {
 	/**
 	 * Sets the name of the creation to be played by this PlayerUI component.
 	 * @param creationName
+	 * @throws MalformedURLException 
 	 */
 	public void setVideo(File file) {
-		_video = new Media("file://" + file.getAbsolutePath());
+		try {
+			_video = new Media(file.toURI().toURL().toString());			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		_videoPlayer = new MediaPlayer(_video);
 		_videoPlayer.setAutoPlay(false);
 		_videoDisplay.setMediaPlayer(_videoPlayer);
