@@ -55,7 +55,6 @@ public class FinalizeCreationController {
 	@FXML private TableView<ImageItem> _imageTable;
 	@FXML private TableColumn<ImageItem, ImageView> _imageCol;
 	@FXML private TableColumn<ImageItem, CheckBox> _checkBoxCol;
-	@FXML private Spinner<Integer> _numberImages;
 	@FXML Button _createButton;
 	@FXML ComboBox<String> _musicCombo;
 	
@@ -76,7 +75,6 @@ public class FinalizeCreationController {
 		// Sets the combobox to select the first option by default
 		_musicCombo.getSelectionModel().selectFirst();
 		
-		_numberImages.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10));
 		_createButton.setDisable(true);
 		_createButton.setText("Fetching images\nPlease wait...");
 	}
