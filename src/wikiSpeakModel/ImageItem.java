@@ -18,11 +18,22 @@ public class ImageItem {
 	}
 	
 	/**
+	 * Get the image URL
+	 * @return URL of the image
+	 */
+	public String getPath() {
+		return _image.getUrl();
+	}
+	
+	/**
 	 * Get ImageView element
 	 * @return
 	 */
 	public ImageView getImageView() {
 		ImageView view = new ImageView();
+		// TODO To be tweaked
+		view.setFitHeight(200);
+		view.setFitWidth(200);
 		view.setImage(_image);
 		return view;
 	}

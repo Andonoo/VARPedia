@@ -2,6 +2,7 @@ package wikiSpeakController;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -50,6 +51,7 @@ public class FinalizeCreationController {
 	private String _searchTerm;
 	private String _creationName;
 	private static Map<String, String> _musicMap;
+	private ImageGalleryEngine _galleryEngine;
 	
 	@FXML private TableView<ImageItem> _imageTable;
 	@FXML private TableColumn<ImageItem, ImageView> _imageCol;
@@ -150,7 +152,7 @@ public class FinalizeCreationController {
 	 * @param event
 	 */
 	private void makeCreation(ActionEvent event) {
-		formatImages();
+//		formatImages();
 		Thread creationWorker = new Thread(() -> {			
 			File audioDirectory = new File("Creations/" + _creationName + "/.temp/");
 			String[] audioFiles = audioDirectory.list();
@@ -159,12 +161,19 @@ public class FinalizeCreationController {
 			File photoDirectory = new File("Creations/" + _creationName + "/.tempPhotos");
 			String[] photoFiles = photoDirectory.list();
 			
-			int noImages = _numberImages.getValue();
+			List<ImageItem> selectedImage = _galleryEngine.getSelectedImage();
+			List<String> selectedImageString = new ArrayList<String>();
 			
+			for (ImageItem item : selectedImage) {
+				String path = item.getPath();
+				selectedImageString.add(path.substring(path.lastIndexOf('/')+1));
+			}
+			int noImages = selectedImage.size();
+
 			String creationDir = "Creations/" + _creationName + "/";
-			
 			try {
 				MediaHelper mh = new MediaHelper(creationDir);
+				mh.deleteAllBut(selectedImageString);
 				mh.combineAudioFiles(".temp/", audioFiles, _creationName);
 				File creationAudio = new File(creationDir + ".temp/" + _creationName + ".wav");
 				mh.createSlideShowToFit(noImages, creationAudio, _creationName, ".tempPhotos/", ".temp/");
@@ -236,9 +245,16 @@ public class FinalizeCreationController {
 	 */
 	@FXML
 	private void onCreate(ActionEvent e) throws IOException {	
+//		// Example call:
+//		List<ImageItem> selectedImage = _galleryEngine.getSelectedImage();
+//		for (ImageItem image : selectedImage) {
+//			String url = image.getPath();
+//			String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
+//			System.out.println(fileName);
+//		}
+		// TODO: REMOVE THE COMMENT IN THE CODE TO CREATE
 		_createButton.setDisable(true);
 		_createButton.setText("Creating...");
-		// TODO: Use this in MediaHelper
 		String musicPath = _musicMap.get(_musicCombo.getValue());
 		System.out.println(musicPath);
 		makeCreation(e);
@@ -246,13 +262,12 @@ public class FinalizeCreationController {
 	
 	/**
 	 * Load the image into the table
-	 * @throws Exception 
+	 * @throws Exception - Incorrect directory for images
 	 */
 	private void initImageTable() throws Exception {
-		ImageGalleryEngine engine = new ImageGalleryEngine(new File("Creations/" + _creationName + "/" + ".tempPhotos/"));
-		List<ImageItem> images = engine.getImages();
+		_galleryEngine = new ImageGalleryEngine(new File("Creations/" + _creationName + "/" + ".tempPhotos/"));
+		List<ImageItem> images = _galleryEngine.getImages();
 		ObservableList<ImageItem> imagesObv = FXCollections.observableArrayList(images);
-		
 		_imageCol.setCellValueFactory(new PropertyValueFactory<ImageItem, ImageView>("ImageView"));
 		_checkBoxCol.setCellValueFactory(new PropertyValueFactory<ImageItem, CheckBox>("CheckBox"));
 		_imageTable.setItems(imagesObv);

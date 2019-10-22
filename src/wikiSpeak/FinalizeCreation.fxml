@@ -17,8 +17,8 @@
       <ComboBox fx:id="_musicCombo" layoutX="735.0" layoutY="219.0" prefWidth="150.0" />
       <TableView fx:id="_imageTable" layoutX="32.0" layoutY="97.0" prefHeight="449.0" prefWidth="487.0">
         <columns>
-          <TableColumn fx:id="_imageCol" prefWidth="386.0" text="Images" />
-          <TableColumn fx:id="_checkBoxCol" prefWidth="100.0" text="Include" />
+          <TableColumn fx:id="_imageCol" prefWidth="389.0" text="Images" />
+          <TableColumn fx:id="_checkBoxCol" prefWidth="71.0" text="Include" />
         </columns>
       </TableView>
    </children>

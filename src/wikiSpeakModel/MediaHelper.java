@@ -3,6 +3,7 @@ package wikiSpeakModel;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -169,6 +170,24 @@ public class MediaHelper {
 		}
 		int[] result = {maxImageWidth, maxImageHeight};
 		return result;
+	}
+	
+	public void deleteAllBut(List<String> filenames) throws Exception {
+//		String command = String.format("shopt -s extglob && rm %s.tempPhotos/!(", _workingDir);
+//		for (String filename : filenames) {
+//			command += ShellHelper.WrapString(filename);
+//			command += "|";
+//		}
+//		command = command.substring(0, command.length()-1);
+//		command += ") 2> /dev/null";
+//		ShellHelper.execute(command);
+		
+		File fileFolder = new File(String.format("./%s/.tempPhotos/", _workingDir));
+		for (File file : fileFolder.listFiles()) {
+			if (!filenames.contains(file.getName())) {
+				file.delete();
+			}
+		}
 	}
 	
 	/**
