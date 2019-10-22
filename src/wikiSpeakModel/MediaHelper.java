@@ -3,6 +3,7 @@ package wikiSpeakModel;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -169,6 +170,20 @@ public class MediaHelper {
 		}
 		int[] result = {maxImageWidth, maxImageHeight};
 		return result;
+	}
+	
+	/**
+	 * Takes in a list of filenames and delete everything but those files
+	 * @param filenames
+	 * @throws Exception
+	 */
+	public void deleteAllBut(List<String> filenames) throws Exception {
+		File fileFolder = new File(String.format("./%s/.tempPhotos/", _workingDir));
+		for (File file : fileFolder.listFiles()) {
+			if (!filenames.contains(file.getName())) {
+				file.delete();
+			}
+		}
 	}
 	
 	/**
