@@ -22,7 +22,6 @@ public class Main extends Application{
 	
 	public static void main(String args[]) {
 		String command = "rm -rf ./.Game 2> /dev/null";
-		
 		try {
 //			deleteAllCreations();
 			ShellHelper.execute(command);
