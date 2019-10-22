@@ -172,16 +172,12 @@ public class MediaHelper {
 		return result;
 	}
 	
+	/**
+	 * Takes in a list of filenames and delete everything but those files
+	 * @param filenames
+	 * @throws Exception
+	 */
 	public void deleteAllBut(List<String> filenames) throws Exception {
-//		String command = String.format("shopt -s extglob && rm %s.tempPhotos/!(", _workingDir);
-//		for (String filename : filenames) {
-//			command += ShellHelper.WrapString(filename);
-//			command += "|";
-//		}
-//		command = command.substring(0, command.length()-1);
-//		command += ") 2> /dev/null";
-//		ShellHelper.execute(command);
-		
 		File fileFolder = new File(String.format("./%s/.tempPhotos/", _workingDir));
 		for (File file : fileFolder.listFiles()) {
 			if (!filenames.contains(file.getName())) {

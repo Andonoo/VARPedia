@@ -31,7 +31,6 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
@@ -52,7 +51,6 @@ public class FinalizeCreationController {
 	private String _creationName;
 	private static Map<String, String> _musicMap;
 	private ImageGalleryEngine _galleryEngine;
-	private String _musicTrack;
 	
 	@FXML private TableView<ImageItem> _imageTable;
 	@FXML private TableColumn<ImageItem, ImageView> _imageCol;
@@ -116,16 +114,6 @@ public class FinalizeCreationController {
 	}
 	
 	/**
-	 * Deletes unnecessary images so that resulting video has requested number.
-	 */
-	private void formatImages() {
-		for (int i = _numberImages.getValue() + 1; i <=10; i++ ) {
-			File imageToDelete = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + i + ".jpg");
-			imageToDelete.delete();
-		}
-	}
-	
-	/**
 	 * Sets the action for the home button. Returns to the main menu.
 	 * @param event
 	 * @throws IOException
@@ -153,27 +141,25 @@ public class FinalizeCreationController {
 	 * @param event
 	 */
 	private void makeCreation(ActionEvent event) {
-//		formatImages();
 		Thread creationWorker = new Thread(() -> {			
 			File audioDirectory = new File("Creations/" + _creationName + "/.temp/");
 			String[] audioFiles = audioDirectory.list();
 			sortAudioFiles(audioFiles);
-			
-			File photoDirectory = new File("Creations/" + _creationName + "/.tempPhotos");
-			String[] photoFiles = photoDirectory.list();
-			
 			List<ImageItem> selectedImage = _galleryEngine.getSelectedImage();
-			List<String> selectedImageString = new ArrayList<String>();
+			int noImages = selectedImage.size();
 			
+			// Get the list of selected filenames
+			List<String> selectedImageString = new ArrayList<String>();
 			for (ImageItem item : selectedImage) {
 				String path = item.getPath();
 				selectedImageString.add(path.substring(path.lastIndexOf('/')+1));
 			}
-			int noImages = selectedImage.size();
+			
 
 			String creationDir = "Creations/" + _creationName + "/";
 			try {
 				MediaHelper mh = new MediaHelper(creationDir);
+				// Delete files that are not selected by the user
 				mh.deleteAllBut(selectedImageString);
 				mh.combineAudioFiles(".temp/", audioFiles, _creationName);
 				File creationAudio = new File(creationDir + ".temp/" + _creationName + ".wav");
@@ -253,15 +239,7 @@ public class FinalizeCreationController {
 	 * @throws IOException
 	 */
 	@FXML
-	private void onCreate(ActionEvent e) throws IOException {	
-//		// Example call:
-//		List<ImageItem> selectedImage = _galleryEngine.getSelectedImage();
-//		for (ImageItem image : selectedImage) {
-//			String url = image.getPath();
-//			String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
-//			System.out.println(fileName);
-//		}
-		// TODO: REMOVE THE COMMENT IN THE CODE TO CREATE
+	private void onCreate(ActionEvent e) throws IOException {
 		_createButton.setDisable(true);
 		_createButton.setText("Creating...");
 		makeCreation(e);
