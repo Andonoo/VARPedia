@@ -117,10 +117,10 @@ public class GuessingGameEngine {
 	 */
 	public boolean checkGuess(String guess) {
 		if (_currentMedia.checkGuess(guess)) {
-			_currentPlayerScore.incrementCorrect();
+			_currentPlayerScore.addGuess(guess, _currentMedia.getAnswer(), true);
 			return true;
 		} else {
-			_currentPlayerScore.incrementWrong();
+			_currentPlayerScore.addGuess(guess, _currentMedia.getAnswer(), false);
 			return false;
 		}
 	}
@@ -259,7 +259,7 @@ public class GuessingGameEngine {
 		if (_scoreBoard.containsKey(_playerName)) {
 			_currentPlayerScore = _scoreBoard.get(_playerName);
 		} else {
-			_currentPlayerScore = new GameRecord();
+			_currentPlayerScore = new GameRecord(_playerName);
 			_scoreBoard.put(_playerName, _currentPlayerScore);
 		}
 	}
@@ -284,5 +284,12 @@ public class GuessingGameEngine {
 		} else {
 			_scoreBoard = new HashMap<String, GameRecord>();
 		}
+	}
+	
+	/**
+	 * @return The score of the current player.
+	 */
+	public GameRecord getPlayerScore() {
+		return _currentPlayerScore;
 	}
 }

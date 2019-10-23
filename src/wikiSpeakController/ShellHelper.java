@@ -35,7 +35,7 @@ public class ShellHelper {
 			if ((line = stderr.readLine()) != null) {
 				System.out.println(line);
 			}
-			throw new RuntimeException("Error with exitStatus" + exitStatus);
+			throw new RuntimeException("Error with exitStatus " + exitStatus + " (" + command + ")");
 		}
 		return output;
 	}
