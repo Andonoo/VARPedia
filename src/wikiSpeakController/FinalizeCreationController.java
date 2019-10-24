@@ -26,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
@@ -57,6 +58,7 @@ public class FinalizeCreationController {
 	@FXML private TableColumn<ImageItem, CheckBox> _checkBoxCol;
 	@FXML Button _createButton;
 	@FXML ComboBox<String> _musicCombo;
+	@FXML ProgressBar _progressBar;
 	
 	/**
 	 * Set initial state of UI components
@@ -100,6 +102,7 @@ public class FinalizeCreationController {
 				try {
 					initImageTable();
 					_createButton.setDisable(false);
+					_progressBar.setVisible(false);
 					_createButton.setText("Create!");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
