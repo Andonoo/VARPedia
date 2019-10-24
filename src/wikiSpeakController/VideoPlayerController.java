@@ -29,23 +29,23 @@ import wikiSpeakModel.Playable;
  *
  */
 public class VideoPlayerController {
-	private boolean _paused;
-	private Duration _duration;
+	protected boolean _paused;
+	protected Duration _duration;
 	
 	@FXML
-	private Media _video;
+	protected Media _video;
 	@FXML
-	private MediaPlayer _videoPlayer;
+	protected MediaPlayer _videoPlayer;
 	@FXML
-	private MediaView _videoDisplay;
+	protected MediaView _videoDisplay;
 	@FXML
-	private Button _playButton;
+	protected Button _playButton;
 	@FXML
-	private Text _creationTitle;
+	protected Text _creationTitle;
 	@FXML
-	private Slider _volumeSlider;
+	protected Slider _volumeSlider;
 	@FXML
-	private Slider _playSlider;
+	protected Slider _playSlider;
 	
 	/**
 	 * Method executed when play button is pressed.
@@ -64,11 +64,12 @@ public class VideoPlayerController {
 	}
 	
 	/**
-	 * Method executed when pause button is pushed
+	 * Forces the media player to a paused state.
 	 */
-	@FXML
-	protected void handlePause() {
+	protected void forcePause() {
 		_videoPlayer.pause();
+		_playButton.setText("Play");
+		_paused = true;
 	}
 	
 	/**
@@ -124,12 +125,16 @@ public class VideoPlayerController {
 	 */
 	private void setUpMediaPlayerListeners() {
 		_paused = true;
-		_volumeSlider.setValue(_videoPlayer.getVolume() * 100);
 		_videoPlayer.setOnReady(() -> {
 			_duration = _videoPlayer.getMedia().getDuration();
 			
-			setPlayerSliderListeners();
-			setVolumeSliderListener();
+			if (_playSlider != null) {
+				setPlayerSliderListeners();
+			}			
+			if (_volumeSlider != null) {
+				_volumeSlider.setValue(_videoPlayer.getVolume() * 100);
+				setVolumeSliderListener();
+			}
 			
 			_videoPlayer.setOnEndOfMedia(new Runnable() {
 	            public void run() {

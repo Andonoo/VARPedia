@@ -25,6 +25,11 @@ import wikiSpeakModel.GuessMedia;
 import wikiSpeakModel.GuessingGameEngine;
 import wikiSpeakModel.MediaType;
 
+/**
+ * Class to control the display of guess media components to the user.
+ * 
+ * @author Andrew Donova, Xiaobin Lin
+ */
 public class GameStageController extends VideoPlayerController {
 	@FXML Pane _videoPane;
 	@FXML Pane _textPane;
@@ -56,11 +61,13 @@ public class GameStageController extends VideoPlayerController {
 			switch (_engine.getCategory()) {
 				case Video: case Audio:
 					_videoPane.setVisible(true);
+					_textPane.setVisible(false);
 					media = _engine.nextMedia();
 					this.setVideo(media.getAudioVideo());
 					break;
 				case Text:
 					_textPane.setVisible(true);
+					_videoPane.setVisible(false);
 					setGuessText(_engine.nextMedia().getText());
 					break;
 			}
@@ -92,8 +99,6 @@ public class GameStageController extends VideoPlayerController {
 				Scene scene = new Scene(layout);
 				stage.setScene(scene);
 				_engine.saveScoreBoard();
-				String command = "rm -r .Game/.Round*";
-				ShellHelper.execute(command);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -102,7 +107,7 @@ public class GameStageController extends VideoPlayerController {
 	
 	private void checkAnswer(String guess) {
 		if (!(_engine.getCategory() == MediaType.Text)) {
-			this.handlePause();
+			this.forcePause();
 		}
 		boolean isCorrent = _engine.checkGuess(guess);
 		String message;
