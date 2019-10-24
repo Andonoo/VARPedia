@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,10 +68,13 @@ public class GuessingGameEngine {
 	/**
 	 * Produces the media elements (videos, audio clips, text) required for the game to begin. NOTE: This method should
 	 * be called on a background thread.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void prepareGame() throws Exception {
-		switch(_gameType) {
+		if (_category.equals(GameCategory.Creations)) {
+			getCreationMedia();
+		} else {
+			switch(_gameType) {
 			case Video:
 				for (int i = 1; i <= _numRounds; i ++) {
 					createVideo(i);
@@ -85,6 +90,7 @@ public class GuessingGameEngine {
 					createText();
 				}
 			break;
+			}
 		}
 	}
 	
@@ -154,6 +160,76 @@ public class GuessingGameEngine {
 	}
 	
 	/**
+	 * Method called if the user has selected to use their own creations for viewing. Populates
+	 * _guessMediaElements with creation media elements.
+	 */
+	private void getCreationMedia() {
+		File creationDir = new File("Creations/");
+		File[] creations = creationDir.listFiles();
+		for (int i = 1; i <= _numRounds; i ++) {
+			switch(_gameType) {
+			case Video:
+				getRandomCreationVideo(creations);
+			break;
+			case Audio:
+				getRandomCreationAudio(creations);
+			break;
+			case Text:
+				getRandomCreationText(creations);
+			break;
+			}
+		}
+	}
+	
+	/**
+	 * Takes the list of directory of a set of creations and adds a GuessMedia element for 
+	 * a random creation's video. 
+	 * @param creations
+	 */
+	private void getRandomCreationVideo(File[] creations) {
+		Random rand = new Random();
+		File randomCreation = creations[rand.nextInt(creations.length)];
+		File creationVideo = new File(randomCreation + "/" + randomCreation.getName() + ".mp4");
+		_guessMediaElements.add(new GuessMedia(MediaType.Video, creationVideo, getCreationSearchTerm(randomCreation)));
+	}
+	
+	/**
+	 * Takes the list of directory of a set of creations and adds a GuessMedia element for 
+	 * a random creation's audio. 
+	 * @param creations
+	 */
+	private void getRandomCreationAudio(File[] creations) {
+		Random rand = new Random();
+		File randomCreation = creations[rand.nextInt(creations.length)];
+		File creationAudio = new File(randomCreation + "/" + randomCreation.getName() + ".wav");
+		_guessMediaElements.add(new GuessMedia(MediaType.Video, creationAudio, getCreationSearchTerm(randomCreation)));
+	}
+	
+	/**
+	 * Takes the list of directory of a set of creations and adds a GuessMedia element for 
+	 * a random creation's text. 
+	 * @param creations
+	 */
+	private void getRandomCreationText(File[] creations) {
+		Random rand = new Random();
+		File randomCreation = creations[rand.nextInt(creations.length)];
+		File creationText = new File(randomCreation + "/" + randomCreation.getName() + ".txt");
+		String contents = "";
+		try {
+			contents = new String(Files.readAllBytes(Paths.get(creationText.getCanonicalPath())));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		_guessMediaElements.add(new GuessMedia(MediaType.Video, contents, getCreationSearchTerm(randomCreation)));
+	}
+	
+	private String getCreationSearchTerm(File creation) {
+		File termDir = new File("Creations/" + creation.getName() + "/" + "Term");
+		File[] termDirContents = termDir.listFiles();
+		return termDirContents[0].getName();
+	}
+
+	/**
 	 * Builds a video for the user's current input.
 	 */
 	private void createVideo(int videoNumber) {
@@ -181,7 +257,7 @@ public class GuessingGameEngine {
 		GuessMedia textMedia = new GuessMedia(_gameType, text, term);
 		_guessMediaElements.add(textMedia);
 	}
- 
+
 	/**
 	 * Builds an audio chunk for the user's current input.
 	 * @throws Exception 

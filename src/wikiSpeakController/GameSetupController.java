@@ -66,7 +66,7 @@ public class GameSetupController {
 	 * Load category names into table.
 	 */
 	private void loadCategoryTable() {
-		ObservableList<String> categories = FXCollections.observableArrayList("Fruits", "Animals", "Countries", "Celebrities");
+		ObservableList<String> categories = FXCollections.observableArrayList("Your Creations", "Fruits", "Animals", "Countries", "Celebrities");
 		_categoryCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
 		_categoryTV.setItems(categories);
 		_categoryTV.getSelectionModel().selectFirst();
@@ -191,6 +191,8 @@ public class GameSetupController {
 				return GameCategory.Countries;
 			case ("Fruits"):
 				return GameCategory.Fruits;
+			case ("Your Creations"):
+				return GameCategory.Creations;
 		}
 		throw new Exception("Wrong GameType");
 	}
