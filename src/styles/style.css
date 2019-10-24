@@ -13,8 +13,30 @@
     -fx-effect: dropshadow(two-pass-box, black, 0.0, 25.0, 1.0, 1.0);
 }
 
-.prompt_text{
-    -fx-prompt-text-fill: #485460
+.rightShadow{
+    -fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);
 }
 
+.lightShadow{
+    -fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 0);
+}
 
+.prompt_text{
+    -fx-prompt-text-fill: #333333;
+}
+
+.primaryColorBackground{
+    -fx-background-color: #3700B3;
+}
+
+.lightColorBackground{
+    -fx-background-color: #64b5f6;
+}
+
+.confirmBackground{
+    -fx-background-color: #40E0D0;
+}
+
+.secondaryColor{
+    -fx-background-color: #03DAC5;
+}
