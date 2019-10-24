@@ -22,5 +22,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/student/eclipse-workspace/WikiSpeakA3/libs/jfoenix-9.0.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
