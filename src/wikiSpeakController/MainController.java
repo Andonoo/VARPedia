@@ -60,4 +60,16 @@ public class MainController {
 		Scene scene = new Scene(SceneSwitcher.getLayout(SceneSwitcher.SceneOption.GameSetup));
 		stage.setScene(scene);
 	}
+	
+	/**
+	 * Go to leaderboard wizard
+	 * @param event
+	 * @throws IOException
+	 */
+	@FXML
+	private void onLeaderboardBtnClicked(ActionEvent event) throws IOException {
+		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+		Scene scene = new Scene(SceneSwitcher.getLayout(SceneSwitcher.SceneOption.Leaderboard));
+		stage.setScene(scene);
+	}
 }

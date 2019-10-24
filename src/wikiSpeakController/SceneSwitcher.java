@@ -18,7 +18,8 @@ public class SceneSwitcher {
 		CreateAudioChunk,
 		ViewCreations,
 		FinalizeCreation,
-		EndGameScoreBoard
+		EndGameScoreBoard,
+		Leaderboard
 	}
 	
 	public static Parent getLayout(SceneOption sceneOption) throws IOException {

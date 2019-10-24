@@ -28,5 +28,10 @@
             <Font size="17.0" />
          </font>
       </Button>
+      <Button layoutX="393.0" layoutY="432.0" mnemonicParsing="false" onAction="#onLeaderboardBtnClicked" prefHeight="75.0" prefWidth="154.0" text="Leaderboard">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
