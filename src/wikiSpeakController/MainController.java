@@ -3,7 +3,7 @@ package wikiSpeakController;
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
-
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -31,7 +31,7 @@ public class MainController {
 	 * @throws IOException
 	 */
 	@FXML
-	private void onViewBtnClicked(ActionEvent event) throws IOException {
+	private void onViewBtnClicked(Event event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
 		Scene scene = new Scene(SceneSwitcher.getLayout(SceneSwitcher.SceneOption.ViewCreations));
 		stage.setScene(scene);
@@ -43,7 +43,7 @@ public class MainController {
 	 * @throws IOException
 	 */
 	@FXML
-	private void onCreateBtnClicked(ActionEvent event) throws IOException {
+	private void onCreateBtnClicked(Event event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
 		Scene scene = new Scene(SceneSwitcher.getLayout(SceneSwitcher.SceneOption.Search));
 		stage.setScene(scene);
@@ -55,7 +55,7 @@ public class MainController {
 	 * @throws IOException
 	 */
 	@FXML
-	private void onPlayBtnClicked(ActionEvent event) throws IOException {
+	private void onPlayBtnClicked(Event event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
 		Scene scene = new Scene(SceneSwitcher.getLayout(SceneSwitcher.SceneOption.GameSetup));
 		stage.setScene(scene);
