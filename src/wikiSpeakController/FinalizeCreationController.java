@@ -159,20 +159,21 @@ public class FinalizeCreationController {
 				MediaHelper mh = new MediaHelper(creationDir);
 				// Delete files that are not selected by the user
 				mh.deleteAllBut(selectedImageString);
-				mh.combineAudioFiles(".temp/", audioFiles, _creationName);
-				File creationAudio = new File(creationDir + ".temp/" + _creationName + ".wav");
-				mh.createSlideShowToFit(noImages, creationAudio, _creationName, ".tempPhotos/", ".temp/");
+				mh.combineAudioFiles(".temp/", audioFiles, _creationName, "");
+				File creationAudio = new File(creationDir + "" + _creationName + ".wav");
+				mh.createSlideShowToFit(noImages, creationAudio, _creationName, ".tempPhotos/", "");
 				
 				// Adding music if requested
 				if (!_musicCombo.getValue().equals("None")) {
 					String musicFile = _musicMap.get(_musicCombo.getValue());
-					mh.layerAudioFiles("", musicFile, ".temp/", _creationName + ".wav", ".temp/", _creationName + "WithMusic.wav");
-					mh.combineAudioVideoWithTerm(_creationName + "WithMusic", ".temp/", _creationName, ".temp/", _searchTerm, creationDir, _creationName + "Creation");
+					mh.layerAudioFiles("", musicFile, "", _creationName + ".wav", ".temp/", _creationName + "WithMusic.wav");
+					mh.combineAudioVideoWithTerm(_creationName + "WithMusic", ".temp/", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
 				} else {
-					mh.combineAudioVideoWithTerm(_creationName, ".temp/", _creationName, ".temp/", _searchTerm, creationDir, _creationName + "Creation");
+					mh.combineAudioVideoWithTerm(_creationName, "", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
 				}
 				
-				String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos";
+				String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos " + 
+								ShellHelper.WrapString(creationDir) + "LoopedAudio.mp3";
 				ShellHelper.execute(command);
 			} catch (Exception e1) {
 				e1.printStackTrace();
