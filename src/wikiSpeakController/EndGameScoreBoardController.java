@@ -57,10 +57,12 @@ public class EndGameScoreBoardController {
 	 */
 	public void setPlayerScore(GameRecord playerScore) {
 		_playerScore = playerScore;
+		
 		List<PlayerGuess> playerGuesses = _playerScore.getGuesses();
 		ObservableList<PlayerGuess> content = FXCollections.observableArrayList(playerGuesses);
 		_scoreBoard.setItems(content);
 		_scoreText.setText("Your total score: " + _playerScore.getTotalScore());
+		
 		if (_playerScore._getScoreThisRound() >= 0) {
 			_netScoreText.setFill(Color.GREEN);
 			_netScoreText.setText(" (+" + _playerScore._getScoreThisRound() + ")");
@@ -68,6 +70,7 @@ public class EndGameScoreBoardController {
 			_netScoreText.setFill(Color.RED);
 			_netScoreText.setText(" (" + _playerScore._getScoreThisRound() + ")");
 		}
+		
 		_playerScore.endOfGame();
 	}
 	
