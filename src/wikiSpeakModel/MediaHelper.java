@@ -114,13 +114,13 @@ public class MediaHelper {
 	 * @param creationName
 	 * @throws Exception
 	 */
-	public void combineAudioFiles(String audioDir, String[] audioFiles, String creationName, String outputDir) throws Exception {
+	public void combineAudioFiles(String audioDir, String[] audioFiles, String creationName) throws Exception {
 		// Creating audio file
 		String command = "sox ";
 		for (String s: audioFiles) {
 			command = command + ShellHelper.WrapString(_workingDir + audioDir + s) + " ";
 		}
-		command = command +  ShellHelper.WrapString(_workingDir + outputDir + creationName) + ".wav 2> /dev/null";
+		command = command +  ShellHelper.WrapString(_workingDir + audioDir + creationName) + ".wav 2> /dev/null";
 		ShellHelper.execute(command);
 	}
 	
