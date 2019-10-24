@@ -4,23 +4,57 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.SearchController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.SearchController">
    <children>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
-      <Label layoutX="151.0" layoutY="120.0" text="Search" />
-      <TextField fx:id="_searchTF" layoutX="204.0" layoutY="115.0" prefHeight="26.0" prefWidth="529.0" />
-      <Button layoutX="742.0" layoutY="115.0" mnemonicParsing="false" onAction="#onSearchBtnClicked" text="Search" />
-      <TextArea fx:id="_searchResultTF" layoutX="145.0" layoutY="160.0" prefHeight="340.0" prefWidth="659.0" promptText="Please use the search bar to search for a keyword." wrapText="true" />
-      <Label layoutX="151.0" layoutY="529.0" text="Creation Name" />
-      <TextField fx:id="_creationNameTF" layoutX="264.0" layoutY="524.0" prefHeight="26.0" prefWidth="540.0" />
-      <Button fx:id="_nextBtn" layoutX="888.0" layoutY="560.0" mnemonicParsing="false" onAction="#onNextBtnClicked" prefHeight="26.0" prefWidth="98.0" text="Next" />
-      <Label layoutX="353.0" layoutY="62.0" text="Search for a term...">
+      <Pane prefHeight="165.0" prefWidth="1000.0" style="-fx-background-color: #3700B3;" />
+      <TextField fx:id="_searchTF" layoutX="171.0" layoutY="111.0" prefHeight="40.0" prefWidth="529.0" promptText="Search Term" styleClass="prompt_text">
+         <font>
+            <Font size="17.0" />
+         </font></TextField>
+      <Button layoutX="709.0" layoutY="110.0" mnemonicParsing="false" onAction="#onSearchBtnClicked" style="-fx-background-color: #03DAC5;" text="Search">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="31.0">
+               <image>
+                  <Image url="@../../res/Images/search.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Label layoutX="353.0" layoutY="47.0" text="Search for a term..." textFill="WHITE">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
+      <TextArea fx:id="_searchResultTF" layoutX="171.0" layoutY="239.0" prefHeight="266.0" prefWidth="638.0" promptText="Please use the search bar to search for a keyword." wrapText="true" />
+      <Label layoutX="171.0" layoutY="184.0" prefHeight="30.0" prefWidth="159.0" text="Creation Name:">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <TextField fx:id="_creationNameTF" layoutX="340.0" layoutY="183.0" prefHeight="33.0" prefWidth="467.0" promptText="Give your creation a name!" styleClass="prompt_text">
+         <font>
+            <Font size="17.0" />
+         </font></TextField>
+      <Button fx:id="_nextBtn" layoutX="870.0" layoutY="535.0" mnemonicParsing="false" onAction="#onNextBtnClicked" prefHeight="51.0" prefWidth="116.0" style="-fx-background-color: #3700B3;" text="    Next" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="37.0" fitWidth="40.0">
+               <image>
+                  <Image url="@../../res/Images/next.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button fx:id="_nextBtn1" layoutX="14.0" layoutY="535.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="52.0" prefWidth="128.0" style="-fx-background-color: #3700B3;" text="     Home" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="42.0" fitWidth="42.0">
+               <image>
+                  <Image url="@../../res/Images/house.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

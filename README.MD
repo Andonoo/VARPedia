@@ -28,4 +28,4 @@ The music used in the project may not be used in materials for commercial purpos
 * /res/melancholy.mp3: Adapted from Split by Javolenus under (CC BY-NC 3.0), can be retrieved from http://ccmixter.org/files/Javolenus/58188
 
 ## Visual License
-Icons made by [Prosymbols, Freepik, DinosoftLabs] from www.flaticon.com
+Icons made by [Prosymbols, Freepik, DinosoftLabs, Lyolya] from www.flaticon.com
