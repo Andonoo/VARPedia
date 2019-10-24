@@ -26,7 +26,7 @@
          </font>
       </Text>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />
-      <Slider fx:id="_playSlider" layoutX="260.0" layoutY="451.0" prefHeight="16.0" prefWidth="480.0" />
+      <Slider fx:id="_playSlider" blockIncrement="1.0" layoutX="260.0" layoutY="451.0" prefHeight="16.0" prefWidth="480.0" />
       <Slider fx:id="_volumeSlider" layoutX="540.0" layoutY="482.0" />
    </children>
 </AnchorPane>
