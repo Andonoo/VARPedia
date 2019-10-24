@@ -1,6 +1,8 @@
 package wikiSpeakController;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 import javafx.application.Platform;
@@ -90,7 +92,13 @@ public class SearchController {
 			showAlert("Creation already exists, please try another name.");
 			return;
 		}
-
+		
+		File creationTxt = new File(String.format("Creations/%s/%s.txt", _creationName, _creationName));
+		creationTxt.createNewFile();
+		PrintWriter output = new PrintWriter(creationTxt);
+		output.println(wikiText);
+		output.close();
+		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("CreateAudio.fxml"));
 		Parent layout = loader.load();
