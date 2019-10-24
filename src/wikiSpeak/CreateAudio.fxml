@@ -5,20 +5,36 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.CreateAudioController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.CreateAudioController">
    <children>
-      <Button layoutX="14.0" layoutY="558.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
-      <TextArea fx:id="_wikiTextTA" layoutX="14.0" layoutY="76.0" prefHeight="462.0" prefWidth="325.0" wrapText="true" />
-      <Button fx:id="_addAudioChunkBtn" layoutX="928.0" layoutY="77.0" mnemonicParsing="false" onAction="#onAddBtnClicked" prefHeight="61.0" prefWidth="44.0" text="Add" />
-      <TableView fx:id="_audioChunkTV" layoutX="380.0" layoutY="160.0" prefHeight="378.0" prefWidth="593.0" />
-      <Button fx:id="_nxtButton" layoutX="882.0" layoutY="558.0" mnemonicParsing="false" onAction="#onNextButtonClicked" prefHeight="26.0" prefWidth="91.0" text="Next" />
-      <TextArea fx:id="_selectedTextTA" editable="false" focusTraversable="false" layoutX="380.0" layoutY="77.0" prefHeight="61.0" prefWidth="540.0" promptText="Please highlight text on the left with the cursor." wrapText="true">
+      <Button fx:id="_addAudioChunkBtn" layoutX="865.0" layoutY="48.0" mnemonicParsing="false" onAction="#onAddBtnClicked" prefHeight="61.0" prefWidth="105.0" styleClass="bottomShadow" text="Add">
+         <graphic>
+            <ImageView fitHeight="45.0" fitWidth="44.0">
+               <image>
+                  <Image url="@../../res/Images/plus.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <TextArea fx:id="_wikiTextTA" layoutX="14.0" layoutY="47.0" prefHeight="462.0" prefWidth="325.0" wrapText="true" />
+      <TableView fx:id="_audioChunkTV" layoutX="380.0" layoutY="131.0" prefHeight="378.0" prefWidth="593.0" />
+      <TextArea fx:id="_selectedTextTA" editable="false" focusTraversable="false" layoutX="380.0" layoutY="48.0" prefHeight="61.0" prefWidth="473.0" promptText="Please highlight text on the left with the cursor." wrapText="true">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></TextArea>
-      <Label layoutX="14.0" layoutY="53.0" text="Select/Edit text:" />
-      <Label layoutX="380.0" layoutY="54.0" text="Preview AudioChunk" />
+      <Label layoutX="16.0" layoutY="13.0" text="Select/Edit text:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label layoutX="380.0" layoutY="13.0" text="Preview AudioChunk">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Button fx:id="_nxtButton" layoutX="882.0" layoutY="558.0" mnemonicParsing="false" onAction="#onNextButtonClicked" prefHeight="26.0" prefWidth="91.0" text="Next" />
+      <Button layoutX="14.0" layoutY="558.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
    </children>
 </AnchorPane>
