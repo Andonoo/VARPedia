@@ -37,7 +37,7 @@ public class AudioChunk extends Playable{
 
 	@Override
 	protected void onDelete(ActionEvent event) {
-		// Make alert to confirm with user
+			// Make alert to confirm with user
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Confirmation");
 			alert.setHeaderText("Delete creation");
