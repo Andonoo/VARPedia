@@ -1,5 +1,5 @@
 package wikiSpeakModel;
 
 public enum GameCategory {
-	Fruits, Animals, Countries, Celebrities;
+	Fruits, Animals, Countries, Celebrities, Creations;
 }
