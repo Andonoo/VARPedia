@@ -26,6 +26,7 @@ import wikiSpeakModel.Playable;
  *
  */
 public class VideoPlayerController {
+	private boolean _paused;
 	@FXML
 	private Media _video;
 	@FXML
@@ -37,12 +38,25 @@ public class VideoPlayerController {
 	@FXML
 	private Text _creationTitle;
 
+	@FXML
+	private void initialize() {
+		_paused = true;
+	}
+	
 	/**
 	 * Method executed when play button is pressed.
 	 */
 	@FXML
 	protected void handlePlay() {
-		_videoPlayer.play();
+		if (_paused) {
+			_videoPlayer.play();
+			_playButton.setText("Pause");
+			_paused = false;
+		} else {
+			_videoPlayer.pause();
+			_playButton.setText("Play");
+			_paused = true;
+		}
 	}
 	
 	/**
