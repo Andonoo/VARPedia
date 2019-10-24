@@ -2,13 +2,17 @@ package wikiSpeakController;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,13 +24,20 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
 import wikiSpeakModel.FlickrHelper;
+import wikiSpeakModel.ImageGalleryEngine;
+import wikiSpeakModel.ImageItem;
 import wikiSpeakModel.MediaHelper;
 
 /**
@@ -39,9 +50,11 @@ public class FinalizeCreationController {
 	private String _searchTerm;
 	private String _creationName;
 	private static Map<String, String> _musicMap;
-	private String _musicTrack;
+	private ImageGalleryEngine _galleryEngine;
 	
-	@FXML private Spinner<Integer> _numberImages;
+	@FXML private TableView<ImageItem> _imageTable;
+	@FXML private TableColumn<ImageItem, ImageView> _imageCol;
+	@FXML private TableColumn<ImageItem, CheckBox> _checkBoxCol;
 	@FXML Button _createButton;
 	@FXML ComboBox<String> _musicCombo;
 	
@@ -62,7 +75,6 @@ public class FinalizeCreationController {
 		// Sets the combobox to select the first option by default
 		_musicCombo.getSelectionModel().selectFirst();
 		
-		_numberImages.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10));
 		_createButton.setDisable(true);
 		_createButton.setText("Fetching images\nPlease wait...");
 	}
@@ -85,21 +97,18 @@ public class FinalizeCreationController {
 		Thread flickrWorker = new Thread(() -> {
 			FlickrHelper.getImages("Creations/" + _creationName + "/", _searchTerm);
 			Platform.runLater(()-> {
-				_createButton.setDisable(false);
-				_createButton.setText("Create!");
+				try {
+					initImageTable();
+					_createButton.setDisable(false);
+					_createButton.setText("Create!");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			});
 		});
 		flickrWorker.start();
-	}
-	
-	/**
-	 * Deletes unnecessary images so that resulting video has requested number.
-	 */
-	private void formatImages() {
-		for (int i = _numberImages.getValue() + 1; i <=10; i++ ) {
-			File imageToDelete = new File("./Creations/" + _creationName + "/.tempPhotos/" + _searchTerm + i + ".jpg");
-			imageToDelete.delete();
-		}
 	}
 	
 	/**
@@ -130,35 +139,41 @@ public class FinalizeCreationController {
 	 * @param event
 	 */
 	private void makeCreation(ActionEvent event) {
-		formatImages();
 		Thread creationWorker = new Thread(() -> {			
 			File audioDirectory = new File("Creations/" + _creationName + "/.temp/");
 			String[] audioFiles = audioDirectory.list();
 			sortAudioFiles(audioFiles);
+			List<ImageItem> selectedImage = _galleryEngine.getSelectedImage();
+			int noImages = selectedImage.size();
 			
-			File photoDirectory = new File("Creations/" + _creationName + "/.tempPhotos");
-			String[] photoFiles = photoDirectory.list();
+			// Get the list of selected filenames
+			List<String> selectedImageString = new ArrayList<String>();
+			for (ImageItem item : selectedImage) {
+				String path = item.getPath();
+				selectedImageString.add(path.substring(path.lastIndexOf('/')+1));
+			}
 			
-			int noImages = _numberImages.getValue();
-			
+
 			String creationDir = "Creations/" + _creationName + "/";
-			
 			try {
 				MediaHelper mh = new MediaHelper(creationDir);
-				mh.combineAudioFiles(".temp/", audioFiles, _creationName);
-				File creationAudio = new File(creationDir + ".temp/" + _creationName + ".wav");
-				mh.createSlideShowToFit(noImages, creationAudio, _creationName, ".tempPhotos/", ".temp/");
+				// Delete files that are not selected by the user
+				mh.deleteAllBut(selectedImageString);
+				mh.combineAudioFiles(".temp/", audioFiles, _creationName, "");
+				File creationAudio = new File(creationDir + "" + _creationName + ".wav");
+				mh.createSlideShowToFit(noImages, creationAudio, _creationName, ".tempPhotos/", "");
 				
 				// Adding music if requested
 				if (!_musicCombo.getValue().equals("None")) {
 					String musicFile = _musicMap.get(_musicCombo.getValue());
-					mh.layerAudioFiles("", musicFile, ".temp/", _creationName + ".wav", ".temp/", _creationName + "WithMusic.wav");
-					mh.combineAudioVideoWithTerm(_creationName + "WithMusic", ".temp/", _creationName, ".temp/", _searchTerm, creationDir, _creationName + "Creation");
+					mh.layerAudioFiles("", musicFile, "", _creationName + ".wav", ".temp/", _creationName + "WithMusic.wav");
+					mh.combineAudioVideoWithTerm(_creationName + "WithMusic", ".temp/", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
 				} else {
-					mh.combineAudioVideoWithTerm(_creationName, ".temp/", _creationName, ".temp/", _searchTerm, creationDir, _creationName + "Creation");
+					mh.combineAudioVideoWithTerm(_creationName, "", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
 				}
 				
-				String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos";
+				String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos " + 
+								ShellHelper.WrapString(creationDir) + "LoopedAudio.mp3";
 				ShellHelper.execute(command);
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -223,10 +238,23 @@ public class FinalizeCreationController {
 	 * @throws IOException
 	 */
 	@FXML
-	private void onCreate(ActionEvent e) throws IOException {	
+	private void onCreate(ActionEvent e) throws IOException {
 		_createButton.setDisable(true);
 		_createButton.setText("Creating...");
 		makeCreation(e);
+	}
+	
+	/**
+	 * Load the image into the table
+	 * @throws Exception - Incorrect directory for images
+	 */
+	private void initImageTable() throws Exception {
+		_galleryEngine = new ImageGalleryEngine(new File("Creations/" + _creationName + "/" + ".tempPhotos/"));
+		List<ImageItem> images = _galleryEngine.getImages();
+		ObservableList<ImageItem> imagesObv = FXCollections.observableArrayList(images);
+		_imageCol.setCellValueFactory(new PropertyValueFactory<ImageItem, ImageView>("ImageView"));
+		_checkBoxCol.setCellValueFactory(new PropertyValueFactory<ImageItem, CheckBox>("CheckBox"));
+		_imageTable.setItems(imagesObv);
 	}
 	
 	

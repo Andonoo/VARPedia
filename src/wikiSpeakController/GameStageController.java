@@ -6,7 +6,9 @@ import java.util.Optional;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -17,12 +19,13 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
 import wikiSpeakModel.GuessMedia;
 import wikiSpeakModel.GuessingGameEngine;
 import wikiSpeakModel.MediaType;
 
-public class GameStageController extends VideoPlayerController{
+public class GameStageController extends VideoPlayerController {
 	@FXML Pane _videoPane;
 	@FXML Pane _textPane;
 	@FXML TextField _guessTF;
@@ -43,7 +46,7 @@ public class GameStageController extends VideoPlayerController{
 		_engine = engine;
 	}
 	
-	private void displayNextMedia() {
+	private boolean displayNextMedia() {
 		_videoPane.setVisible(false);
 		_textPane.setVisible(false);
 		prepareForNewQuestion();
@@ -61,9 +64,9 @@ public class GameStageController extends VideoPlayerController{
 					setGuessText(_engine.nextMedia().getText());
 					break;
 			}
+			return true;
 		} else {
-			_engine.saveScoreBoard();
-			showAlert("END", "The end of the quiz", AlertType.INFORMATION);
+			return false;
 		}
 	}
 	
@@ -78,7 +81,23 @@ public class GameStageController extends VideoPlayerController{
 	@FXML
 	private void guessBtnClicked(ActionEvent event) {
 		checkAnswer(_guessTF.getText());
-		displayNextMedia();
+		if (!displayNextMedia()) {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Main.class.getResource("EndGameScoreBoard.fxml"));
+				Parent layout = loader.load();
+				EndGameScoreBoardController controller = loader.<EndGameScoreBoardController>getController();
+				controller.setPlayerScore(_engine.getPlayerScore());
+				Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+				Scene scene = new Scene(layout);
+				stage.setScene(scene);
+				_engine.saveScoreBoard();
+				String command = "rm -r .Game/.Round*";
+				ShellHelper.execute(command);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void checkAnswer(String guess) {

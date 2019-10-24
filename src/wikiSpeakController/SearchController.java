@@ -1,6 +1,8 @@
 package wikiSpeakController;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 import javafx.application.Platform;
@@ -90,7 +92,15 @@ public class SearchController {
 			showAlert("Creation already exists, please try another name.");
 			return;
 		}
-
+		
+		File creationTxt = new File(String.format("Creations/%s/%s.txt", _creationName, _creationName));
+		creationTxt.createNewFile();
+		PrintWriter output = new PrintWriter(creationTxt);
+		output.println(wikiText);
+		output.close();
+		
+		saveUsersSearchTerm();
+		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("CreateAudio.fxml"));
 		Parent layout = loader.load();
@@ -101,6 +111,21 @@ public class SearchController {
 
 		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		stage.setScene(scene);
+	}
+	
+	/**
+	 * Saves the user's search term for the purpose of future use in the quiz.
+	 */
+	private void saveUsersSearchTerm() {
+		try {
+			String command = String.format("mkdir Creations/%s/Term", ShellHelper.WrapString(_creationName));
+			ShellHelper.execute(command);
+			command = String.format("echo '' > Creations/%s/Term/%s", ShellHelper.WrapString(_creationName), ShellHelper.WrapString(_searchTerm));
+			ShellHelper.execute(command);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

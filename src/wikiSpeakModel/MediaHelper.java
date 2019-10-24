@@ -3,6 +3,7 @@ package wikiSpeakModel;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -113,13 +114,13 @@ public class MediaHelper {
 	 * @param creationName
 	 * @throws Exception
 	 */
-	public void combineAudioFiles(String audioDir, String[] audioFiles, String creationName) throws Exception {
+	public void combineAudioFiles(String audioDir, String[] audioFiles, String creationName, String outputDir) throws Exception {
 		// Creating audio file
 		String command = "sox ";
 		for (String s: audioFiles) {
 			command = command + ShellHelper.WrapString(_workingDir + audioDir + s) + " ";
 		}
-		command = command +  ShellHelper.WrapString(_workingDir + audioDir + creationName) + ".wav 2> /dev/null";
+		command = command +  ShellHelper.WrapString(_workingDir + outputDir + creationName) + ".wav 2> /dev/null";
 		ShellHelper.execute(command);
 	}
 	
@@ -169,6 +170,20 @@ public class MediaHelper {
 		}
 		int[] result = {maxImageWidth, maxImageHeight};
 		return result;
+	}
+	
+	/**
+	 * Takes in a list of filenames and delete everything but those files
+	 * @param filenames
+	 * @throws Exception
+	 */
+	public void deleteAllBut(List<String> filenames) throws Exception {
+		File fileFolder = new File(String.format("./%s/.tempPhotos/", _workingDir));
+		for (File file : fileFolder.listFiles()) {
+			if (!filenames.contains(file.getName())) {
+				file.delete();
+			}
+		}
 	}
 	
 	/**
