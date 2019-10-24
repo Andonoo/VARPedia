@@ -10,8 +10,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import wikiSpeakController.SceneSwitcher;
-import wikiSpeakController.ShellHelper;
 import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakController.ShellHelper;
 
 /**
  * Main application method for VARpedia
@@ -74,7 +74,6 @@ public class Main extends Application{
 		}
 		
 		launch(args);
-		
 	}
 	
 	/**
