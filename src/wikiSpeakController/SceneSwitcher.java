@@ -35,14 +35,4 @@ public class SceneSwitcher {
 		controller.setVideo(playable);
 		return layout;
 	}
-	
-	public static Parent getGameAudioPlayer(String guessName) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("GameAudioPlayer.fxml"));
-		Parent layout = loader.load();
-		GameAudioPlayerController controller = loader.<GameAudioPlayerController>getController();
-		controller.setAudio("./.Game/temp.mp3");
-		return layout;
-	}
-
 }
