@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -153,6 +156,9 @@ public class VideoPlayerController {
 		       if (_volumeSlider.isValueChanging()) {
 		    	   _videoPlayer.setVolume(_volumeSlider.getValue() / 100.0);
 		       }
+		       if (_volumeSlider.isPressed()) {
+		    	   _videoPlayer.setVolume(_volumeSlider.getValue() / 100.0);
+		       }
 		    }
 		});
 	}
@@ -172,6 +178,9 @@ public class VideoPlayerController {
 		_playSlider.valueProperty().addListener(new InvalidationListener() {
 		    public void invalidated(Observable ov) {
 		       if (_playSlider.isValueChanging()) {
+		    	   _videoPlayer.seek(_duration.multiply(_playSlider.getValue() / 100.0));
+		       }
+		       if (_playSlider.isPressed()) {
 		    	   _videoPlayer.seek(_duration.multiply(_playSlider.getValue() / 100.0));
 		       }
 		    }
