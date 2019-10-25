@@ -9,16 +9,12 @@
     -fx-cursor: hand;
 }
 
-.bottomShadow{
-    -fx-effect: dropshadow(two-pass-box, black, 0.0, 25.0, 1.0, 1.0);
-}
-
 .rightShadow{
     -fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);
 }
 
 .lightShadow{
-    -fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
 .prompt_text{
