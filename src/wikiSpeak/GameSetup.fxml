@@ -9,11 +9,13 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.GameSetupController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.GameSetupController">
    <children>
       <Text layoutX="-135.0" layoutY="-175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
@@ -39,20 +41,38 @@
           <TableColumn fx:id="_categoryCol" prefWidth="251.0" text="Category" />
         </columns>
       </TableView>
-      <JFXButton fx:id="_playBtn" layoutX="437.0" layoutY="491.0" mnemonicParsing="false" onAction="#onPlayBtnClicked" prefHeight="53.0" prefWidth="126.0" text="Play!" />
+      <JFXButton fx:id="_playBtn" layoutX="437.0" layoutY="491.0" mnemonicParsing="false" onAction="#onPlayBtnClicked" prefHeight="53.0" prefWidth="126.0" styleClass="primaryColorBackground" text="Play!" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font></JFXButton>
       <JFXSlider fx:id="_nOfGameSlider" blockIncrement="1.0" layoutX="278.0" layoutY="427.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" prefHeight="36.0" prefWidth="446.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
-      <AnchorPane layoutX="91.0" layoutY="184.0" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane layoutX="91.0" layoutY="184.0" prefHeight="200.0" prefWidth="456.0">
          <children>
             <Label text="Game type:">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <RadioButton fx:id="_textRB" layoutX="81.0" layoutY="91.0" mnemonicParsing="false" text="Text" />
-            <RadioButton fx:id="_audioRB" layoutX="80.0" layoutY="65.0" mnemonicParsing="false" text="Audio" />
-            <RadioButton fx:id="_videoRB" layoutX="80.0" layoutY="40.0" mnemonicParsing="false" text="Video" />
+            <RadioButton fx:id="_textRB" layoutX="175.0" layoutY="158.0" mnemonicParsing="false" text="Text" />
+            <RadioButton fx:id="_audioRB" layoutX="310.0" layoutY="158.0" mnemonicParsing="false" text="Audio" />
+            <RadioButton fx:id="_videoRB" layoutX="31.0" layoutY="158.0" mnemonicParsing="false" text="Video" />
+            <ImageView fitHeight="94.0" fitWidth="94.0" layoutX="7.0" layoutY="41.0">
+               <image>
+                  <Image url="@../../res/Images/slideshow.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="94.0" fitWidth="94.0" layoutX="297.0" layoutY="41.0">
+               <image>
+                  <Image url="@../../res/Images/listen.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="94.0" fitWidth="94.0" layoutX="161.0" layoutY="49.0">
+               <image>
+                  <Image url="@../../res/Images/text.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
-      <Label layoutX="442.0" layoutY="411.0" text="Number of games" />
+      <Label layoutX="439.0" layoutY="411.0" text="Number of Rounds" />
    </children>
 </AnchorPane>
