@@ -155,7 +155,6 @@ public class FinalizeCreationController {
 				String path = item.getPath();
 				selectedImageString.add(path.substring(path.lastIndexOf('/')+1));
 			}
-			
 
 			String creationDir = "Creations/" + _creationName + "/";
 			try {

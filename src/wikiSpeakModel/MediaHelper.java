@@ -205,7 +205,7 @@ public class MediaHelper {
 		float creationImageRate = noImages/creationAudioDuration;
 		
 		String command = "cat " + ShellHelper.WrapString(_workingDir + imageDir) + "*.jpg | ffmpeg -f image2pipe -framerate " + creationImageRate + " "
-				+ "-i - -c:v libx264 -pix_fmt yuv420p -vf \"scale=320x240\" -r 25 -max_muxing_queue_size 1024 " + ShellHelper.WrapString(_workingDir + destPath + videoName) + ".mp4";
+				+ "-i - -c:v libx264 -pix_fmt yuv420p -vf \"scale=480x360\" -r 25 -max_muxing_queue_size 1024 " + ShellHelper.WrapString(_workingDir + destPath + videoName) + ".mp4";
 		ShellHelper.execute(command);
 	}
 	

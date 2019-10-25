@@ -96,7 +96,7 @@
          </children>
       </AnchorPane>
       <Label layoutX="439.0" layoutY="411.0" text="Number of Rounds" />
-      <Button fx:id="_nextBtn1" layoutX="15.0" layoutY="534.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="54.0" prefWidth="146.0" styleClass="primaryColorBackground" text="     Home" textFill="WHITE">
+      <Button fx:id="_nextBtn1" layoutX="15.0" layoutY="534.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="54.0" prefWidth="146.0" styleClass="primaryColorBackground" text="Home" textFill="WHITE">
          <graphic>
             <ImageView fitHeight="42.0" fitWidth="42.0">
                <image>

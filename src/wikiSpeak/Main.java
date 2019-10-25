@@ -10,8 +10,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import wikiSpeakController.SceneSwitcher;
-import wikiSpeakController.ShellHelper;
 import wikiSpeakController.SceneSwitcher.SceneOption;
+import wikiSpeakController.ShellHelper;
 
 /**
  * Main application method for VARpedia
@@ -19,6 +19,11 @@ import wikiSpeakController.SceneSwitcher.SceneOption;
  * 
  */
 public class Main extends Application{	
+	// Entries to this array will be deleted on closing of the application.
+	private static String[] tempFiles = {
+		".Game/.Round*",
+	};
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
@@ -27,15 +32,24 @@ public class Main extends Application{
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		    @Override
 		    public void handle(WindowEvent event) {
-		    	onClose();
+		    	onCloseCleanup();
 		    }
 		});
 	}
 	
-	private void onClose() {
+	/**
+	 * Iterates through list of declared temp files. If any have not been deleted they
+	 * will be removed.
+	 */
+	private void onCloseCleanup() {
 		try {
-			String command = "rm -r .Game/.Round*";
-			ShellHelper.execute(command);
+			File fileToBeDeleted;
+			for (String tempFile: tempFiles) {
+				fileToBeDeleted = new File(tempFile);
+				if (fileToBeDeleted.exists()) {
+					fileToBeDeleted.delete();
+				}
+			}
 			stop();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -43,10 +57,13 @@ public class Main extends Application{
 		}
 	}
 	
+	/**
+	 * Initializes core directories and launches the application.
+	 * @param args
+	 */
 	public static void main(String args[]) {
 		String command = "rm -rf ./.Game 2> /dev/null";
 		try {
-//			deleteAllCreations();
 			ShellHelper.execute(command);
 			command = "mkdir -p ./Creations";
 			ShellHelper.execute(command);
@@ -57,9 +74,11 @@ public class Main extends Application{
 		}
 		
 		launch(args);
-		
 	}
 	
+	/**
+	 * Deletes all existing user made creations.
+	 */
 	public static void deleteAllCreations() {
 		try {
 			ShellHelper.execute("rm -r ./Creations");

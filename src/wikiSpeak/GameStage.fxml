@@ -5,10 +5,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
@@ -23,9 +23,11 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Pane fx:id="_videoPane" layoutX="300.0" layoutY="164.0" prefHeight="296.0" prefWidth="410.0">
+      <Pane fx:id="_videoPane" layoutX="300.0" layoutY="164.0" prefHeight="334.0" prefWidth="410.0">
          <children>
-            <MediaView fx:id="_videoDisplay" fitHeight="240.0" fitWidth="320.0" layoutX="45.0" nodeOrientation="INHERIT" />
+            <MediaView fx:id="_videoDisplay" fitHeight="360.0" fitWidth="480.0" layoutX="-35.0" layoutY="-84.0" nodeOrientation="INHERIT" />
+            <Slider fx:id="_playSlider" layoutX="-35.0" layoutY="284.0" prefHeight="15.0" prefWidth="480.0" />
+            <Button fx:id="_playButton" layoutX="165.0" layoutY="307.0" mnemonicParsing="false" onAction="#handlePlay" prefWidth="80.0" text="Play" />
             <HBox layoutX="115.0" layoutY="240.0" prefHeight="46.0" prefWidth="180.0">
                <children>
                   <JFXButton fx:id="_playButton" mnemonicParsing="false" onAction="#handlePlay" prefWidth="80.0" text="Play" />

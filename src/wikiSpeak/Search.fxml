@@ -47,7 +47,7 @@
             <String fx:value="prompt_text" />
          </styleClass>
       </TextField>
-      <JFXButton fx:id="_nextBtn" layoutX="858.0" layoutY="535.0" mnemonicParsing="false" onAction="#onNextBtnClicked" prefHeight="51.0" prefWidth="128.0" styleClass="primaryColorBackground" text="    Next" textFill="WHITE">
+      <JFXButton fx:id="_nextBtn" layoutX="858.0" layoutY="535.0" mnemonicParsing="false" onAction="#onNextBtnClicked" prefHeight="51.0" prefWidth="128.0" styleClass="primaryColorBackground" text="Next" textFill="WHITE">
          <graphic>
             <ImageView fitHeight="37.0" fitWidth="40.0">
                <image>
@@ -58,7 +58,7 @@
          <font>
             <Font size="18.0" />
          </font></JFXButton>
-      <JFXButton fx:id="_nextBtn1" layoutX="14.0" layoutY="535.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="54.0" prefWidth="146.0" styleClass="primaryColorBackground" text="     Home" textFill="WHITE">
+      <JFXButton fx:id="_nextBtn1" layoutX="14.0" layoutY="535.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="54.0" prefWidth="146.0" styleClass="primaryColorBackground" text="Home" textFill="WHITE">
          <graphic>
             <ImageView fitHeight="42.0" fitWidth="42.0">
                <image>

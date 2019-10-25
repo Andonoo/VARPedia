@@ -1,6 +1,7 @@
 package wikiSpeakModel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,5 +96,47 @@ public class GameRecord implements Serializable {
 		_guessesThisGame = new ArrayList<PlayerGuess>();
 		_round = 0;
 		_netScoreThisRound = 0;
+	}
+	
+	/**
+	 * Returns the players score from all time as an observable.
+	 * @return
+	 */
+	public StringProperty getTotalScoreForTable() {
+		return new SimpleStringProperty(Integer.toString(_totalScore));
+	}
+	
+	/**
+	 * Returns the players as an observable.
+	 * @return
+	 */
+	public StringProperty getPlayerForTable() {
+		return new SimpleStringProperty(_player);
+	}
+	
+	/**
+	 * Returns the players correct guesses as an observable.
+	 * @return
+	 */
+	public StringProperty getCorrectGuessesForTable() {
+		return new SimpleStringProperty(Integer.toString(_correctGuesses));
+	}
+	
+	/**
+	 * Returns the players incorrect guesses as an observable.
+	 * @return
+	 */
+	public StringProperty getIncorrectGuessesForTable() {
+		return new SimpleStringProperty(Integer.toString(_incorrectGuesses));
+	}
+	
+	/**
+	 * Returns the players incorrect guesses as an observable.
+	 * @return
+	 */
+	public StringProperty getAccuracyForTable() {
+		float accuracy = _correctGuesses * 100f / (_correctGuesses + _incorrectGuesses);
+		int accuracyRounded = Math.round(accuracy);
+		return new SimpleStringProperty(Integer.toString(accuracyRounded) + "%");
 	}
 }
