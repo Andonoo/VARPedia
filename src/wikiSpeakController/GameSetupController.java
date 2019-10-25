@@ -165,7 +165,7 @@ public class GameSetupController {
 		RadioButton selectedRadioButton = (RadioButton) _radioButtonGroup.getSelectedToggle();
 		String radioBtnText = selectedRadioButton.getText();
 		switch (radioBtnText) {
-			case ("Video"):
+			case ("Slideshow"):
 				return MediaType.Video;
 			case ("Audio"):
 				return MediaType.Audio;
