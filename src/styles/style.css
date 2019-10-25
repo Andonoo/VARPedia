@@ -17,6 +17,10 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
+.lighterShadow{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 3, 0, 0, 0);
+}
+
 .prompt_text{
     -fx-prompt-text-fill: #333333;
 }

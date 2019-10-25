@@ -37,6 +37,11 @@
                   <Font size="24.0" />
                </font>
             </Label>
+            <Label layoutX="419.0" layoutY="55.0" text="Game Setup" textFill="WHITE">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
          </children>
          <styleClass>
             <String fx:value="primaryColorBackground" />
@@ -44,11 +49,6 @@
          </styleClass>
       </Pane>
       <Text layoutX="-135.0" layoutY="-175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-      <Label layoutX="407.0" layoutY="40.0" text="Game Setup" textFill="WHITE">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Label>
       <TableView fx:id="_categoryTV" layoutX="585.0" layoutY="186.0" prefHeight="200.0" prefWidth="252.0">
         <columns>
           <TableColumn fx:id="_categoryCol" prefWidth="251.0" text="Category" />
