@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSlider?>
 <?import java.lang.String?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -17,7 +17,7 @@
    <children>
       <Pane prefHeight="148.0" prefWidth="1000.0">
          <children>
-            <Label layoutX="414.0" layoutY="29.0" text="Game Round" textFill="WHITE">
+            <Label layoutX="402.0" layoutY="28.0" text="Game Round" textFill="WHITE">
                <font>
                   <Font size="30.0" />
                </font>
@@ -36,9 +36,10 @@
       <Pane fx:id="_videoPane" layoutX="260.0" layoutY="108.0" prefHeight="419.0" prefWidth="503.0">
          <children>
             <MediaView fx:id="_videoDisplay" fitHeight="360.0" fitWidth="480.0" layoutX="12.0" layoutY="3.0" nodeOrientation="INHERIT" />
-            <Pane layoutY="367.0" prefHeight="54.0" prefWidth="486.0">
+            <Pane layoutX="9.0" layoutY="363.0" prefHeight="54.0" prefWidth="486.0">
                <children>
-                  <JFXButton fx:id="_playButton" layoutX="-7.0" layoutY="6.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="43.0" prefWidth="79.0" text=" ">
+                  <JFXSlider fx:id="_playSlider" layoutX="60.0" layoutY="20.0" prefHeight="15.0" prefWidth="406.0" showTickLabels="true" showTickMarks="true" />
+                  <JFXButton fx:id="_playButton" layoutY="5.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="35.0" prefWidth="4.0" text=" ">
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="35.0">
                            <image>
@@ -47,7 +48,6 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Slider fx:id="_playSlider" layoutX="60.0" layoutY="20.0" prefHeight="15.0" prefWidth="419.0" />
                </children>
             </Pane>
          </children>

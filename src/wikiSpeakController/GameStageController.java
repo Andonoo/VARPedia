@@ -33,6 +33,7 @@ import wikiSpeakModel.MediaType;
 public class GameStageController extends VideoPlayerController {
 	@FXML Pane _videoPane;
 	@FXML Pane _textPane;
+	@FXML Pane _audioPane;
 	@FXML TextField _guessTF;
 	@FXML TextArea _guessTA;
 	GuessingGameEngine _engine;
@@ -53,15 +54,22 @@ public class GameStageController extends VideoPlayerController {
 	
 	private boolean displayNextMedia() {
 		_videoPane.setVisible(false);
+		_audioPane.setVisible(false);
 		_textPane.setVisible(false);
 		prepareForNewQuestion();
 		
 		if (_engine.hasNextMedia()){
 			GuessMedia media;
 			switch (_engine.getCategory()) {
-				case Video: case Audio:
+				case Video:
 					_videoPane.setVisible(true);
-					_textPane.setVisible(false);
+					media = _engine.nextMedia();
+					this.setVideo(media.getAudioVideo());
+					break;
+				case Audio:
+					// Audio section also used the player to play the audio
+					_videoPane.setVisible(true);
+					_audioPane.setVisible(true);
 					media = _engine.nextMedia();
 					this.setVideo(media.getAudioVideo());
 					break;

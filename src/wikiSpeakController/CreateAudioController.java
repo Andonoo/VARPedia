@@ -104,7 +104,7 @@ public class CreateAudioController {
 		// Create columns for the UI
 		List<String> creationFieldNames = Arrays.asList("PlayableName", "duration", "play", "delete");
 		List<String> tableColumnNames = Arrays.asList("Name", "Duration", "Play", "Delete");
-		double[] widthMultiplier = {0.4, 0.5/3, 0.5/3, 0.5/3};
+		double[] widthMultiplier = {0.49, 0.5/3, 0.5/3, 0.5/3};
 		List<TableColumn<String, Creation>> columns = new ArrayList<TableColumn<String, Creation>>();
 		for (int i = 0; i < creationFieldNames.size(); i++) {
 			TableColumn<String, Creation> col = new TableColumn<>(tableColumnNames.get(i));
