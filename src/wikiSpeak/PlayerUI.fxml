@@ -33,7 +33,7 @@
       <Pane layoutX="345.0" layoutY="504.0" prefHeight="56.0" prefWidth="247.0" />
       <Pane layoutX="184.0" layoutY="489.0" prefHeight="88.0" prefWidth="569.0">
          <children>
-            <JFXButton fx:id="_playButton" layoutY="23.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="43.0" prefWidth="76.0" text=" ">
+            <JFXButton fx:id="_playButton" layoutY="23.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="43.0" prefWidth="76.0">
                <graphic>
                   <ImageView fitHeight="35.0" fitWidth="35.0">
                      <image>
