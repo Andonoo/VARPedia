@@ -34,7 +34,7 @@
          <children>
             <MediaView fx:id="_videoDisplay" fitHeight="360.0" fitWidth="480.0" layoutX="45.0" nodeOrientation="INHERIT" />
             <JFXSlider fx:id="_playSlider" blockIncrement="1.0" layoutX="102.0" layoutY="380.0" prefHeight="16.0" prefWidth="403.0" />
-            <JFXButton fx:id="_playButton" layoutX="36.0" layoutY="366.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="43.0" prefWidth="86.0" text=" ">
+            <JFXButton fx:id="_playButton" layoutX="36.0" layoutY="366.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="45.0" prefWidth="35.0" text=" ">
                <graphic>
                   <ImageView fitHeight="35.0" fitWidth="35.0">
                      <image>

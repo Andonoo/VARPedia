@@ -33,6 +33,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
@@ -58,7 +59,7 @@ public class FinalizeCreationController {
 	@FXML private TableColumn<ImageItem, CheckBox> _checkBoxCol;
 	@FXML Button _createButton;
 	@FXML ComboBox<String> _musicCombo;
-	@FXML ProgressBar _progressBar;
+	@FXML Pane _loadingPane;
 	
 	/**
 	 * Set initial state of UI components
@@ -76,9 +77,6 @@ public class FinalizeCreationController {
 		}
 		// Sets the combobox to select the first option by default
 		_musicCombo.getSelectionModel().selectFirst();
-		
-		_createButton.setDisable(true);
-		_createButton.setText("Fetching images\nPlease wait...");
 	}
 	
 	/**
@@ -101,9 +99,7 @@ public class FinalizeCreationController {
 			Platform.runLater(()-> {
 				try {
 					initImageTable();
-					_createButton.setDisable(false);
-					_progressBar.setVisible(false);
-					_createButton.setText("Create!");
+					_loadingPane.setVisible(false);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -241,8 +237,9 @@ public class FinalizeCreationController {
 	 */
 	@FXML
 	private void onCreate(ActionEvent e) throws IOException {
-		_createButton.setDisable(true);
-		_createButton.setText("Creating...");
+		_loadingPane.setVisible(true);
+//		_createButton.setDisable(true);
+//		_createButton.setText("Creating...");
 		makeCreation(e);
 	}
 	

@@ -52,9 +52,9 @@
             </Pane>
          </graphic>
       </JFXButton>
-      <JFXButton layoutX="622.0" layoutY="232.0" onAction="#onCreateBtnClicked" text=" ">
+      <JFXButton layoutX="622.0" layoutY="232.0" onAction="#onCreateBtnClicked" styleClass="hover_border" text=" ">
          <graphic>
-            <Pane prefHeight="218.0" prefWidth="237.0" styleClass="hover_border" stylesheets="@../styles/style.css">
+            <Pane prefHeight="218.0" prefWidth="237.0" stylesheets="@../styles/style.css">
                <children>
                   <Label layoutX="78.0" layoutY="158.0" text="Create">
                      <font>
