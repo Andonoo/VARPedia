@@ -41,35 +41,23 @@ public class Creation extends Playable{
 	}
 	
 	/***
-	 * Confirm with user then delete the creation
+	 * Delete this creation
 	 */
-	protected void onDelete(ActionEvent event) {
-		// Make alert to confirm with user
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation");
-		alert.setHeaderText("Delete creation");
-		alert.setContentText("Are you sure you want to delete?");
-		ButtonType buttonTypeYes = new ButtonType("Yes");
-		ButtonType buttonTypeCancel = new ButtonType("No", ButtonData.CANCEL_CLOSE);
-		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeYes){
-				Thread worker = new Thread(()->{
-				try {
-					String command = String.format("rm -r %s", ShellHelper.WrapString(_directoryPath));
-					ShellHelper.execute(command);
-					// Run the action specified by client, mainly for refreshing the UI
-					Platform.runLater(_afterDelete);
-				} catch (Exception e) {
-					Platform.runLater(()->{
-						Alert errorAlert = new Alert(AlertType.ERROR);
-						errorAlert.setContentText("Unable to delete " + e.getMessage());
-						errorAlert.showAndWait();
-					});
-				}});
-				worker.start();
-		}
+	protected void delete() {
+		Thread worker = new Thread(()->{
+		try {
+			String command = String.format("rm -r %s", ShellHelper.WrapString(_directoryPath));
+			ShellHelper.execute(command);
+			// Run the action specified by client, mainly for refreshing the UI
+			Platform.runLater(_afterDelete);
+		} catch (Exception e) {
+			Platform.runLater(()->{
+				Alert errorAlert = new Alert(AlertType.ERROR);
+				errorAlert.setContentText("Unable to delete " + e.getMessage());
+				errorAlert.showAndWait();
+			});
+		}});
+		worker.start();
 	}
 	
 	public String getPlayableName() {

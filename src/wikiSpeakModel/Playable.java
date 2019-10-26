@@ -1,8 +1,14 @@
 package wikiSpeakModel;
 
 import java.io.File;
+import java.util.Optional;
+
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 
 /**
  * Class to define a playable media object.
@@ -35,7 +41,23 @@ public abstract class Playable {
 
 	protected abstract void onPlay(ActionEvent event);
 	
-	protected abstract void onDelete(ActionEvent event);
+	protected void onDelete(ActionEvent event) {
+		// Make alert to confirm with user
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation");
+		alert.setHeaderText("Delete creation");
+		alert.setContentText("Are you sure you want to delete?");
+		ButtonType buttonTypeYes = new ButtonType("Yes");
+		ButtonType buttonTypeCancel = new ButtonType("No", ButtonData.CANCEL_CLOSE);
+		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == buttonTypeYes){
+			this.delete();
+		}
+	};
+	
+	protected abstract void delete();
 	
 	public abstract String getPlayableName();
 
