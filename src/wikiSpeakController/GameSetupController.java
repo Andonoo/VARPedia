@@ -23,7 +23,9 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.stage.Stage;
@@ -44,7 +46,9 @@ public class GameSetupController extends Navigation{
 	@FXML RadioButton _videoRB;
 	@FXML Button _playBtn;
 	@FXML TextField _nameTF;
+	@FXML ToggleButton _discoveryTB;
 	
+	Tooltip _discoveryToolTip;
 	ToggleGroup _radioButtonGroup;
 	
 	/**
@@ -59,17 +63,19 @@ public class GameSetupController extends Navigation{
 		_textRB.setToggleGroup(_radioButtonGroup);
 		_audioRB.setToggleGroup(_radioButtonGroup);
 		_videoRB.setToggleGroup(_radioButtonGroup);
-		_audioRB.setSelected(true);
+		_videoRB.setSelected(true);
+		_categoryTV.setVisible(false);
+		_discoveryTB.setTooltip(new Tooltip("Hi"));
 	}
 	
 	/***
 	 * Load category names into table.
 	 */
 	private void loadCategoryTable() {
-		ObservableList<String> categories = FXCollections.observableArrayList("Your Creations", "Fruits", "Animals", "Countries", "Celebrities");
+		ObservableList<String> categories = FXCollections.observableArrayList("Fruits", "Animals", "Countries", "Celebrities");
 		_categoryCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
 		_categoryTV.setItems(categories);
-		_categoryTV.getSelectionModel().selectFirst();
+		_categoryTV.getSelectionModel().selectFirst();_categoryTV.setVisible(false);
 	}
 	
 	/**
@@ -81,7 +87,7 @@ public class GameSetupController extends Navigation{
 	private void onPlayBtnClicked(ActionEvent event) throws Exception {
 		MediaType mediaType = this.getMediaType();
 		GameCategory gameCategory;
-		if (_categoryTV.getSelectionModel().getSelectedItem() == null) {
+		if (_categoryTV.getSelectionModel().getSelectedItem() == null && _discoveryTB.isSelected()) {
 			showAlert("You haven't selected a category");
 			return;
 		} else {
@@ -146,6 +152,9 @@ public class GameSetupController extends Navigation{
 	 * @throws Exception
 	 */
 	private GameCategory getGameCategory() throws Exception{
+		if (!_discoveryTB.isSelected()) {
+			return GameCategory.Creations;
+		}
 		String category = _categoryTV.getSelectionModel().getSelectedItem();
 		switch (category) {
 			case ("Animals"):
@@ -156,10 +165,25 @@ public class GameSetupController extends Navigation{
 				return GameCategory.Countries;
 			case ("Fruits"):
 				return GameCategory.Fruits;
-			case ("Your Creations"):
-				return GameCategory.Creations;
 		}
 		throw new Exception("Wrong GameType");
 	}
 	
+	@FXML
+	private void discoveryOnToggle(ActionEvent event) {
+		if (_discoveryTB.isSelected()) {
+			_discoveryTB.setText("Discovery Mode");
+			_categoryTV.setVisible(true);
+		} else {
+			_discoveryTB.setText("Review Mode");
+			_categoryTV.setVisible(false);
+		}
+	}
+	
+	@FXML
+	private void helpOnClicked(ActionEvent event) {
+		showInfo("Review Mode is for review the creations you've made\n"
+				+ "Discovery Mode is for learning different terms you haven't seen before, "
+				+ "the difficulty varies based on your age!");
+	}
 }

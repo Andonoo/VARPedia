@@ -42,4 +42,15 @@ public class Navigation {
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
+	
+	/**
+	 * Show alert dialog
+	 * 
+	 * @param message
+	 */
+	protected void showInfo(String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
 }
