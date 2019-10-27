@@ -113,9 +113,9 @@ public class GameSetupController extends Navigation{
 					}
 				});
 			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			while (!engine.hasNextMedia()) {
+				Platform.runLater(()->{
+					showAlert(e1.getMessage());
+				});
 			}
 		}); 
 		worker.start();
