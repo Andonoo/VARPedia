@@ -38,7 +38,7 @@ import wikiSpeakModel.Playable;
  * Controller class for audio creation UI component.
  * 
  */
-public class CreateAudioController {
+public class CreateAudioController extends Navigation{
 	private String _creationName;
 	private String _searchTerm;
 	private String _wikiContent;
@@ -176,24 +176,6 @@ public class CreateAudioController {
 			});
 		});
 		worker.start();
-	}
-	
-	@FXML
-	private void onHomeBtnClicked(ActionEvent event) throws IOException {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation");
-		alert.setHeaderText("Delete creation");
-		alert.setContentText("Are you sure you want to go home? All of the progress will be lost");
-		ButtonType buttonTypeYes = new ButtonType("Yes");
-		ButtonType buttonTypeCancel = new ButtonType("No", ButtonData.CANCEL_CLOSE);
-		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeYes){
-			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
-			stage.setScene(scene);
-		}
 	}
 	
 	/***

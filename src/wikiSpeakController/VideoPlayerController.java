@@ -31,7 +31,7 @@ import wikiSpeakModel.Playable;
  * @author Andrew Donovan
  *
  */
-public class VideoPlayerController {
+public class VideoPlayerController extends Navigation{
 	protected boolean _paused;
 	protected Duration _duration;
 	

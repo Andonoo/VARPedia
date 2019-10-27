@@ -29,7 +29,7 @@ import wikiSpeakModel.MediaHelper;
  * Controller class for text search UI component.
  *
  */
-public class SearchController {
+public class SearchController extends Navigation{
 	public static final String contentPlaceHolder = "Please use the input field above to search";
 	public static final String loadingText = "Loading...";
 	private String _searchTerm;
@@ -44,30 +44,6 @@ public class SearchController {
 	public void initialize() {
 		_searchResultTF.setEditable(false);
 		_nextBtn.setDisable(true);
-	}
-
-	/**
-	 * Show an alert dialog with actionable buttons
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
-	@FXML
-	private void onHomeBtnClicked(ActionEvent event) throws IOException {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation");
-		alert.setHeaderText("Delete creation");
-		alert.setContentText("Are you sure you want to go home? All of the progress will be lost");
-		ButtonType buttonTypeYes = new ButtonType("Yes");
-		ButtonType buttonTypeCancel = new ButtonType("No", ButtonData.CANCEL_CLOSE);
-		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeYes) {
-			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
-			stage.setScene(scene);
-		}
 	}
 
 	/**
@@ -176,17 +152,6 @@ public class SearchController {
 	private void resetCreate() {
 		_searchResultTF.clear();
 		_nextBtn.setDisable(true);
-	}
-
-	/**
-	 * Show alert dialog
-	 * 
-	 * @param message
-	 */
-	private void showAlert(String message) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setContentText(message);
-		alert.showAndWait();
 	}
 
 }

@@ -34,7 +34,7 @@ import wikiSpeakModel.GuessMedia;
 import wikiSpeakModel.GuessingGameEngine;
 import wikiSpeakModel.MediaType;
 
-public class GameSetupController {
+public class GameSetupController extends Navigation{
 	@FXML Spinner<Integer> _ageSpinner;
 	@FXML Slider _nOfGameSlider;
 	@FXML TableView<String> _categoryTV;
@@ -70,29 +70,6 @@ public class GameSetupController {
 		_categoryCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
 		_categoryTV.setItems(categories);
 		_categoryTV.getSelectionModel().selectFirst();
-	}
-	
-	/**
-	 * Attempts to go home by switching scene.
-	 * @param event
-	 * @throws IOException
-	 */
-	@FXML
-	private void onHomeBtnClicked(ActionEvent event) throws IOException {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation");
-		alert.setHeaderText("Return to main menu");
-		alert.setContentText("Are you sure you want to go home? All of the progress will be lost");
-		ButtonType buttonTypeYes = new ButtonType("Yes");
-		ButtonType buttonTypeCancel = new ButtonType("No", ButtonData.CANCEL_CLOSE);
-		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeYes){
-			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
-			stage.setScene(scene);
-		}
 	}
 	
 	/**
@@ -142,18 +119,6 @@ public class GameSetupController {
 			}
 		}); 
 		worker.start();
-	}
-	
-	/**
-	 * Show alert popup
-	 * @param text
-	 */
-	private void showAlert(String text) {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Error");
-		alert.setHeaderText("Can't proceed");
-		alert.setContentText(text);
-		alert.showAndWait();
 	}
 	
 	/**

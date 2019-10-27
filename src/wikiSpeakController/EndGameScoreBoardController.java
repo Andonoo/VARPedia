@@ -24,7 +24,7 @@ import wikiSpeakModel.PlayerGuess;
  * @author Andrew Donovan
  *
  */
-public class EndGameScoreBoardController {
+public class EndGameScoreBoardController{
 	private GameRecord _playerScore;
 	@FXML 
 	private Text _scoreText;

@@ -33,8 +33,8 @@
       <Pane layoutX="216.0" layoutY="137.0" prefHeight="440.0" prefWidth="569.0">
          <children>
             <MediaView fx:id="_videoDisplay" fitHeight="360.0" fitWidth="480.0" layoutX="45.0" nodeOrientation="INHERIT" />
-            <JFXSlider fx:id="_playSlider" blockIncrement="1.0" layoutX="102.0" layoutY="380.0" prefHeight="16.0" prefWidth="403.0" />
-            <JFXButton fx:id="_playButton" layoutX="36.0" layoutY="366.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="45.0" prefWidth="35.0" text=" ">
+            <JFXSlider fx:id="_playSlider" blockIncrement="1.0" layoutX="106.0" layoutY="381.0" prefHeight="16.0" prefWidth="403.0" />
+            <JFXButton fx:id="_playButton" layoutX="45.0" layoutY="366.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="45.0" prefWidth="48.0" text=" ">
                <graphic>
                   <ImageView fitHeight="35.0" fitWidth="35.0">
                      <image>
@@ -51,17 +51,17 @@
             </ImageView>
          </children>
       </Pane>
-      <JFXButton fx:id="_homeButton" layoutX="16.0" layoutY="533.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="54.0" prefWidth="146.0" styleClass="primaryColorBackground" text="Home" textFill="WHITE">
-         <graphic>
-            <ImageView fitHeight="42.0" fitWidth="42.0">
-               <image>
-                  <Image url="@../../res/Images/house.png" />
-               </image>
-            </ImageView>
-         </graphic>
+      <JFXButton fx:id="_homeButton" layoutX="16.0" layoutY="533.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="54.0" prefWidth="146.0" styleClass="primaryColorBackground" text="Back" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="42.0" fitWidth="42.0" style="-fx-rotate: 180;">
+               <image>
+                  <Image url="@../../res/Images/next.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </JFXButton>
    </children>
 </AnchorPane>
