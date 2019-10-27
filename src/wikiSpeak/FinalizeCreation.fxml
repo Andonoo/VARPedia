@@ -4,7 +4,6 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import java.lang.String?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
@@ -75,7 +74,8 @@
             </ImageView>
          </graphic>
       </JFXButton>
-      <Pane fx:id="_loadingPane" layoutX="-15.0" layoutY="-20.0" opacity="0.96" prefHeight="636.0" prefWidth="1051.0" style="-fx-background-color: rgba(255, 255, 255, 0.5);" visible="false">
+      <JFXListView fx:id="_imageLV" layoutX="95.0" layoutY="92.0" orientation="HORIZONTAL" prefHeight="278.0" prefWidth="811.0" />
+      <Pane fx:id="_loadingPane" layoutX="-15.0" layoutY="-20.0" opacity="0.96" prefHeight="636.0" prefWidth="1051.0" style="-fx-background-color: rgba(255, 255, 255, 0.5);">
          <children>
             <ProgressIndicator layoutX="500.0" layoutY="292.0" prefHeight="82.0" prefWidth="500.0" />
             <Label layoutX="476.0" layoutY="365.0" text="Loading...">
@@ -85,6 +85,5 @@
             </Label>
          </children>
       </Pane>
-      <JFXListView fx:id="_imageLV" layoutX="95.0" layoutY="92.0" orientation="HORIZONTAL" prefHeight="278.0" prefWidth="811.0" />
    </children>
 </AnchorPane>

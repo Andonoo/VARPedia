@@ -2,6 +2,9 @@ package wikiSpeakController;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -130,11 +133,24 @@ public class FinalizeCreationController extends Navigation{
 			sortAudioFiles(audioFiles);
 			List<ImageItem> selectedImage = _galleryEngine.getSelectedImage();
 			int noImages = selectedImage.size();
+			if (noImages <= 0) {
+				Platform.runLater(()->{
+					showAlert("You must select at least one image");
+				});
+				return;
+			}
 			
+			// Start the creation process 
+			_loadingPane.setVisible(true);
 			// Get the list of selected filenames
 			List<String> selectedImageString = new ArrayList<String>();
-			for (ImageItem item : selectedImage) {
+			for (ImageItem  item : selectedImage) {
 				String path = item.getPath();
+				try {
+					path = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+				} catch (UnsupportedEncodingException e) {
+					throw new Error("Decoding URL error");
+				}
 				selectedImageString.add(path.substring(path.lastIndexOf('/')+1));
 			}
 
@@ -223,9 +239,6 @@ public class FinalizeCreationController extends Navigation{
 	 */
 	@FXML
 	private void onCreate(ActionEvent e) throws IOException {
-		_loadingPane.setVisible(true);
-//		_createButton.setDisable(true);
-//		_createButton.setText("Creating...");
 		makeCreation(e);
 	}
 	
@@ -237,9 +250,6 @@ public class FinalizeCreationController extends Navigation{
 		_galleryEngine = new ImageGalleryEngine(new File("Creations/" + _creationName + "/" + ".tempPhotos/"));
 		List<ImageItem> images = _galleryEngine.getImages();
 		ObservableList<ImageItem> imagesObv = FXCollections.observableArrayList(images);
-//		_imageCol.setCellValueFactory(new PropertyValueFactory<ImageItem, ImageView>("ImageView"));
-//		_checkBoxCol.setCellValueFactory(new PropertyValueFactory<ImageItem, CheckBox>("CheckBox"));
-//		_imageTable.setItems(imagesObv);
 		
 		_imageLV.setCellFactory(listView -> new ListCell<ImageItem>() {
 			@Override
