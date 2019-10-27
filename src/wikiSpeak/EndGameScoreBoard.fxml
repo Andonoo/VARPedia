@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.EndGameScoreBoardController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.EndGameScoreBoardController">
    <children>
-      <TableView fx:id="_scoreBoard" layoutX="107.0" layoutY="114.0" prefHeight="350.0" prefWidth="800.0">
+      <Pane prefHeight="165.0" prefWidth="1000.0">
+         <styleClass>
+            <String fx:value="primaryColorBackground" />
+            <String fx:value="lightShadow" />
+         </styleClass>
+         <children>
+            <HBox alignment="CENTER" layoutX="228.0" layoutY="58.0" prefHeight="54.0" prefWidth="570.0">
+               <children>
+                  <Text fx:id="_scoreText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Score:">
+                     <font>
+                        <Font size="44.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="_netScoreText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="(Net)">
+                     <font>
+                        <Font size="44.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+      <TableView fx:id="_scoreBoard" layoutX="107.0" layoutY="132.0" prefHeight="350.0" prefWidth="800.0">
         <columns>
           <TableColumn fx:id="_roundColumn" minWidth="200.0" prefWidth="75.0" text="Round" />
           <TableColumn fx:id="_guessColumn" minWidth="200.0" prefWidth="75.0" text="Your Guess" />
@@ -18,29 +44,29 @@
             <TableColumn fx:id="_pointsColumn" minWidth="200.0" prefWidth="75.0" text="+/-" />
         </columns>
       </TableView>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="383.0" layoutY="507.0" minWidth="42.0" mnemonicParsing="false" onAction="#onHome" prefHeight="42.0" prefWidth="121.0" text="Home">
+      <JFXButton layoutX="14.0" layoutY="532.0" mnemonicParsing="false" onAction="#onHome" prefHeight="54.0" prefWidth="146.0" styleClass="primaryColorBackground" text="Home" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="42.0" fitWidth="42.0">
+               <image>
+                  <Image url="@../../res/Images/house.png" />
+               </image>
+            </ImageView>
+         </graphic>
          <font>
-            <Font size="17.0" />
+            <Font size="18.0" />
          </font>
-      </Button>
-      <Button alignment="CENTER" layoutX="510.0" layoutY="507.0" minWidth="1.0" mnemonicParsing="false" onAction="#onPlayAgain" prefHeight="42.0" prefWidth="121.0" text="Play Again!">
+      </JFXButton>
+      <JFXButton layoutX="809.0" layoutY="532.0" mnemonicParsing="false" onAction="#onPlayAgain" prefHeight="54.0" prefWidth="177.0" styleClass="primaryColorBackground" text="Play Again!" textFill="WHITE">
          <font>
-            <Font size="17.0" />
+            <Font size="18.0" />
          </font>
-      </Button>
-      <HBox alignment="CENTER" layoutX="222.0" layoutY="24.0" prefHeight="54.0" prefWidth="570.0">
-         <children>
-            <Text fx:id="_scoreText" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Score:">
-               <font>
-                  <Font size="44.0" />
-               </font>
-            </Text>
-            <Text fx:id="_netScoreText" strokeType="OUTSIDE" strokeWidth="0.0" text="(Net)">
-               <font>
-                  <Font size="44.0" />
-               </font>
-            </Text>
-         </children>
-      </HBox>
+         <graphic>
+            <ImageView fitHeight="42.0" fitWidth="42.0">
+               <image>
+                  <Image url="@../../res/Images/loop.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
    </children>
 </AnchorPane>
