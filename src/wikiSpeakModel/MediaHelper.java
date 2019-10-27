@@ -62,7 +62,6 @@ public class MediaHelper {
 	 */
 	public static String searchWiki(String term) throws Exception {
 		// Search wikipedia using wikit
-		System.out.println("Searching for "+ term + "...");
 		String command = String.format("wikit %s", term);
 		List<String> output = ShellHelper.execute(command);
 		
