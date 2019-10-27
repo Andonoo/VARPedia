@@ -39,6 +39,16 @@ public class ImageItem {
 	}
 	
 	/**
+	 * Select/Deselect the ImageItem
+	 * @return the status of ImageItem, selected or not.
+	 */
+	public boolean toggleSelect() {
+		boolean newState = !_checkBox.isSelected();
+		_checkBox.setSelected(newState);
+		return newState;
+	}
+	
+	/**
 	 * Get check box UI element
 	 * @return
 	 */

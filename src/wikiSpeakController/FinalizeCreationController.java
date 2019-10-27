@@ -10,12 +10,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import com.jfoenix.controls.JFXRippler;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,6 +30,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -33,7 +39,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
@@ -54,7 +62,8 @@ public class FinalizeCreationController {
 	private static Map<String, String> _musicMap;
 	private ImageGalleryEngine _galleryEngine;
 	
-	@FXML private TableView<ImageItem> _imageTable;
+	@FXML private ListView<ImageItem> _imageLV;
+//	@FXML private TableView<ImageItem> _imageTable;
 	@FXML private TableColumn<ImageItem, ImageView> _imageCol;
 	@FXML private TableColumn<ImageItem, CheckBox> _checkBoxCol;
 	@FXML Button _createButton;
@@ -251,9 +260,33 @@ public class FinalizeCreationController {
 		_galleryEngine = new ImageGalleryEngine(new File("Creations/" + _creationName + "/" + ".tempPhotos/"));
 		List<ImageItem> images = _galleryEngine.getImages();
 		ObservableList<ImageItem> imagesObv = FXCollections.observableArrayList(images);
-		_imageCol.setCellValueFactory(new PropertyValueFactory<ImageItem, ImageView>("ImageView"));
-		_checkBoxCol.setCellValueFactory(new PropertyValueFactory<ImageItem, CheckBox>("CheckBox"));
-		_imageTable.setItems(imagesObv);
+//		_imageCol.setCellValueFactory(new PropertyValueFactory<ImageItem, ImageView>("ImageView"));
+//		_checkBoxCol.setCellValueFactory(new PropertyValueFactory<ImageItem, CheckBox>("CheckBox"));
+//		_imageTable.setItems(imagesObv);
+		
+		_imageLV.setCellFactory(listView -> new ListCell<ImageItem>() {
+			@Override
+			protected void updateItem(ImageItem imageItem, boolean empty) {
+				super.updateItem(imageItem, empty);
+				if (empty) {
+					setGraphic(null);
+				} else {
+					VBox vBox = new VBox(5);
+					vBox.setAlignment(Pos.CENTER);
+					
+					//Add the images into vBox
+					vBox.getChildren().addAll(imageItem.getImageView(), imageItem.getCheckBox());
+					JFXRippler rippler = new JFXRippler(vBox);
+					setGraphic(rippler);
+				}
+			}
+		});
+		
+		_imageLV.setOnMouseClicked(event -> {
+			ImageItem imageItem = _imageLV.getSelectionModel().getSelectedItem();
+			imageItem.toggleSelect();
+		});
+		_imageLV.setItems(imagesObv);
 	}
 	
 	
