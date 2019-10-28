@@ -19,6 +19,10 @@ bash ./runApp.sh
 If classpath is configured incorrectly, please run the following sciprt to execute the jar file
 bash ./runJAR.sh
 
+## Libraries Used
+JFoenix JavaFX Library, can be retrieved from http://www.jfoenix.com/
+Flickr4Java Library, can be retrieved from https://github.com/boncey/Flickr4Java
+
 ## Music License
 The music used in the project may not be used in materials for commercial purposes.
 * /res/groove.mp3: Adapted from Urban Groove by Javolenus under (CC BY-NC 3.0), can be retrieved from http://ccmixter.org/files/Javolenus/60295
