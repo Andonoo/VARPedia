@@ -1,7 +1,7 @@
 .hover_border:hover{
     -fx-border-color: #f5faff;
     -fx-border-width: 1px 1px 1px 1px;
-    -fx-background-color: #e6e6e6;
+    -fx-background-color: #210463;
     -fx-cursor: hand;
 }
 
