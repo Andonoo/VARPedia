@@ -105,7 +105,7 @@ public class GuessMedia {
 	private boolean checkTermIgnorePlural(String singular, String potentiallyPlural) {
 		int length = potentiallyPlural.length();
 		if (length > 0) {
-			if (potentiallyPlural.substring(0, length-1).equals(singular)) {
+			if (potentiallyPlural.substring(0, length-1).equals(singular) && potentiallyPlural.charAt(length-1) == 's') {
 				return true;
 			} 
 			if (potentiallyPlural.charAt(length-1) == 'y') {
