@@ -1,38 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.GameStageController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.GameStageController">
    <children>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" text="Home" />
-      <Text layoutX="-135.0" layoutY="-175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-      <Label layoutX="407.0" layoutY="40.0" text="Game Round">
+      <Pane prefHeight="148.0" prefWidth="1000.0">
+         <children>
+            <Label layoutX="402.0" layoutY="28.0" text="Game Round" textFill="WHITE">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+         <styleClass>
+            <String fx:value="primaryColorBackground" />
+            <String fx:value="lightShadow" />
+         </styleClass>
+      </Pane>
+      <Pane fx:id="_textPane" layoutX="260.0" layoutY="109.0" prefHeight="403.0" prefWidth="480.0">
+         <children>
+            <TextArea fx:id="_guessTA" prefHeight="403.0" prefWidth="480.0" wrapText="true" />
+         </children>
+      </Pane>
+      <Pane fx:id="_videoPane" layoutX="260.0" layoutY="108.0" prefHeight="419.0" prefWidth="503.0">
+         <children>
+            <MediaView fx:id="_videoDisplay" fitHeight="360.0" fitWidth="480.0" layoutX="12.0" layoutY="3.0" nodeOrientation="INHERIT" />
+            <Pane layoutX="9.0" layoutY="363.0" prefHeight="54.0" prefWidth="486.0">
+               <children>
+                  <JFXSlider fx:id="_playSlider" layoutX="60.0" layoutY="20.0" prefHeight="15.0" prefWidth="406.0" showTickLabels="true" showTickMarks="true" value="0.1" />
+                  <JFXButton fx:id="_playButton" layoutY="5.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="35.0" prefWidth="4.0" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="35.0">
+                           <image>
+                              <Image url="@../../res/Images/play.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </JFXButton>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <TextField fx:id="_guessTF" layoutX="362.0" layoutY="539.0" prefHeight="43.0" prefWidth="157.0" promptText="Your guess..." />
+      <JFXButton layoutX="539.0" layoutY="538.0" mnemonicParsing="false" onAction="#guessBtnClicked" prefHeight="43.0" prefWidth="100.0" styleClass="primaryColorBackground" text="Guess" textFill="WHITE">
          <font>
-            <Font size="30.0" />
+            <Font size="18.0" />
+         </font></JFXButton>
+      <Pane fx:id="_audioPane" layoutX="400.0" layoutY="180.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="-2.0">
+               <image>
+                  <Image url="@../../res/Images/listen.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <JFXButton fx:id="_homeButton" layoutX="14.0" layoutY="533.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="54.0" prefWidth="146.0" styleClass="primaryColorBackground" text="Home" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="42.0" fitWidth="42.0">
+               <image>
+                  <Image url="@../../res/Images/house.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font size="18.0" />
          </font>
-      </Label>
-      <Pane fx:id="_videoPane" layoutX="300.0" layoutY="164.0" prefHeight="334.0" prefWidth="410.0">
-         <children>
-            <MediaView fx:id="_videoDisplay" fitHeight="360.0" fitWidth="480.0" layoutX="-35.0" layoutY="-84.0" nodeOrientation="INHERIT" />
-            <Slider fx:id="_playSlider" layoutX="-35.0" layoutY="284.0" prefHeight="15.0" prefWidth="480.0" />
-            <Button fx:id="_playButton" layoutX="165.0" layoutY="307.0" mnemonicParsing="false" onAction="#handlePlay" prefWidth="80.0" text="Play" />
-         </children>
-      </Pane>
-      <TextField fx:id="_guessTF" layoutX="415.0" layoutY="504.0" />
-      <Button layoutX="471.0" layoutY="539.0" mnemonicParsing="false" onAction="#guessBtnClicked" text="Guess" />
-      <Pane fx:id="_textPane" layoutX="345.0" layoutY="88.0" prefHeight="304.0" prefWidth="320.0">
-         <children>
-            <TextArea fx:id="_guessTA" prefHeight="304.0" prefWidth="320.0" wrapText="true" />
-         </children>
-      </Pane>
+      </JFXButton>
    </children>
 </AnchorPane>

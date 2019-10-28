@@ -33,6 +33,7 @@ import wikiSpeakModel.MediaType;
 public class GameStageController extends VideoPlayerController {
 	@FXML Pane _videoPane;
 	@FXML Pane _textPane;
+	@FXML Pane _audioPane;
 	@FXML TextField _guessTF;
 	@FXML TextArea _guessTA;
 	GuessingGameEngine _engine;
@@ -53,15 +54,22 @@ public class GameStageController extends VideoPlayerController {
 	
 	private boolean displayNextMedia() {
 		_videoPane.setVisible(false);
+		_audioPane.setVisible(false);
 		_textPane.setVisible(false);
 		prepareForNewQuestion();
 		
 		if (_engine.hasNextMedia()){
 			GuessMedia media;
 			switch (_engine.getCategory()) {
-				case Video: case Audio:
+				case Video:
 					_videoPane.setVisible(true);
-					_textPane.setVisible(false);
+					media = _engine.nextMedia();
+					this.setVideo(media.getAudioVideo());
+					break;
+				case Audio:
+					// Audio section also used the player to play the audio
+					_videoPane.setVisible(true);
+					_audioPane.setVisible(true);
 					media = _engine.nextMedia();
 					this.setVideo(media.getAudioVideo());
 					break;
@@ -132,23 +140,5 @@ public class GameStageController extends VideoPlayerController {
 		alert.setHeaderText(null);
 		alert.setContentText(message);
 		alert.showAndWait();
-	}
-	
-	@FXML
-	private void onHomeBtnClicked(ActionEvent event) throws IOException {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation");
-		alert.setHeaderText("Return to main menu");
-		alert.setContentText("Are you sure you want to go home? All of the progress will be lost");
-		ButtonType buttonTypeYes = new ButtonType("Yes");
-		ButtonType buttonTypeCancel = new ButtonType("No", ButtonData.CANCEL_CLOSE);
-		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeYes){
-			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
-			stage.setScene(scene);
-		}
 	}
 }

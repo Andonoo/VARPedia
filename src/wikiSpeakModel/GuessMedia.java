@@ -103,16 +103,18 @@ public class GuessMedia {
 	 */
 	private boolean checkTermIgnorePlural(String singular, String potentiallyPlural) {
 		int length = potentiallyPlural.length();
-		if (potentiallyPlural.substring(0, length-1).equals(singular)) {
-			return true;
-		} 
-		if (potentiallyPlural.charAt(length-1) == 'y') {
-			// Strip out the y
-			potentiallyPlural = potentiallyPlural.substring(0, length-1);
-			// Replace it with ies
-			potentiallyPlural += "ies";
-			if (potentiallyPlural.equals(singular)) {
+		if (length > 0) {
+			if (potentiallyPlural.substring(0, length-1).equals(singular)) {
 				return true;
+			} 
+			if (potentiallyPlural.charAt(length-1) == 'y') {
+				// Strip out the y
+				potentiallyPlural = potentiallyPlural.substring(0, length-1);
+				// Replace it with ies
+				potentiallyPlural += "ies";
+				if (potentiallyPlural.equals(singular)) {
+					return true;
+				}
 			}
 		}
 		return false;

@@ -2,6 +2,9 @@ package wikiSpeakController;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,12 +13,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import com.jfoenix.controls.JFXRippler;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,12 +33,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
 import wikiSpeakController.SceneSwitcher.SceneOption;
@@ -46,17 +59,19 @@ import wikiSpeakModel.MediaHelper;
  * @author Andrew Donovan, Xiaobin Lin
  *
  */
-public class FinalizeCreationController {
+public class FinalizeCreationController extends Navigation{
 	private String _searchTerm;
 	private String _creationName;
 	private static Map<String, String> _musicMap;
 	private ImageGalleryEngine _galleryEngine;
 	
-	@FXML private TableView<ImageItem> _imageTable;
+	@FXML private ListView<ImageItem> _imageLV;
+//	@FXML private TableView<ImageItem> _imageTable;
 	@FXML private TableColumn<ImageItem, ImageView> _imageCol;
 	@FXML private TableColumn<ImageItem, CheckBox> _checkBoxCol;
 	@FXML Button _createButton;
 	@FXML ComboBox<String> _musicCombo;
+	@FXML Pane _loadingPane;
 	
 	/**
 	 * Set initial state of UI components
@@ -74,9 +89,6 @@ public class FinalizeCreationController {
 		}
 		// Sets the combobox to select the first option by default
 		_musicCombo.getSelectionModel().selectFirst();
-		
-		_createButton.setDisable(true);
-		_createButton.setText("Fetching images\nPlease wait...");
 	}
 	
 	/**
@@ -99,8 +111,7 @@ public class FinalizeCreationController {
 			Platform.runLater(()-> {
 				try {
 					initImageTable();
-					_createButton.setDisable(false);
-					_createButton.setText("Create!");
+					_loadingPane.setVisible(false);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -109,29 +120,6 @@ public class FinalizeCreationController {
 			});
 		});
 		flickrWorker.start();
-	}
-	
-	/**
-	 * Sets the action for the home button. Returns to the main menu.
-	 * @param event
-	 * @throws IOException
-	 */
-	@FXML
-	private void onHomeBtnClicked(ActionEvent event) throws IOException {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation");
-		alert.setHeaderText("Delete creation");
-		alert.setContentText("Are you sure you want to go home? All of the progress will be lost");
-		ButtonType buttonTypeYes = new ButtonType("Yes");
-		ButtonType buttonTypeCancel = new ButtonType("No", ButtonData.CANCEL_CLOSE);
-		alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeCancel);
-
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == buttonTypeYes){
-			Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-			Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
-			stage.setScene(scene);
-		}
 	}
 	
 	/**
@@ -145,11 +133,24 @@ public class FinalizeCreationController {
 			sortAudioFiles(audioFiles);
 			List<ImageItem> selectedImage = _galleryEngine.getSelectedImage();
 			int noImages = selectedImage.size();
+			if (noImages <= 0) {
+				Platform.runLater(()->{
+					showAlert("You must select at least one image");
+				});
+				return;
+			}
 			
+			// Start the creation process 
+			_loadingPane.setVisible(true);
 			// Get the list of selected filenames
 			List<String> selectedImageString = new ArrayList<String>();
-			for (ImageItem item : selectedImage) {
+			for (ImageItem  item : selectedImage) {
 				String path = item.getPath();
+				try {
+					path = URLDecoder.decode(path, StandardCharsets.UTF_8.toString());
+				} catch (UnsupportedEncodingException e) {
+					throw new Error("Decoding URL error");
+				}
 				selectedImageString.add(path.substring(path.lastIndexOf('/')+1));
 			}
 
@@ -238,8 +239,6 @@ public class FinalizeCreationController {
 	 */
 	@FXML
 	private void onCreate(ActionEvent e) throws IOException {
-		_createButton.setDisable(true);
-		_createButton.setText("Creating...");
 		makeCreation(e);
 	}
 	
@@ -251,9 +250,30 @@ public class FinalizeCreationController {
 		_galleryEngine = new ImageGalleryEngine(new File("Creations/" + _creationName + "/" + ".tempPhotos/"));
 		List<ImageItem> images = _galleryEngine.getImages();
 		ObservableList<ImageItem> imagesObv = FXCollections.observableArrayList(images);
-		_imageCol.setCellValueFactory(new PropertyValueFactory<ImageItem, ImageView>("ImageView"));
-		_checkBoxCol.setCellValueFactory(new PropertyValueFactory<ImageItem, CheckBox>("CheckBox"));
-		_imageTable.setItems(imagesObv);
+		
+		_imageLV.setCellFactory(listView -> new ListCell<ImageItem>() {
+			@Override
+			protected void updateItem(ImageItem imageItem, boolean empty) {
+				super.updateItem(imageItem, empty);
+				if (empty) {
+					setGraphic(null);
+				} else {
+					VBox vBox = new VBox(5);
+					vBox.setAlignment(Pos.CENTER);
+					
+					//Add the images into vBox
+					vBox.getChildren().addAll(imageItem.getImageView(), imageItem.getCheckBox());
+					JFXRippler rippler = new JFXRippler(vBox);
+					setGraphic(rippler);
+				}
+			}
+		});
+		
+		_imageLV.setOnMouseClicked(event -> {
+			ImageItem imageItem = _imageLV.getSelectionModel().getSelectedItem();
+			imageItem.toggleSelect();
+		});
+		_imageLV.setItems(imagesObv);
 	}
 	
 	

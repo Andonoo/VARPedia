@@ -31,7 +31,7 @@ import wikiSpeakModel.Playable;
  * @author Andrew Donovan
  *
  */
-public class VideoPlayerController {
+public class VideoPlayerController extends Navigation{
 	protected boolean _paused;
 	protected Duration _duration;
 	
@@ -57,11 +57,9 @@ public class VideoPlayerController {
 	protected void handlePlay() {
 		if (_paused) {
 			_videoPlayer.play();
-			_playButton.setText("Pause");
 			_paused = false;
 		} else {
 			_videoPlayer.pause();
-			_playButton.setText("Play");
 			_paused = true;
 		}
 	}
@@ -71,7 +69,6 @@ public class VideoPlayerController {
 	 */
 	protected void forcePause() {
 		_videoPlayer.pause();
-		_playButton.setText("Play");
 		_paused = true;
 	}
 	

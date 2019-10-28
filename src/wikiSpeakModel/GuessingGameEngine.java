@@ -79,17 +79,17 @@ public class GuessingGameEngine {
 				for (int i = 1; i <= _numRounds; i ++) {
 					createVideo(i);
 				}
-			break;
+				break;
 			case Audio:
 				for (int i = 1; i <= _numRounds; i ++) {
 					createAudio(i);
 				}
-			break;
+				break;
 			case Text:
 				for (int i = 1; i <= _numRounds; i ++) {
 					createText();
 				}
-			break;
+				break;
 			}
 		}
 	}
@@ -162,10 +162,14 @@ public class GuessingGameEngine {
 	/**
 	 * Method called if the user has selected to use their own creations for viewing. Populates
 	 * _guessMediaElements with creation media elements.
+	 * @throws Exception 
 	 */
-	private void getCreationMedia() {
+	private void getCreationMedia() throws Exception {
 		File creationDir = new File("Creations/");
 		File[] creations = creationDir.listFiles();
+		if (creations.length == 0) {
+			throw new Exception("There are no creations");
+		}
 		for (int i = 1; i <= _numRounds; i ++) {
 			switch(_gameType) {
 			case Video:

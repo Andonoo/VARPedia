@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.ViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.ViewController">
    <children>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackBtnClicked" text="Back" />
-      <TableView fx:id="creationTable" layoutX="14.0" layoutY="46.0" prefHeight="532.0" prefWidth="971.0" />
+      <TableView fx:id="_creationTable" layoutX="15.0" layoutY="175.0" prefHeight="343.0" prefWidth="971.0">
+         <columns>
+            <TableColumn fx:id="_creationNameCol" prefWidth="651.0" text="Creation Name" />
+            <TableColumn fx:id="_playCol" prefWidth="150.0" style="-fx-alignment: CENTER;" text="Play" />
+            <TableColumn fx:id="_deleteCol" prefWidth="150.0" text="Delete" />
+         </columns></TableView>
+      <Pane prefHeight="165.0" prefWidth="1000.0">
+         <styleClass>
+            <String fx:value="primaryColorBackground" />
+            <String fx:value="lightShadow" />
+         </styleClass>
+         <children>
+            <Text fill="WHITE" layoutX="385.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creations">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <JFXButton layoutX="14.0" layoutY="534.0" mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="54.0" prefWidth="146.0" styleClass="primaryColorBackground" text="Home" textFill="WHITE">
+         <graphic>
+            <ImageView fitHeight="42.0" fitWidth="42.0">
+               <image>
+                  <Image url="@../../res/Images/house.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

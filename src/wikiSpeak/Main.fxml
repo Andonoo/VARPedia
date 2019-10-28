@@ -1,37 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="lightColorBackground" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wikiSpeakController.MainController">
    <children>
-      <Text layoutX="-135.0" layoutY="-175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-      <Text layoutX="351.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VARpedia">
+      <Text layoutX="366.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VARpedia">
          <font>
-            <Font size="49.0" />
+            <Font name="Vemana2000" size="49.0" />
          </font>
       </Text>
-      <Button layoutX="180.0" layoutY="317.0" mnemonicParsing="false" onAction="#onViewBtnClicked" prefHeight="75.0" prefWidth="154.0" text="View">
+      <JFXButton layoutX="85.0" layoutY="232.0" onAction="#onViewBtnClicked" styleClass="hover_border" text=" ">
+         <graphic>
+            <Pane prefHeight="218.0" prefWidth="237.0" stylesheets="@../styles/style.css">
+               <children>
+                  <ImageView fitHeight="120.0" fitWidth="120.0" layoutX="59.0" layoutY="27.0">
+                     <image>
+                        <Image url="@../../res/Images/tools.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="89.0" layoutY="158.0" text="View">
+                     <font>
+                        <Font name="Loma Bold" size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </graphic>
+      </JFXButton>
+      <JFXButton layoutX="349.0" layoutY="232.0" onAction="#onPlayBtnClicked" styleClass="hover_border" text=" ">
+         <graphic>
+            <Pane prefHeight="218.0" prefWidth="237.0" stylesheets="@../styles/style.css">
+               <children>
+                  <Label layoutX="92.0" layoutY="158.0" text="Play">
+                     <font>
+                        <Font name="Loma Bold" size="28.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="120.0" fitWidth="120.0" layoutX="59.0" layoutY="29.0">
+                     <image>
+                        <Image url="@../../res/Images/quiz.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </graphic>
+      </JFXButton>
+      <JFXButton layoutX="622.0" layoutY="232.0" onAction="#onCreateBtnClicked" styleClass="hover_border" text=" ">
+         <graphic>
+            <Pane prefHeight="218.0" prefWidth="237.0" stylesheets="@../styles/style.css">
+               <children>
+                  <Label layoutX="78.0" layoutY="158.0" text="Create">
+                     <font>
+                        <Font name="Loma Bold" size="28.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="133.0" fitWidth="133.0" layoutX="53.0" layoutY="25.0">
+                     <image>
+                        <Image url="@../../res/Images/review.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </graphic>
+      </JFXButton>
+      <JFXButton layoutX="754.0" layoutY="44.0" onAction="#onLeaderboardBtnClicked" prefHeight="59.0" prefWidth="189.0" styleClass="hover_border" text="Leaderboard">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0">
+               <image>
+                  <Image url="@../../res/Images/trophy.png" />
+               </image>
+            </ImageView>
+         </graphic>
          <font>
             <Font size="17.0" />
          </font>
-      </Button>
-      <Button layoutX="595.0" layoutY="317.0" mnemonicParsing="false" onAction="#onCreateBtnClicked" prefHeight="75.0" prefWidth="154.0" text="Create">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Button>
-      <Button layoutX="393.0" layoutY="317.0" mnemonicParsing="false" onAction="#onPlayBtnClicked" prefHeight="75.0" prefWidth="154.0" text="Play">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Button>
-      <Button layoutX="393.0" layoutY="432.0" mnemonicParsing="false" onAction="#onLeaderboardBtnClicked" prefHeight="75.0" prefWidth="154.0" text="Leaderboard">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Button>
+      </JFXButton>
    </children>
 </AnchorPane>

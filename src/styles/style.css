@@ -1,0 +1,44 @@
+.hover_border:hover{
+    -fx-border-color: #f5faff;
+    -fx-border-width: 1px 1px 1px 1px;
+    -fx-background-color: #e6e6e6;
+    -fx-cursor: hand;
+}
+
+
+
+.button{
+    -fx-cursor: hand;
+}
+
+.rightShadow{
+    -fx-effect: dropshadow(three-pass-box, black, 10, 0, 0, 0);
+}
+
+.lightShadow{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.lighterShadow{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 3, 0, 0, 0);
+}
+
+.prompt_text{
+    -fx-prompt-text-fill: #333333;
+}
+
+.primaryColorBackground{
+    -fx-background-color: #3700B3;
+}
+
+.lightColorBackground{
+    -fx-background-color: #64b5f6;
+}
+
+.confirmBackground{
+    -fx-background-color: #40E0D0;
+}
+
+.secondaryColor{
+    -fx-background-color: #03DAC5;
+}
