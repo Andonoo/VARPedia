@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-import wikiSpeakController.ShellHelper;
-
 /**
  * Class which will be used to take the user's inputs to the guessing game (age, category, difficulty ...) 
  * and use them to create an appropriate creation(s) to guess from. Also manages the guessing game logic 

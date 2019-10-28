@@ -1,15 +1,12 @@
 package wikiSpeakModel;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import wikiSpeakController.ShellHelper;
 
 /**

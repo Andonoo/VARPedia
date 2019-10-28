@@ -1,16 +1,12 @@
 package wikiSpeakController;
 
 import java.io.IOException;
-import java.util.Optional;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.stage.Stage;
 import wikiSpeakController.SceneSwitcher.SceneOption;
 

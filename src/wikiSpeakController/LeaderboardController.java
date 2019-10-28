@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JLabel;
-import javax.swing.table.DefaultTableCellRenderer;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +19,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import wikiSpeakModel.GameRecord;
-import wikiSpeakModel.PlayerGuess;
 
 /**
  * Class used to control the displaying of the leaderboard data from the leaderboard view.

@@ -2,7 +2,6 @@ package wikiSpeakController;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -18,11 +17,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import wikiSpeakController.SceneSwitcher.SceneOption;
 import wikiSpeakModel.Creation;
-import wikiSpeakModel.GameRecord;
 import wikiSpeakModel.Playable;
 
 /**

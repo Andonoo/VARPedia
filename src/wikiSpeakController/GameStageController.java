@@ -1,8 +1,5 @@
 package wikiSpeakController;
 
-import java.io.IOException;
-import java.util.Optional;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,16 +8,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
-import wikiSpeakController.SceneSwitcher.SceneOption;
 import wikiSpeakModel.GuessMedia;
 import wikiSpeakModel.GuessingGameEngine;
 import wikiSpeakModel.MediaType;

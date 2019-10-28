@@ -1,7 +1,6 @@
 package wikiSpeakModel;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Class to represent one media component for the user to guess against (text, audio or video).

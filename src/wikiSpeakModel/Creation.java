@@ -1,7 +1,6 @@
 package wikiSpeakModel;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,11 +10,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.stage.Stage;
 import wikiSpeakController.SceneSwitcher;
 import wikiSpeakController.ShellHelper;
-import javafx.scene.control.ButtonType;
 
 /***
  * A class to represent an existing creation
