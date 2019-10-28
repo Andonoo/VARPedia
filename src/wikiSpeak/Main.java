@@ -29,6 +29,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		Scene scene = new Scene(SceneSwitcher.getLayout(SceneOption.Main));
 		primaryStage.setScene(scene);
+		primaryStage.setTitle("VARPedia");
 		primaryStage.show();
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		    @Override
