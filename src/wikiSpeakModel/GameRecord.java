@@ -20,7 +20,6 @@ public class GameRecord implements Serializable {
 	private int _netScoreThisRound;
 	private int _correctGuesses;
 	private int _incorrectGuesses;
-	private int _roundsPlayed;
 	
 	/**
 	 * Creates a game record for the provided player. Sets initial values to 0.
@@ -31,7 +30,6 @@ public class GameRecord implements Serializable {
 		_round = 0;
 		_correctGuesses = 0;
 		_incorrectGuesses = 0;
-		_roundsPlayed = 0;
 		_netScoreThisRound = 0;
 		_totalScore = 0;
 		_player = playerName;
@@ -55,7 +53,6 @@ public class GameRecord implements Serializable {
 			_totalScore--;
 			_netScoreThisRound--;
 		}
-		_roundsPlayed++;
 	}
 	
 	/**

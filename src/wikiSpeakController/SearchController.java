@@ -153,13 +153,4 @@ public class SearchController extends Navigation{
 		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.temp");
 		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.tempPhotos");
 	}
-
-	/**
-	 * Reset creation to allow user to start again
-	 */
-	private void resetCreate() {
-		_searchResultTF.clear();
-		_nextBtn.setDisable(true);
-	}
-
 }

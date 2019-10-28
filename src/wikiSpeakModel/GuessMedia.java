@@ -81,7 +81,9 @@ public class GuessMedia {
 			case Audio: 
 				return _guessAudio;
 			case Video: 
-				return _guessVideo;	
+				return _guessVideo;
+			default:
+			break;	
 		}
 		return null;
 	}

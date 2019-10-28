@@ -324,6 +324,7 @@ public class GuessingGameEngine {
 					strings.add(line);
 				}
 			}
+			txtScanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
