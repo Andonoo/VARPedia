@@ -1,15 +1,8 @@
 package wikiSpeakModel;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -121,54 +114,6 @@ public class MediaHelper {
 		}
 		command = command +  ShellHelper.WrapString(_workingDir + outputDir + creationName) + ".wav 2> /dev/null";
 		ShellHelper.execute(command);
-	}
-	
-	/**
-	 * Sorts the audio clips into the user's order
-	 * @param audioFiles
-	 */
-	private void sortAudioFiles(String[] audioFiles) {
-		Hashtable<Integer, String> sortingFiles = new Hashtable<Integer, String>();
-		for (String s: audioFiles) {
-			String valString = s.substring(s.length()-5, s.length()-4);
-			int val =  Integer.parseInt(valString);
-			sortingFiles.put(val, s);
-		}
-		int count = 0;
-		for (Integer i: sortingFiles.keySet()) {
-			audioFiles[count] = sortingFiles.get(i);
-			count ++;
-		}
-		Collections.reverse(Arrays.asList(audioFiles));
-	}
-	
-	/**
-	 * Returns the maximum height and width from the provided images as an array of two integers.
-	 * @param dir Directory containing images
-	 * @param photoFiles names of image files
-	 * @return max width (int[0]) and height(int[1])
-	 */
-	private int[] getMaxImageDimensions(String dir, String[] photoFiles) {
-		int maxImageWidth = 0;
-		int maxImageHeight = 0;
-		for (String p: photoFiles) {
-			BufferedImage image;
-			try {
-				image = ImageIO.read(new File(dir + "/" + p));
-				int width = image.getWidth();
-				int height = image.getHeight();
-				if (width > maxImageWidth) {
-					maxImageWidth = width;
-				}
-				if (height > maxImageHeight) {
-					maxImageHeight = height;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		int[] result = {maxImageWidth, maxImageHeight};
-		return result;
 	}
 	
 	/**

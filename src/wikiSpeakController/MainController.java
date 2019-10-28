@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 
 /**
  * Controller class for main menu UI component.
- *
  */
 public class MainController {
 	@FXML
@@ -26,7 +25,7 @@ public class MainController {
     }
 	
 	/**
-	 * Go to ViewCreation UI
+	 * Listener method for the view button. Loads the ViewCreation menu.
 	 * @param event
 	 * @throws IOException
 	 */
@@ -38,7 +37,7 @@ public class MainController {
 	}
 	
 	/**
-	 * Go to new creation wizard
+	 * Listener method for the create button. Loads the creation wizard.
 	 * @param event
 	 * @throws IOException
 	 */
@@ -50,7 +49,7 @@ public class MainController {
 	}
 	
 	/**
-	 * Go to game wizard
+	 * Listener method for the play button. Loads the game setup.
 	 * @param event
 	 * @throws IOException
 	 */
@@ -62,7 +61,7 @@ public class MainController {
 	}
 	
 	/**
-	 * Go to leaderboard wizard
+	 * Listener method for the leaderboard button. Loads the game leaderboard.
 	 * @param event
 	 * @throws IOException
 	 */

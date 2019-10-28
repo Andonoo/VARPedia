@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JLabel;
-import javax.swing.table.DefaultTableCellRenderer;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +19,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import wikiSpeakModel.GameRecord;
-import wikiSpeakModel.PlayerGuess;
 
 /**
  * Class used to control the displaying of the leaderboard data from the leaderboard view.
@@ -46,6 +42,9 @@ public class LeaderboardController {
 	@FXML 
 	private TableColumn<GameRecord, String> _accuracyColumn;
 	
+	/**
+	 * Method called on loading of leaderboard scene. Initializes the table component.
+	 */
 	@FXML
 	private void initialize() {
 		loadScoreBoard();
@@ -63,6 +62,12 @@ public class LeaderboardController {
 		}
 	}
 	
+	/**
+	 * Handler class for the back button. Returns the user to the main menu.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void onBack(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();

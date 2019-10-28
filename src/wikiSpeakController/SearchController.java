@@ -3,8 +3,6 @@ package wikiSpeakController;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Optional;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
@@ -13,21 +11,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
-import wikiSpeakController.SceneSwitcher.SceneOption;
 import wikiSpeakModel.MediaHelper;
 
 /**
  * Controller class for text search UI component.
- *
+ * 
+ * @author Andrew Donovan, Xiaobin Lin
  */
 public class SearchController extends Navigation{
 	public static final String contentPlaceHolder = "Please use the input field above to search";
@@ -40,6 +34,9 @@ public class SearchController extends Navigation{
 	@FXML private TextField _creationNameTF;
 	@FXML private Button _nextBtn;
 
+	/**
+	 * Method called on loading of term search scene.
+	 */
 	@FXML
 	public void initialize() {
 		_searchResultTF.setEditable(false);
@@ -69,13 +66,10 @@ public class SearchController extends Navigation{
 			return;
 		}
 		
-		File creationTxt = new File(String.format("Creations/%s/%s.txt", _creationName, _creationName));
-		creationTxt.createNewFile();
-		PrintWriter output = new PrintWriter(creationTxt);
-		output.println(wikiText);
-		output.close();
-		
+		// Saves media components for use in the quiz.
+		saveUsersSearchText(wikiText);
 		saveUsersSearchTerm();
+		
 		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("CreateAudio.fxml"));
@@ -87,6 +81,20 @@ public class SearchController extends Navigation{
 
 		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		stage.setScene(scene);
+	}
+	
+	/**
+	 * Saves the user's search text for the purpose of future use in the quiz.
+	 * 
+	 * @param wikiText
+	 * @throws IOException
+	 */
+	private void saveUsersSearchText(String wikiText) throws IOException {
+		File creationTxt = new File(String.format("Creations/%s/%s.txt", _creationName, _creationName));
+		creationTxt.createNewFile();
+		PrintWriter output = new PrintWriter(creationTxt);
+		output.println(wikiText);
+		output.close();
 	}
 	
 	/**
@@ -145,13 +153,4 @@ public class SearchController extends Navigation{
 		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.temp");
 		ShellHelper.execute("mkdir ./Creations/" + ShellHelper.WrapString(name) + "/.tempPhotos");
 	}
-
-	/**
-	 * Reset creation to allow user to start again
-	 */
-	private void resetCreate() {
-		_searchResultTF.clear();
-		_nextBtn.setDisable(true);
-	}
-
 }

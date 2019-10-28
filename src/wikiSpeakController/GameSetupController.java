@@ -1,8 +1,6 @@
 package wikiSpeakController;
 
 import java.io.IOException;
-import java.util.Optional;
-
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -13,9 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
@@ -26,16 +22,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.stage.Stage;
 import wikiSpeak.Main;
-import wikiSpeakController.SceneSwitcher.SceneOption;
 import wikiSpeakModel.GameCategory;
-import wikiSpeakModel.GuessMedia;
 import wikiSpeakModel.GuessingGameEngine;
 import wikiSpeakModel.MediaType;
 
+/**
+ * Controller class for the quiz setup menu.
+ */
 public class GameSetupController extends Navigation{
 	@FXML Spinner<Integer> _ageSpinner;
 	@FXML Slider _nOfGameSlider;
@@ -99,7 +94,10 @@ public class GameSetupController extends Navigation{
 		int age = _ageSpinner.getValue();
 		int nOfGames = (int) _nOfGameSlider.getValue();
 		
+		// Builds game engine with user inputs.
 		GuessingGameEngine engine = new GuessingGameEngine(name, age, nOfGames, gameCategory, mediaType);
+		
+		// Prepares the game on a background thread and once complete launches the game.
 		Thread worker = new Thread(() -> {
 			try {
 				engine.prepareGame();
@@ -169,6 +167,11 @@ public class GameSetupController extends Navigation{
 		throw new Exception("Wrong GameType");
 	}
 	
+	/**
+	 * Listener method for game mode toggle. Changes between discovery and review game types.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void discoveryOnToggle(ActionEvent event) {
 		if (_discoveryTB.isSelected()) {
@@ -180,6 +183,11 @@ public class GameSetupController extends Navigation{
 		}
 	}
 	
+	/**
+	 * Listener method for game mode toggle help tooltip. 
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void helpOnClicked(ActionEvent event) {
 		showInfo("Review Mode is for review the creations you've made\n"

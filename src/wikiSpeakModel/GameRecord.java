@@ -1,12 +1,8 @@
 package wikiSpeakModel;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -24,13 +20,16 @@ public class GameRecord implements Serializable {
 	private int _netScoreThisRound;
 	private int _correctGuesses;
 	private int _incorrectGuesses;
-	private int _roundsPlayed;
 	
+	/**
+	 * Creates a game record for the provided player. Sets initial values to 0.
+	 * 
+	 * @param playerName
+	 */
 	public GameRecord(String playerName) {
 		_round = 0;
 		_correctGuesses = 0;
 		_incorrectGuesses = 0;
-		_roundsPlayed = 0;
 		_netScoreThisRound = 0;
 		_totalScore = 0;
 		_player = playerName;
@@ -54,7 +53,6 @@ public class GameRecord implements Serializable {
 			_totalScore--;
 			_netScoreThisRound--;
 		}
-		_roundsPlayed++;
 	}
 	
 	/**

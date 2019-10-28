@@ -4,6 +4,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Class to represent an image selection by the user to be put in a creation.
+ */
 public class ImageItem {
 	Image _image;
 	CheckBox _checkBox;

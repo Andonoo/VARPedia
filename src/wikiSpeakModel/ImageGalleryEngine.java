@@ -1,16 +1,14 @@
 package wikiSpeakModel;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
 import javafx.scene.image.Image;
 
+/**
+ * Class to control the selection of images for a creation.
+ */
 public class ImageGalleryEngine {
 	private List<ImageItem> _images;
 	

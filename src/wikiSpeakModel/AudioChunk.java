@@ -1,27 +1,34 @@
 package wikiSpeakModel;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import wikiSpeakController.ShellHelper;
 
 /**
  * A class to represent a Audio Chunk audio file
+ * 
  * @author Xiaobin Lin
  *
  */
 public class AudioChunk extends Playable{
+	/**
+	 * Produces an audio chunk with the provided playable. 
+	 * 
+	 * @param playableName
+	 * @param afterDelete called when the chunk will be deleted
+	 */
 	public AudioChunk(String playableName, Runnable afterDelete) {
 		super(playableName, afterDelete);
 	}
-
+	
+	/**
+	 * Plays this audio chunk.
+	 */
 	@Override
 	protected void onPlay(ActionEvent event) {
 		Thread worker = new Thread(()->{
@@ -35,6 +42,9 @@ public class AudioChunk extends Playable{
 		worker.start();
 	}
 
+	/**
+	 * Deletes this audio chunk.
+	 */
 	@Override
 	protected void delete() {
 		Thread worker = new Thread(()->{
@@ -64,7 +74,10 @@ public class AudioChunk extends Playable{
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Returns the duration of this audio chunk.
+	 */
 	@Override
 	protected int fetchDuration() {
 		try {

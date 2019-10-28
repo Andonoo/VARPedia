@@ -1,7 +1,6 @@
 package wikiSpeakModel;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Class to represent one media component for the user to guess against (text, audio or video).
@@ -82,7 +81,9 @@ public class GuessMedia {
 			case Audio: 
 				return _guessAudio;
 			case Video: 
-				return _guessVideo;	
+				return _guessVideo;
+			default:
+			break;	
 		}
 		return null;
 	}
