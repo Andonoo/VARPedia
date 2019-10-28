@@ -168,13 +168,14 @@ public class FinalizeCreationController extends Navigation{
 					String musicFile = _musicMap.get(_musicCombo.getValue());
 					mh.layerAudioFiles("", musicFile, "", _creationName + ".wav", ".temp/", _creationName + "WithMusic.wav");
 					mh.combineAudioVideoWithTerm(_creationName + "WithMusic", ".temp/", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
+					String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos " + 
+							ShellHelper.WrapString(creationDir) + "LoopedAudio.mp3";
+					ShellHelper.execute(command);
 				} else {
 					mh.combineAudioVideoWithTerm(_creationName, "", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
+					String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos ";
+					ShellHelper.execute(command);
 				}
-				
-				String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos " + 
-								ShellHelper.WrapString(creationDir) + "LoopedAudio.mp3";
-				ShellHelper.execute(command);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
