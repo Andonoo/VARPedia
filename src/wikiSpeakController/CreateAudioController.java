@@ -37,6 +37,7 @@ import wikiSpeakModel.Playable;
 /**
  * Controller class for audio creation UI component.
  * 
+ * @author Andrew Donovan, Xiaobin Lin
  */
 public class CreateAudioController extends Navigation{
 	private String _creationName;
@@ -51,7 +52,7 @@ public class CreateAudioController extends Navigation{
 	@FXML private Button _addAudioChunkBtn;
 	
 	/**
-	 * Finds the number of words in a string
+	 * Finds the number of words in a string.
 	 * @param text
 	 * @return
 	 */
@@ -66,6 +67,9 @@ public class CreateAudioController extends Navigation{
         return count;
 	}
 	
+	/**
+	 * Method called on launching of the AudioCreation scene. Initializes the scene elements.
+	 */
 	@FXML
     public void initialize() {
 		_nxtButton.setDisable(true);
@@ -115,6 +119,13 @@ public class CreateAudioController extends Navigation{
 		_audioChunkTV.getColumns().addAll(columns);
 	}
 	
+	/**
+	 * Listener method for add button. Results in an AudioChunk pop-up which allows the user to 
+	 * edit and finalize the audio chunk.
+	 *  
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void onAddBtnClicked(ActionEvent event) throws IOException {
 		Stage parentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
@@ -123,6 +134,7 @@ public class CreateAudioController extends Navigation{
 		loader.setLocation(Main.class.getResource("CreateAudioChunk.fxml"));
 		Parent layout = loader.load();
 
+		// Fetches the pop-up scene
 		String chunkName = _creationName + _chunkCount;
 		String text = _wikiTextTA.getSelectedText();
 		CreateAudioChunkController controller = loader.<CreateAudioChunkController>getController();
@@ -130,6 +142,7 @@ public class CreateAudioController extends Navigation{
 		controller.setOnAddAction(()->onChunkCreation());
 		Scene scene = new Scene(layout);
 		
+		// Creates pop-up stage and sets scene
 		Stage modal = new Stage();
 		modal.initOwner(parentStage);
 		modal.initModality(Modality.APPLICATION_MODAL); 
@@ -137,23 +150,34 @@ public class CreateAudioController extends Navigation{
 		modal.showAndWait();
 	}
 	
+	/**
+	 * Method called to refresh the table and increment the number of audio chunks.
+	 */
 	private void onChunkCreation() {
 		refreshTableAsync();
 		_chunkCount++;
 	}
 	
+	/**
+	 * Handler method for next button. Sets the scene to the finalize creation page
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void onNextButtonClicked(ActionEvent event) throws IOException {
 		Stage parentStage = (Stage)((Node) event.getSource()).getScene().getWindow();
 		
+		// Fetch FinalizeCreation fxml page
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("FinalizeCreation.fxml"));
 		Parent layout = loader.load();
 		
+		// Loads the scene
 		FinalizeCreationController controller = loader.<FinalizeCreationController>getController();
 		controller.setCreationInfo(_creationName, _searchTerm);
 		Scene scene = new Scene(layout);
 		
+		// Sets the scene
 		parentStage.setScene(scene);
 	}
 	

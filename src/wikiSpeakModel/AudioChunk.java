@@ -14,14 +14,24 @@ import wikiSpeakController.ShellHelper;
 
 /**
  * A class to represent a Audio Chunk audio file
+ * 
  * @author Xiaobin Lin
  *
  */
 public class AudioChunk extends Playable{
+	/**
+	 * Produces an audio chunk with the provided playable. 
+	 * 
+	 * @param playableName
+	 * @param afterDelete called when the chunk will be deleted
+	 */
 	public AudioChunk(String playableName, Runnable afterDelete) {
 		super(playableName, afterDelete);
 	}
-
+	
+	/**
+	 * Plays this audio chunk.
+	 */
 	@Override
 	protected void onPlay(ActionEvent event) {
 		Thread worker = new Thread(()->{
@@ -35,6 +45,9 @@ public class AudioChunk extends Playable{
 		worker.start();
 	}
 
+	/**
+	 * Deletes this audio chunk.
+	 */
 	@Override
 	protected void delete() {
 		Thread worker = new Thread(()->{
@@ -64,7 +77,10 @@ public class AudioChunk extends Playable{
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Returns the duration of this audio chunk.
+	 */
 	@Override
 	protected int fetchDuration() {
 		try {

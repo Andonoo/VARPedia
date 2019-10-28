@@ -28,7 +28,7 @@ public class Creation extends Playable{
     }
 	
 	/***
-	 * Retrieving scene appropriate for playing this creation and loading
+	 * Retrieving scene appropriate for playing this creation and loading.
 	 */
 	protected void onPlay(ActionEvent event) {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
@@ -41,7 +41,7 @@ public class Creation extends Playable{
 	}
 	
 	/***
-	 * Delete this creation
+	 * Deletes this creation.
 	 */
 	protected void delete() {
 		Thread worker = new Thread(()->{
@@ -60,6 +60,9 @@ public class Creation extends Playable{
 		worker.start();
 	}
 	
+	/**
+	 * Returns the name of this creation file.
+	 */
 	public String getPlayableName() {
 		Pattern p = Pattern.compile(".+\\/(.+)Creation.mp4$");
 		Matcher m = p.matcher(_filePath);
@@ -69,21 +72,17 @@ public class Creation extends Playable{
 		return null;
 	}
 	
+	/**
+	 * @return the name of this creation.
+	 */
 	public String getCreationName() {
 		return getPlayableName();
 	}
 
+	/**
+	 * Placeholder method for future feature.
+	 */
 	protected int fetchDuration() {
 		return -1;
-		// The following code fetches the creation duration, it is a time consuming process so 
-		// only use when needed
-//		try {
-//			// Get the duration to a whole number string
-//			String command = String.format("ffprobe -i \"%s\" -show_format -v " +
-//					"quiet | sed -n 's/duration=//p'", _filePath);
-//			return((int) Double.parseDouble(ShellHelper.execute(command).get(0)));
-//		} catch (Exception e) {
-//			return 0;
-//		}
 	}
 }

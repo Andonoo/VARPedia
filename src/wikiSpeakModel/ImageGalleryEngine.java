@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
 
 import javafx.scene.image.Image;
 
+/**
+ * Class to control the selection of images for a creation.
+ */
 public class ImageGalleryEngine {
 	private List<ImageItem> _images;
 	

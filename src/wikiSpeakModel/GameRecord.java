@@ -26,6 +26,11 @@ public class GameRecord implements Serializable {
 	private int _incorrectGuesses;
 	private int _roundsPlayed;
 	
+	/**
+	 * Creates a game record for the provided player. Sets initial values to 0.
+	 * 
+	 * @param playerName
+	 */
 	public GameRecord(String playerName) {
 		_round = 0;
 		_correctGuesses = 0;

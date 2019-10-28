@@ -30,6 +30,9 @@ public class CreateAudioChunkController {
 	@FXML private Button _saveBtn;
 	@FXML private Button _previewBtn;
 	
+	/**
+	 * Method called on loading of the CreateAudioChunk popup scene.
+	 */
 	@FXML
     private void initialize() {
 		_voiceMap = new LinkedHashMap<String, String>();
@@ -44,6 +47,10 @@ public class CreateAudioChunkController {
 		_voiceCombo.getSelectionModel().selectFirst();
     }
 	
+	/**
+	 * Listener method called when the audio preview button is clicked. Handles the event by previewing the
+	 * audio chunk.
+	 */
 	@FXML
     private void previewBtnClicked() {
 		setDisableButtons(true);
@@ -64,6 +71,12 @@ public class CreateAudioChunkController {
 		worker.start();
     }
 	
+	/**
+	 * Handler method called when the user clicks the save button on an audio chunk. Saves the user's 
+	 * current audio chunk to be used in creation process.
+	 * 
+	 * @param event
+	 */
 	@FXML
     private void saveBtnClicked(ActionEvent event) {
 		String text = getText();
@@ -132,10 +145,13 @@ public class CreateAudioChunkController {
 		this._onAdd = r;
 	}
 	
+	/**
+	 * Toggles visibility of save and preview buttons depending on parameter.
+	 * 
+	 * @param condition, true to disable. False to enable.
+	 */
 	private void setDisableButtons(Boolean condition) {
 		this._saveBtn.setDisable(condition);
 		this._previewBtn.setDisable(condition);
 	}
-	
-	
 }

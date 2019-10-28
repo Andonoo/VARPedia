@@ -66,7 +66,6 @@ public class FinalizeCreationController extends Navigation{
 	private ImageGalleryEngine _galleryEngine;
 	
 	@FXML private ListView<ImageItem> _imageLV;
-//	@FXML private TableView<ImageItem> _imageTable;
 	@FXML private TableColumn<ImageItem, ImageView> _imageCol;
 	@FXML private TableColumn<ImageItem, CheckBox> _checkBoxCol;
 	@FXML Button _createButton;
@@ -131,6 +130,8 @@ public class FinalizeCreationController extends Navigation{
 			File audioDirectory = new File("Creations/" + _creationName + "/.temp/");
 			String[] audioFiles = audioDirectory.list();
 			sortAudioFiles(audioFiles);
+			
+			// Fetches selected images
 			List<ImageItem> selectedImage = _galleryEngine.getSelectedImage();
 			int noImages = selectedImage.size();
 			if (noImages <= 0) {
@@ -165,16 +166,9 @@ public class FinalizeCreationController extends Navigation{
 				
 				// Adding music if requested
 				if (!_musicCombo.getValue().equals("None")) {
-					String musicFile = _musicMap.get(_musicCombo.getValue());
-					mh.layerAudioFiles("", musicFile, "", _creationName + ".wav", ".temp/", _creationName + "WithMusic.wav");
-					mh.combineAudioVideoWithTerm(_creationName + "WithMusic", ".temp/", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
-					String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos " + 
-							ShellHelper.WrapString(creationDir) + "LoopedAudio.mp3";
-					ShellHelper.execute(command);
+					finalizeCreationWithMusic(mh, creationDir);
 				} else {
-					mh.combineAudioVideoWithTerm(_creationName, "", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
-					String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos ";
-					ShellHelper.execute(command);
+					finalizeCreationWithoutMusic(mh, creationDir);
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -184,6 +178,37 @@ public class FinalizeCreationController extends Navigation{
 			creationComplete(parentStage);
 		});
 		creationWorker.start();
+	}
+	
+	/**
+	 * Takes the existing media files selected by the user and builds a creation with music in background. Creation is built
+	 * using the provided media helper.
+	 * 
+	 * @param mh
+	 * @param creationDir
+	 * @throws Exception
+	 */
+	private void finalizeCreationWithMusic(MediaHelper mh, String creationDir) throws Exception {
+		String musicFile = _musicMap.get(_musicCombo.getValue());
+		mh.layerAudioFiles("", musicFile, "", _creationName + ".wav", ".temp/", _creationName + "WithMusic.wav");
+		mh.combineAudioVideoWithTerm(_creationName + "WithMusic", ".temp/", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
+		String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos " + 
+				ShellHelper.WrapString(creationDir) + "LoopedAudio.mp3";
+		ShellHelper.execute(command);
+	}
+	
+	/**
+	 * Takes the existing media files selected by the user and uses provided media helper to build
+	 * a creation without music.
+	 * 
+	 * @param mh
+	 * @param creationDir
+	 * @throws Exception
+	 */
+	private void finalizeCreationWithoutMusic(MediaHelper mh, String creationDir) throws Exception {
+		mh.combineAudioVideoWithTerm(_creationName, "", _creationName, "", _searchTerm, creationDir, _creationName + "Creation");
+		String command = "rm -r " + ShellHelper.WrapString(creationDir) + "/.temp " + ShellHelper.WrapString(creationDir) + "/.tempPhotos ";
+		ShellHelper.execute(command);
 	}
 	
 	/**

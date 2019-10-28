@@ -16,8 +16,8 @@ import wikiSpeakController.SceneSwitcher.SceneOption;
 
 /**
  * List of common methods used in many UI Controller classes
- * @author student
- *
+ * 
+ * @author Xiaobin Lin
  */
 public class Navigation {
 	/**
@@ -44,7 +44,7 @@ public class Navigation {
 	}
 	
 	/**
-	 * Show alert dialog
+	 * Show information dialog
 	 * 
 	 * @param message
 	 */

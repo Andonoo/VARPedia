@@ -41,6 +41,9 @@ public class EndGameScoreBoardController{
 	@FXML
 	private TableColumn<PlayerGuess, String> _pointsColumn;
 	
+	/**
+	 * Method called on launching of the end of game scoreboard. Initializes table value factories.
+	 */
 	@FXML
 	private void initialize() {		
 		if (_scoreBoard != null) {

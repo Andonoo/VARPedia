@@ -27,7 +27,6 @@ import wikiSpeakModel.Playable;
 
 /**
  * Controller class for view creations UI component.
- * 
  */
 public class ViewController {
 	@FXML private TableView<Playable> _creationTable;
@@ -40,29 +39,15 @@ public class ViewController {
 	 */
 	@FXML
     public void initialize() {
-		makeColumns();
 		refreshTableAsync();
     }
 	
 	/**
-	 * Create columns for the UI
+	 * Listener method for home button. Takes the user back to the main menu.
+	 * 
+	 * @param event
+	 * @throws IOException
 	 */
-	private void makeColumns() {
-//		List<String> creationFieldNames = Arrays.asList("creationName", "play", "delete");
-//		List<String> tableColumnNames = Arrays.asList("Name", "Play", "Delete");
-//		double[] widthMultiplier = {0.4, 0.5/3, 0.5/3, 0.5/3};
-//		List<TableColumn<String, Creation>> columns = new ArrayList<TableColumn<String, Creation>>();
-//		for (int i = 0; i < creationFieldNames.size(); i++) {
-//			TableColumn<String, Creation> col = new TableColumn<>(tableColumnNames.get(i));
-//			col.setCellValueFactory(new PropertyValueFactory<>(creationFieldNames.get(i)));
-//			col.prefWidthProperty().bind(creationTable.widthProperty().multiply(widthMultiplier[i]));
-//			columns.add(col);
-//		}
-//		creationTable.getColumns().addAll(columns);
-//		_playerColumn.setCellValueFactory(cellData -> cellData.getValue().getPlayerForTable());
-//		_playerColumn.setCellValueFactory(cellData -> cellData.getValue().getPlayerForTable());
-	}
-	
 	@FXML
 	private void onHomeBtnClicked(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();

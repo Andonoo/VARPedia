@@ -46,6 +46,9 @@ public class LeaderboardController {
 	@FXML 
 	private TableColumn<GameRecord, String> _accuracyColumn;
 	
+	/**
+	 * Method called on loading of leaderboard scene. Initializes the table component.
+	 */
 	@FXML
 	private void initialize() {
 		loadScoreBoard();
@@ -63,6 +66,12 @@ public class LeaderboardController {
 		}
 	}
 	
+	/**
+	 * Handler class for the back button. Returns the user to the main menu.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void onBack(ActionEvent event) throws IOException {
 		Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();

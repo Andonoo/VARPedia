@@ -14,7 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 
 /**
- * Class to define a playable media object.
+ * Class to define a playable media object, as used for display in a table.
  */
 public abstract class Playable {
 	protected String _directoryPath;
@@ -25,6 +25,11 @@ public abstract class Playable {
 	protected Button _delete;
 	protected Runnable _afterDelete;
 	
+	/**
+	 * Creates a media object for the provided pathname. 
+	 * @param filePath
+	 * @param afterDelete executed on deletion of this element
+	 */
 	public Playable(String filePath, Runnable afterDelete){
 		_filePath = filePath;
 		_afterDelete = afterDelete;
@@ -45,10 +50,21 @@ public abstract class Playable {
 		_directoryPath = file.getParent();
     }
 	
+	/**
+	 * @return duration of this media element.
+	 */
 	protected abstract int fetchDuration();
 
+	/**
+	 * Plays this playable.
+	 * @param event
+	 */
 	protected abstract void onPlay(ActionEvent event);
 	
+	/**
+	 * Requests confirmation from users and if it is given, deletes this playable.
+	 * @param event
+	 */
 	protected void onDelete(ActionEvent event) {
 		// Make alert to confirm with user
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -65,22 +81,40 @@ public abstract class Playable {
 		}
 	};
 	
+	/**
+	 * Deletes this media element.
+	 */
 	protected abstract void delete();
 	
+	/**
+	 * @return the file name of this playable.
+	 */
 	public abstract String getPlayableName();
 
+	/**
+	 * @return the path to this playable file.
+	 */
 	public String getPath() {
 		return _filePath;
 	}
 	
+	/**
+	 * @return the duration of this playable.
+	 */
 	public String getDuration() {
 		return _duration;
 	}
 	
+	/**
+	 * @return a button to play this playable from a table
+	 */
 	public Button getPlay() {
 		return _play;
 	}
 	
+	/**
+	 * @return a button to delete this playable from a table
+	 */
 	public Button getDelete() {
 		return _delete;
 	}

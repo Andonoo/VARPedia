@@ -7,7 +7,8 @@ import java.util.List;
 
 /***
  * A very simple class to simplify the call to bash
- * @author student
+ * 
+ * @author Xiaobin Lin
  *
  */
 public class ShellHelper {
