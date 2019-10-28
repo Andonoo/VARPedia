@@ -119,6 +119,8 @@ public class GameSetupController extends Navigation{
 			} catch (Exception e1) {
 				Platform.runLater(()->{
 					showAlert(e1.getMessage());
+					_playBtn.setDisable(false);
+					_playBtn.setText("Play!");
 				});
 			}
 		}); 
