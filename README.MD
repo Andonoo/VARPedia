@@ -4,6 +4,9 @@ VARPedia provides a multimedia interface with Wikipedia and Flickr, ultimately a
 
 This application should be tested in the SE206-2019 VirtualBox image 
 
+## Example Screenshot
+![](https://i.imgur.com/sHETWgJ.png)
+
 ## Before running the application
 
 Please create a file called "flickr-api-keys.txt" at the same folder as this readme
@@ -33,3 +36,4 @@ The music used in the project may not be used in materials for commercial purpos
 
 ## Visual License
 Icons made by [Prosymbols, Freepik, DinosoftLabs, Lyolya, Smashicons] from www.flaticon.com
+
